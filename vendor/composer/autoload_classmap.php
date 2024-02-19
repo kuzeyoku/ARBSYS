@@ -77,6 +77,8 @@ return array(
     'App\\Http\\Resources\\SideApplicantResource' => $baseDir . '/app/Http/Resources/SideApplicantResource.php',
     'App\\Http\\Resources\\SideResource' => $baseDir . '/app/Http/Resources/SideResource.php',
     'App\\Mail\\InvitationLetter' => $baseDir . '/app/Mail/InvitationLetter.php',
+    'App\\Mail\\NewUserMail' => $baseDir . '/app/Mail/NewUserMail.php',
+    'App\\Mail\\WelcomeMail' => $baseDir . '/app/Mail/WelcomeMail.php',
     'App\\Models\\AgreementType\\AgreementType' => $baseDir . '/app/Models/AgreementType/AgreementType.php',
     'App\\Models\\Baro' => $baseDir . '/app/Models/Baro.php',
     'App\\Models\\CalculationTool' => $baseDir . '/app/Models/CalculationTool.php',

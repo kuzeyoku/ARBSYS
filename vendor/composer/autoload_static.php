@@ -381,8 +381,8 @@ class ComposerStaticInit8fc311c72ed4ccdfd42c1a48b7062b3a
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -682,6 +682,8 @@ class ComposerStaticInit8fc311c72ed4ccdfd42c1a48b7062b3a
         'App\\Http\\Resources\\SideApplicantResource' => __DIR__ . '/../..' . '/app/Http/Resources/SideApplicantResource.php',
         'App\\Http\\Resources\\SideResource' => __DIR__ . '/../..' . '/app/Http/Resources/SideResource.php',
         'App\\Mail\\InvitationLetter' => __DIR__ . '/../..' . '/app/Mail/InvitationLetter.php',
+        'App\\Mail\\NewUserMail' => __DIR__ . '/../..' . '/app/Mail/NewUserMail.php',
+        'App\\Mail\\WelcomeMail' => __DIR__ . '/../..' . '/app/Mail/WelcomeMail.php',
         'App\\Models\\AgreementType\\AgreementType' => __DIR__ . '/../..' . '/app/Models/AgreementType/AgreementType.php',
         'App\\Models\\Baro' => __DIR__ . '/../..' . '/app/Models/Baro.php',
         'App\\Models\\CalculationTool' => __DIR__ . '/../..' . '/app/Models/CalculationTool.php',
