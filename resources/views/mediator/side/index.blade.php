@@ -103,7 +103,6 @@
         </div>
         <!-- end:: Content -->
     </div>
-    @include('mediator.lawsuit.partials.side_modals')
     <div class="modal" tabindex="-1" role="dialog" id="newSideModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
