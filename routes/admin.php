@@ -83,11 +83,13 @@ Route::group(["middleware" => ["auth", "admin"], "prefix" => "admin", "namespace
         Route::delete("/{legislation}/sil", "LegislationController@destroy")->name("admin.legislation.destroy");
     });
 
-    Route::get("/tanimlar/uyuzmazlıklar", [App\Http\Controllers\Admin\LawsuitSubjectTypeController::class, "index"])->name("admin.lawsuit_subject_type.index");
+    Route::get("/tanimlar/uyuzmazliklar", [App\Http\Controllers\Admin\LawsuitSubjectTypeController::class, "index"])->name("admin.lawsuit_subject_type.index");
 
-    Route::post("/tanimlar/uyusmazli-turu/ekle", [App\Http\Controllers\Admin\LawsuitSubjectTypeController::class, "store"])->name("admin.lawsuit_subject_type.store");
-    Route::delete("/tanimlar/uyusmazli-turu/{lawsuit_subject_type}/sil", [App\Http\Controllers\Admin\LawsuitSubjectTypeController::class, "destroy"])->name("admin.lawsuit_subject_type.destroy");
+    Route::post("/tanimlar/uyusmazlik-turu/ekle", [App\Http\Controllers\Admin\LawsuitSubjectTypeController::class, "store"])->name("admin.lawsuit_subject_type.store");
+    Route::delete("/tanimlar/uyusmazlik-turu/{lawsuit_subject_type}/sil", [App\Http\Controllers\Admin\LawsuitSubjectTypeController::class, "destroy"])->name("admin.lawsuit_subject_type.destroy");
 
-    Route::post("/tanimlar/uyusmazlık-konusu/ekle", [App\Http\Controllers\Admin\LawsuitSubjectController::class, "store"])->name("admin.lawsuit_subject.store");
-    Route::delete("/tanimlar/uyusmazlık-konusu/{lawsuit_subject}/sil", [App\Http\Controllers\Admin\LawsuitSubjectController::class, "destroy"])->name("admin.lawsuit_subject.destroy");
+    Route::post("/tanimlar/uyusmazlik-konusu/ekle", [App\Http\Controllers\Admin\LawsuitSubjectController::class, "store"])->name("admin.lawsuit_subject.store");
+    Route::delete("/tanimlar/uyusmazlik-konusu/{lawsuit_subject}/sil", [App\Http\Controllers\Admin\LawsuitSubjectController::class, "destroy"])->name("admin.lawsuit_subject.destroy");
+
+    Route::get("/tanimlar/muzakere-edilen-hususlar", [App\Http\Controllers\Admin\MattersDiscussedController::class, "index"])->name("admin.matters_discussed.index");
 });

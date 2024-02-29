@@ -304,6 +304,8 @@ $(document).on("click", "#matters-discussed-save", function () {
   var textarea = $("<textarea>").attr("name", "matters_discussed");
   textarea.html(matters_discussed.toLowerCase());
   $("#matters_discussed").append(textarea);
+  var content = $(".note-editable").html();
+  $(".preview_area").summernote("code", content);
   $("#matters-discussed-modal").hide();
 });
 

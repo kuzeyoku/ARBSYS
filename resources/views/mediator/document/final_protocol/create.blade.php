@@ -260,9 +260,6 @@
         </div>
         @include('mediator.document.layout.matters_discussed_modal')
         @include('mediator.document.layout.result_modal')
-        @include('mediator.lawsuit.partials.add_sub_side')
-        @include('mediator.lawsuit.partials.subject_replace_modal')
-        @include('mediator.lawsuit.partials.side_modals')
     </div>
 @endsection
 @section('script')

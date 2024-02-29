@@ -26,22 +26,6 @@
                         </label>
                     @endforeach
                 @endforeach
-                <div class="row">
-                    <div class="col-lg-3">
-                        {{ Form::select("lawyer", )  }}
-                    </div>
-                    <div class="col-lg-3">
-
-                    </div>
-                    <div class="col-lg-3">
-
-                    </div>
-                    <div class="col-lg-3">
-
-                    </div>
-                </div>
-                <div>
-                </div>
             </div>
             <div class="col-md-6">
                 <div class="kt-heading kt-heading--md">Diğer Taraf</div>

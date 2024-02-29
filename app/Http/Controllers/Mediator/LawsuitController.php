@@ -410,6 +410,7 @@ class LawsuitController extends Controller
 
     public function destroy(Lawsuit $lawsuit)
     {
+        $lawsuit->documents()->delete();
         $lawsuit->delete();
         return Redirect::back()->with("success", "Dosya silindi");
     }

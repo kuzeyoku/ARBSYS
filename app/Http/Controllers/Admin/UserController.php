@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use RoleOptions;
-use App\Mail\NewUserMail;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Models\User\Mediator;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -133,7 +131,6 @@ class UserController extends Controller
             $user->delete();
             return Redirect::route("admin.users")->withSuccess("Silme işlemi başarılı bir şekilde gerçekleşti");
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return Redirect::back()->withError("Silme işlemi sırasında bir hata meydana geldi");
         }
     }

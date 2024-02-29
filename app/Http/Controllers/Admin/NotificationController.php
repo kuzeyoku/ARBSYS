@@ -33,7 +33,6 @@ class NotificationController extends Controller
             }
             return redirect()->back()->withSuccess('Bildirim başarılı bir şekilde gönderildi');
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
             return redirect()->back()->withError('Bildirim gönderilirken bir hata oluştu!');
         }

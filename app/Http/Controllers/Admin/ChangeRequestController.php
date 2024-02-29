@@ -9,6 +9,9 @@ use App\Models\User\Mediator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Mail\ChangeRequestConfirmationMail;
+use App\Mail\ChangeRequestRejectionMail;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Notification\Notification;
 
 class ChangeRequestController extends Controller
@@ -99,8 +102,14 @@ class ChangeRequestController extends Controller
             $notification->save();
 
             DB::commit();
+            $mailData = [
+                "name" => $realUser->name,
+                "email" =>  $realUser->email,
+            ];
+            Mail::to($realUser->email)->send(new ChangeRequestConfirmationMail((object)$mailData));
             return redirect()->route('admin.change_request.index')->withSuccess('Değişiklik talebi onaylandı.');
         } catch (Exception $e) {
+            dd($e->getMessage());
             Log::debug($e);
             DB::rollBack();
             return redirect()->route('admin.change_request.index')->withError('İşlem Sırasında Bir Hata Oluştu.');
@@ -122,8 +131,15 @@ class ChangeRequestController extends Controller
                 $user->delete();
             }
             DB::commit();
+            $mailData = [
+                "name" => $user->name,
+                "email" => $user->email,
+                "reason" => $request->description
+            ];
+            Mail::to($user->parent->email)->send(new ChangeRequestRejectionMail((object)$mailData));
             return redirect()->route('admin.change_request.index')->withSuccess("Değişiklik talebi reddedildi.");
         } catch (Exception $e) {
+            dd($e->getMessage());
             Log::debug($e);
             DB::rollBack();
             return redirect()->route('admin.change_request.index')->withError("İşlem Sırasında Bir Hata Oluştu.");

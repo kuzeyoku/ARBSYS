@@ -46,6 +46,8 @@ var KTWizard4 = (function () {
                   'input[name="signature_method"]:checked'
                 ).val();
                 $("#signature_method").html(signature_method);
+                var content = $(".note-editable").html();
+                $(".preview_area").summernote("code", content);
               });
             }
             if (

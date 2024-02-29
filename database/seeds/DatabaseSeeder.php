@@ -1,9 +1,6 @@
 <?php
 
-use App\CalculationTool;
-use App\Models\MinisteriesOpinion;
 use Illuminate\Database\Seeder;
-use PhpOffice\PhpWord\Media;
 
 class DatabaseSeeder extends Seeder
 {
@@ -36,5 +33,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DocumentTypeTemplatesTableSeeder::class);
         $this->call(MinisteriesOpinionsSeeder::class);
         $this->call(MediationOfficesSeeder::class);
+        $this->call(MattersDiscussedSeeder::class);
     }
 }

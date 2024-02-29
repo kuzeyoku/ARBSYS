@@ -506,7 +506,6 @@
                     <a href="" class="btn btn-success" id="next_button_udf">Evet</a>
                 </div>
             </div>
-            @include('mediator.lawsuit.partials.add_sub_side')
         </div>
     @endsection
     @section('script')
