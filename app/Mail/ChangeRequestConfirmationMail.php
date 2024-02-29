@@ -29,7 +29,8 @@ class ChangeRequestConfirmationMail extends Mailable
     public function build()
     {
         $data = $this->data;
+
         $this->subject("Kullanıcı Değişiklik Talepleriniz Onaylandı");
-        return $this->from("noreply@arbsys.com.tr")->view("email.changerequestconfirm", compact('data'));
+        return $this->from("noreply@arbsys.com.tr","ARBSYS")->view("email.changerequestconfirm", compact('data'));
     }
 }

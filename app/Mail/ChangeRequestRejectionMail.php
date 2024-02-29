@@ -33,6 +33,6 @@ class ChangeRequestRejectionMail extends Mailable
         $data = $this->data;
         $this->subject("Kullanıcı Değişiklik Talepleriniz Onaylanmadı");
 
-        return $this->from("noreply@arbsys.com.tr")->view('email.changerequestreject', compact("data"));
+        return $this->from("noreply@arbsys.com.tr","ARBSYS")->view('email.changerequestreject', compact("data"));
     }
 }
