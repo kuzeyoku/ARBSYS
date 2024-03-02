@@ -265,7 +265,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @include("layout.form_actions")
+                                    <div class="kt-form__actions">
+                                        <button
+                                            class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                            data-ktwizard-type="action-prev">
+                                            GERİ
+                                        </button>
+                                        <button type="button"
+                                            class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-save-button"
+                                            data-toggle="modal" data-target="#exampleModal"
+                                            data-ktwizard-type="action-submit">
+                                            KAYDET
+                                        </button>
+                                        <button
+                                            class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-next-button-date-logic"
+                                            data-ktwizard-type="action-next">
+                                            İLERİ
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
