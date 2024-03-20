@@ -89,7 +89,9 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $users->links('pagination::bootstrap-4') }}
+                    <div class="d-flex justify-content-end">
+                        {{ $users->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>
