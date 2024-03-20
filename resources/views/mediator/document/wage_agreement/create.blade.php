@@ -366,7 +366,7 @@
         $("#aaut_first").on('click', function() {
             var form = $('#aaut_first_form').find('select, textarea, input').serialize();
             var url = $(this).data('action');
-            
+
             $.ajax({
                 url: url,
                 type: "POST",
@@ -381,7 +381,8 @@
         });
 
         $("#aaut_second").on('click', function() {
-            var form = $('#aaut_second_form').find('select, textarea, input').serialize();
+            var form = $('#aaut_second_form').find('select, textarea, input').serializeArray();
+            form.push({ name: '_token', value: $('meta[name="csrf-token"]').attr('content') });
             var url = $(this).data('action');
 
             $.ajax({

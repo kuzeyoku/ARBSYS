@@ -75,7 +75,6 @@ class RegisterController extends Controller
             Mail::to($request->email)->send(new WelcomeMail($data));
             return redirect()->route("login")->withSuccess("Kayıt işlemi başarılı. Giriş Yapabilirsiniz.");
         } catch (Throwable $e) {
-            dd($e->getMessage());
             return redirect()->back()->withError("Kayıt işlemi başarısız.")->withInput();
         }
     }

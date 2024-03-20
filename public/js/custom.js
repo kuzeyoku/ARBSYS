@@ -306,6 +306,7 @@ $(document).on("click", "#matters-discussed-save", function () {
   $("#matters_discussed").append(textarea);
   var content = $(".note-editable").html();
   $(".preview_area").summernote("code", content);
+  console.log(content);
   $("#matters-discussed-modal").hide();
 });
 
