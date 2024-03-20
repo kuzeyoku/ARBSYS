@@ -69,7 +69,7 @@ class RegisterController extends Controller
             ];
             $user = User::create($data);
             Mediator::create([
-                "user_id" => $user->id,
+                "user_id" => $user,
             ]);
             Mail::to("info@arbsys.com.tr")->send(new NewUserMail($data));
             Mail::to($request->email)->send(new WelcomeMail($data));
