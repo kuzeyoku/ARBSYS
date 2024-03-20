@@ -66,6 +66,7 @@ class RegisterController extends Controller
                 "borndate" => Carbon::parse($request->borndate)->format("d/m/Y"),
                 "gender" => $request->gender,
                 "role_id" => RoleOptions::MEDIATOR,
+                "end" => Carbon::now()->addDays(7),
             ];
             $user = User::create($data);
             Mediator::create([

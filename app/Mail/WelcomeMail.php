@@ -33,7 +33,7 @@ class WelcomeMail extends Mailable
     public function build()
     {
         $user = $this->user;
-        $this->subject("Yeni Arabulucu Kaydı");
+        $this->subject("ARBSYS'e Hoşgeldiniz!");
         $this->from("uyelik@arbsys.com.tr", "ARBSYS");
         return $this->view("email.welcome", compact("user"));
     }

@@ -115,7 +115,7 @@
             border-bottom: 10px solid #3869D4;
             border-left: 18px solid #3869D4;
             display: inline-block;
-            color: #FFF;
+            color: #fff !important;
             text-decoration: none;
             border-radius: 3px;
             box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
@@ -454,7 +454,7 @@
                 <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="email-masthead">
-                            <a href="#" class="f-fallback email-masthead_name">
+                            <a href={{ route('home') }} class="f-fallback email-masthead_name">
                                 <img src="https://i.hizliresim.com/fvccyi9.png" alt="System Logo">
                             </a>
                         </td>
