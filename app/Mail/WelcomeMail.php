@@ -21,10 +21,11 @@ class WelcomeMail extends Mailable
      */
     public function __construct($user)
     {
-        $this->user = $user["user"];
+        $this->user = $user;
     }
 
     /**
+     * 
      * Build the message.
      *
      * @return $this

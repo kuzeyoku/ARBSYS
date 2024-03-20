@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::whereRoleId(RoleOptions::MEDIATOR)->paginate(15);
+        $users = User::whereRoleId(RoleOptions::MEDIATOR)->orderBy("created_at", "DESC")->paginate(15);
         return view('admin.users.index', compact('users'));
     }
 
@@ -127,7 +127,8 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
-            $user->mediator->delete();
+            if ($user->mediator)
+                $user->mediator->delete();
             $user->delete();
             return Redirect::route("admin.users")->withSuccess("Silme işlemi başarılı bir şekilde gerçekleşti");
         } catch (\Exception $e) {

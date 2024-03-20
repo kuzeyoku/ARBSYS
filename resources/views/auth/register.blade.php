@@ -74,6 +74,8 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+    <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
+    @include('layout.alert')
     <script>
         $(document).ready(function() {
             $(".phonemask").inputmask("9999999999");

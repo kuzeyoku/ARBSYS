@@ -69,10 +69,10 @@ class RegisterController extends Controller
             ];
             $user = User::create($data);
             Mediator::create([
-                "user_id" => $user,
+                "user_id" => $user->id,
             ]);
             Mail::to("info@arbsys.com.tr")->send(new NewUserMail($data));
-            Mail::to($request->email)->send(new WelcomeMail($data));
+            Mail::to($request->email)->send(new WelcomeMail($user));
             return redirect()->route("login")->withSuccess("Kayıt işlemi başarılı. Giriş Yapabilirsiniz.");
         } catch (Throwable $e) {
             return redirect()->back()->withError("Kayıt işlemi başarısız.")->withInput();
