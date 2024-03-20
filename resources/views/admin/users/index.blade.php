@@ -88,8 +88,8 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        {{ $users->links('pagination::bootstrap-4') }}
                     </table>
+                    {{ $users->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
