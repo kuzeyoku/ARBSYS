@@ -54,20 +54,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($personList as $person)
+                            @foreach ($items as $item)
                                 <tr>
-                                    <td>{!! $person->type->name !!}</td>
-                                    <td>{{ $person->name }}</td>
-                                    <td>{{ $person->phone }}</td>
-                                    <td>{{ $person->email }}</td>
+                                    <td>{!! $item->type->name !!}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->phone }}</td>
+                                    <td>{{ $item->email }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-primary edit-person-btn"
-                                                data-url="{{ route('person.edit') }}" data-id="{{ $person->id }}"
-                                                data-type="{{ $person->type }}">Düzenle</button>
+                                                data-url="{{ route('person.edit') }}" data-id="{{ $item->id }}"
+                                                data-type="{{ $item->type->id }}">Düzenle</button>
                                             {!! Form::open(['url' => route('person.destroy'), 'method' => 'DELETE']) !!}
-                                            {!! Form::hidden('id', $person->id) !!}
-                                            {!! Form::hidden('type', $person->type->id) !!}
+                                            {!! Form::hidden('id', $item->id) !!}
+                                            {!! Form::hidden('type', $item->type->id) !!}
                                             <button type="button" class="btn btn-sm btn-danger delete-btn">Sil</button>
                                             {!! Form::close() !!}
                                         </div>

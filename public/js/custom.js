@@ -192,7 +192,7 @@ $(document).on("change", "#personModal #person_type", function () {
 
 $(document).on("change", "#personModalEdit #person_type", function () {
   var id = $("#person_id").val();
-  var old_type = $("#old-type").val();
+  var current_type = $("input[name=current_type]").val();
   var type = $(this).val();
   var url = $(this).data("url");
   $.ajax({
@@ -202,7 +202,7 @@ $(document).on("change", "#personModalEdit #person_type", function () {
       _token: $("meta[name='csrf-token']").attr("content"),
       id: id,
       type: type,
-      old_type: old_type,
+      current_type: current_type,
     },
     success: function (response) {
       $("#personModalEdit #formContent").html(response.data);

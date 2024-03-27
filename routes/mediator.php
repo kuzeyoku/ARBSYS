@@ -118,13 +118,13 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::post('/lawsuit_agreement_type_update', 'LawsuitController@agreementTypeUpdate');
     Route::post('/lawsuit_filter_by_params', 'LawsuitController@filterByParams');
 
-    Route::post('/side_filter_by_params', 'Side\SideController@filterByParams')->name('side.filter');
+    Route::post('/side_filter_by_params', [App\Http\Controllers\Mediator\SideController::class, "filterByParams"])->name('side.filter');
     Route::post("/side/{side}/edit", [App\Http\Controllers\Mediator\SideController::class, "edit"])->name("mediator.side.edit");
     Route::post("/side/update", [App\Http\Controllers\Mediator\SideController::class, "update"])->name("mediator.side.update");
     Route::post("/side/getEditModalContent", [App\Http\Controllers\Mediator\SideController::class, "getEditModalContent"])->name("side.getEditModalContent");
     Route::get('/side/{side_id}', 'Side\SideController@show')->name('side.show');
-    Route::delete('/side/{side_id}', 'Side\SideController@destroy')->name('side.destroy');
-    Route::post('/side', 'Side\SideController@store')->name('side.store');
+    Route::delete('/side/{side}/delete', [App\Http\Controllers\Mediator\SideController::class, "destroy"])->name('mediator.side.destroy');
+    // Route::post('/side', 'Side\SideController@store')->name('side.store');
     Route::put('/side/{side_id}', 'Side\SideController@update')->name('side.update');
 
     Route::prefix("evrak")->group(function () {

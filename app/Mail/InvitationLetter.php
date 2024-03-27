@@ -32,6 +32,6 @@ class InvitationLetter extends Mailable
      */
     public function build()
     {
-        return $this->view('backend.email.invitation_letter')->attachData($this->pdf, 'Davet Mektubu.pdf')->subject("Davet Mektubu");
+        return $this->view('email.invitation_letter')->attachData($this->pdf, 'Davet Mektubu.pdf')->subject("Davet Mektubu");
     }
 }

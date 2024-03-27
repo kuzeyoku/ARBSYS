@@ -1,6 +1,6 @@
 @if (isset($item))
     {{ Form::hidden('id', $item->id, ['id' => 'person_id']) }}
-    {{ Form::hidden('old_type', $item->type->id, ['id' => 'old-type']) }}
+    {{ Form::hidden('current_type', $item->type->id) }}
 @endif
 <div class="form-group row">
     <div class="col-sm-4">

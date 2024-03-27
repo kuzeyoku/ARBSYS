@@ -15,7 +15,7 @@
                             Taraflar
                         </h3>
                     </div>
-                    <div class="kt-portlet__head-toolbar">
+                    {{-- <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="dropdown dropdown-inline">
                                 <button type="button" class="btn btn-brand btn-icon-sm" data-toggle="modal"
@@ -24,7 +24,7 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="kt-portlet__body">
                     <!--begin: Search Form -->
@@ -85,12 +85,15 @@
                                     <td>{{ $side->detail->name }}</td>
                                     <td>{{ $side->side_type->name }}</td>
                                     <td>{{ $side->side_applicant_type->name }}</td>
-                                    <td><a href="javascript:;" data-id="" data-type=""
-                                            class="btn btn-sm btn-clean btn-icon btn-icon-md edit-side-button"
-                                            title="Evraklarım"><i class="la la-edit"></i></a>
-                                        <a href="javascript:;" data-id="" data-side="" data-type=""
-                                            class="btn btn-sm btn-clean btn-icon btn-icon-md delete-side-button"
-                                            title="Sil"><i class="la la-remove"></i></a>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button"
+                                                class="btn btn-sm btn-primary edit-person-btn">Düzenle</button>
+                                            {!! Form::open(['url' => route('mediator.side.destroy', $side), 'method' => 'DELETE']) !!}
+                                            {!! Form::hidden('id', $side->id) !!}
+                                            <button type="button" class="btn btn-sm btn-danger delete-btn">Sil</button>
+                                            {!! Form::close() !!}
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -103,7 +106,7 @@
         </div>
         <!-- end:: Content -->
     </div>
-    <div class="modal" tabindex="-1" role="dialog" id="newSideModal">
+    {{-- <div class="modal" tabindex="-1" role="dialog" id="newSideModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -134,12 +137,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 @section('script')
     <script>
-        var applicant = 0;
-        var opponent = 0;
+        $("d")
     </script>
-    <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
 @endsection

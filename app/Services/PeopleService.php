@@ -16,7 +16,7 @@ class PeopleService
             "phone" => $request->phone,
             "fixed_phone" => $request->fixed_phone,
             "email" => $request->email,
-            "kep_address" => $request->key_address,
+            "kep_address" => $request->kep_address,
             "check" => $request->check ? json_encode(array_keys($request->check)) : null,
             "tax_office_id" => $request->tax_office,
             "type_id" => $request->type,
@@ -37,7 +37,6 @@ class PeopleService
             "check" => $request->check ? json_encode(array_keys($request->check)) : null,
             "tax_office_id" => $request->tax_office,
             "type_id" => $request->type,
-            "user_id" => auth()->user()->id,
         ]);
     }
 

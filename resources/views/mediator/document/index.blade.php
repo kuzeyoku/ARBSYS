@@ -60,7 +60,7 @@
                                     <td>
                                         <button class="btn btn-primary btn-sm"
                                             data-toggle="dropdown">@svg('fas-ellipsis-v')</button>
-                                        <a href="#" class="btn btn-success btn-sm edit_btn">@svg('fas-edit')</a>
+                                        {{-- <a href="#" class="btn btn-success btn-sm edit_btn">@svg('fas-edit')</a> --}}
                                         {{ Form::open(['url' => route('document.destroy', $document), 'method' => 'DELETE', 'class' => 'd-inline']) }}
                                         <button type="button"
                                             class="btn btn-danger btn-sm delete-btn">@svg('fas-trash-alt')</button>

@@ -3,7 +3,6 @@
 namespace App\Models\Side;
 
 use App\Models\Lawsuit\Lawsuit;
-use App\Models\PersonType;
 use Illuminate\Database\Eloquent\Model;
 
 class Side extends Model
