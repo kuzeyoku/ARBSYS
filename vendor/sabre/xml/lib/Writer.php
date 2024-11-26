@@ -124,7 +124,6 @@ class Writer extends \XMLWriter
         if ('{' === $name[0]) {
             list($namespace, $localName) =
                 Service::parseClarkNotation($name);
-            $namespace = $namespace ?? '';
 
             if (array_key_exists($namespace, $this->namespaceMap)) {
                 $result = $this->startElementNS(
@@ -236,10 +235,9 @@ class Writer extends \XMLWriter
 
         list(
             $namespace,
-            $localName
+            $localName,
         ) = Service::parseClarkNotation($name);
 
-        $namespace = $namespace ?? '';
         if (array_key_exists($namespace, $this->namespaceMap)) {
             // It's an attribute with a namespace we know
             return $this->writeAttribute(

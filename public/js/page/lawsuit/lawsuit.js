@@ -229,7 +229,7 @@ $(document).ready(function () {
 
     let identification = $("input[name='identification']").val();
     let name = $("input[name='name']").val();
-    let address = $("input[name='address'").val();
+    let address = $("input[name='address']").val();
     let phone = $("input[name='phone']").val();
     let fixed_phone = $("input[name='fixed_phone']").val();
     let baro = $("input[name='baro']").val();
