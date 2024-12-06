@@ -45,54 +45,23 @@ class LawsuitController extends Controller
         }));
     }
 
-    public function getPersonToSideModalContent(Request $request)
-    {
-        $type = new stdClass();
-        $personType = null;
-        switch ($request->type) {
-            case 'lawyer':
-                $type->name = "Avukat";
-                $personType = "lawyer";
-                $type->file = "person_lawyer";
-                break;
-            case 'authorized':
-                $type->name = "Yetkili";
-                $personType = "authorized";
-                $type->file = "person_standard";
-                break;
-            case 'employee':
-                $type->name = "Çalışan";
-                $personType = "employee";
-                $type->file = "person_standard";
-                break;
-            case 'representative':
-                $type->name = "Kanuni Temsilci";
-                $personType = "representative";
-                $type->file = "person_standard";
-                break;
-            case 'commissioner':
-                $type->name = "Komisyon Üyesi";
-                $personType = "commissioner";
-                $type->file = "person_standard";
-                break;
-            case 'expert':
-                $type->name = "Uzman";
-                $personType = "expert";
-                $type->file = "person_standard";
-                break;
-            default:
-                return false;
-        }
-
-        $data = view('mediator.person.modals.' . $type->file, compact('type'))->render();
-        return compact('data', "type", "personType");
-    }
-
     public function getModalContent(Request $request)
     {
         $type = new stdClass();
         $personType = null;
         switch ($request->type) {
+            case "person_taxpayer":
+                $type->id = 2;
+                $type->name = "Gerçek Kişi (Vergi Mükellefi)";
+                $type->file = "person_taxpayer";
+                $personType = "person";
+                break;
+            case "company_public":
+                $type->id = 9;
+                $type->name = "Tüzel Kişi (Kamu)";
+                $type->file = "company_public";
+                $personType = "company";
+                break;
             case 'lawyer':
                 $type->id = 3;
                 $type->name = "Avukat";

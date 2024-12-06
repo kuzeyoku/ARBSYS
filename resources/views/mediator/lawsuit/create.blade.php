@@ -99,14 +99,14 @@
                                                         <label>Gerçek Kişi/Tüzel Kişi</label>
                                                         <div class="kt-radio-inline row">
                                                             <input type="hidden" class="modalContentUrl"
-                                                                data-url="{{ route('person.getModalContent') }}">
+                                                                data-url="{{ route('lawsuit.getModalContent') }}">
                                                             <label class="kt-radio">
-                                                                <input type="radio" data-type="2" name="isPerson"
+                                                                <input type="radio" data-type="person_taxpayer" name="isPerson"
                                                                     class="personTypeSelect"> Gerçek Kişi
                                                                 <span></span>
                                                             </label>
                                                             <label class="kt-radio">
-                                                                <input type="radio" data-type="9" name="isPerson"
+                                                                <input type="radio" data-type="company_public" name="isPerson"
                                                                     class="personTypeSelect"> Tüzel Kişi
                                                                 <span></span>
                                                             </label>
@@ -362,14 +362,14 @@
                             <label>Gerçek Kişi/Tüzel Kişi</label>
                             <div class="kt-radio-inline">
                                 <input type="hidden" class="modalContentUrl"
-                                    data-url="{{ route('person.getModalContent') }}">
+                                    data-url="{{ route('lawsuit.getModalContent') }}">
                                 <label class="kt-radio">
-                                    <input type="radio" data-type="2" name="isPerson" class="personTypeSelect">
+                                    <input type="radio" data-type="person_taxpayer" name="isPerson" class="personTypeSelect">
                                     Gerçek Kişi
                                     <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                    <input type="radio" data-type="9" name="isPerson" class="personTypeSelect">
+                                    <input type="radio" data-type="company_public" name="isPerson" class="personTypeSelect">
                                     Tüzel
                                     Kişi
                                     <span></span>
