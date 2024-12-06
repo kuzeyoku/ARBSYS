@@ -60,6 +60,61 @@ function getModalContent(type) {
   });
 }
 
+function getModalContent2(type) {
+  $.ajax({
+    url: "/lawsuit/getModalContent",
+    type: "post",
+    data: {
+      _token: $("meta[name='csrf-token']").attr("content"),
+      type: type,
+    },
+    success: function (response) {
+      switch (response.type.id) {
+        case 1:
+          personType = "person";
+          break;
+        case 2:
+          personType = "person";
+          break;
+        case 3:
+          personType = "lawyer";
+          break;
+        case 4:
+          personType = "authorized";
+          break;
+        case 5:
+          personType = "employee";
+          break;
+        case 6:
+          personType = "representative";
+          break;
+        case 7:
+          personType = "commissioner";
+          break;
+        case 8:
+          personType = "company";
+          break;
+        case 9:
+          personType = "company";
+          break;
+        default:
+          personType = null;
+          break;
+      }
+      $("#personModal .modal-header h5").text(response.type.name);
+      $("#personModal .modal-body form").html(response.data);
+      $("#personModal .modal-body form #person_type").prop("disabled", true);
+      $("#personModal .modal-footer .personAddButton").attr(
+          "id",
+          "save" + personType
+      );
+      $("#personModal").modal("show");
+      $(".selectSearch").select2({
+        theme: "bootstrap4",
+      });
+    },
+  });
+}
 $(document).ready(function () {
   //Görev Kabul Tarihi Kontrol İşlemi
   $(".custom-next-button-date-logic").on("click", function () {
@@ -587,24 +642,24 @@ $(document).ready(function () {
   // ---------------------------------- lawyer operations ----------------------------------//
   $(document).on("click", ".addPersonToSide", function (e) {
     e.preventDefault();
-    getModalContent($(this).attr("personType"));
+    getModalContent2($(this).attr("personType"));
     switch ($(this).attr("personType")) {
-      case "lawyer":
+      case "3": //avukat
         lawyerIndex = $(this).attr("data-index");
         break;
-      case "authorized":
+      case "4": //yetkili
         authorizedIndex = $(this).attr("data-index");
         break;
-      case "employee":
+      case "5": //çalışan
         employeeIndex = $(this).attr("data-index");
         break;
-      case "representative":
+      case "6": //temsilci
         representativeIndex = $(this).attr("data-index");
         break;
-      case "commissioner":
+      case "7": //komisyon üyesi
         commissionerIndex = $(this).attr("data-index");
         break;
-      case "expert":
+      case "8": //Uzman kişi
         expertIndex = $(this).attr("data-index");
         break;
     }
@@ -1215,31 +1270,31 @@ function generateSideBlock(side) {
   html += "</div>";
   html += '<div id="lawyerBlock' + side.index + '">';
   html +=
-    '<button class="btn btn-sm btn-warning addPersonToSide" personType="3" data-index="' +
+    '<button class="btn btn-sm btn-warning addPersonToSide" personType="lawyer" data-index="' +
     side.index +
     '"><i class="fas fa-plus"></i> Vekil Ekle</button>';
   html += "</div>";
   html += '<div id="authorizedBlock' + side.index + '">';
   html +=
-    '<button class="btn btn-sm btn-warning addPersonToSide" personType="4" data-index="' +
+    '<button class="btn btn-sm btn-warning addPersonToSide" personType="authorized" data-index="' +
     side.index +
     '"><i class="fas fa-plus"></i> Yetkili Ekle</button>';
   html += "</div>";
   html += '<div id="employeeBlock' + side.index + '">';
   html +=
-    '<button class="btn btn-sm btn-warning addPersonToSide" personType="5" data-index="' +
+    '<button class="btn btn-sm btn-warning addPersonToSide" personType="employee" data-index="' +
     side.index +
     '"><i class="fas fa-plus"></i> Çalışan Ekle</button>';
   html += "</div>";
   html += '<div id="representativeBlock' + side.index + '">';
   html +=
-    '<button class="btn btn-sm btn-warning addPersonToSide" personType="6" data-index="' +
+    '<button class="btn btn-sm btn-warning addPersonToSide" personType="representative" data-index="' +
     side.index +
     '"><i class="fas fa-plus"></i> Kanuni Temsilci Ekle</button>';
   html += "</div>";
   html += '<div id="commissionerBlock' + side.index + '">';
   html +=
-    '<button class="btn btn-sm btn-warning addPersonToSide" personType="7" data-index="' +
+    '<button class="btn btn-sm btn-warning addPersonToSide" personType="commissioner" data-index="' +
     side.index +
     '"><i class="fas fa-plus"></i> Komisyon Üyesi Ekle</button>';
   html += "</div>";

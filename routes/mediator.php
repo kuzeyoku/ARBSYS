@@ -31,6 +31,7 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
         Route::get('/archive/{lawsuit}', 'LawsuitController@archive')->name("lawsuit.archive");
         Route::get('/un-archive/{lawsuit}', 'LawsuitController@unArchive')->name("lawsuit.unArchive");
         Route::post('/getModalContent', 'LawsuitController@getModalContent')->name("lawsuit.getModalContent");
+        Route::post("/getPersonToSideModalContent", 'LawsuitController@getPersonToSideModalContent')->name("lawsuit.getPersonToSideModalContent");
     });
 
     Route::get('/bildirimler', 'NotificationController@index')->name("notification.index");

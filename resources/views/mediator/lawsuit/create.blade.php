@@ -253,8 +253,7 @@
                                                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                                                         rel="stylesheet">
                                                     <div class="neo-notification row">
-                                                        <i
-                                                            class="material-icons col-1 align-middle my-auto">notifications</i>
+                                                        <i class="material-icons col-1 align-middle my-auto">notifications</i>
                                                         <div class="col-11">
                                                             Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
                                                             dilediginiz zaman erişebilirsiniz.

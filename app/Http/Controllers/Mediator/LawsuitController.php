@@ -45,55 +45,86 @@ class LawsuitController extends Controller
         }));
     }
 
-    public function getModalContent(Request $request)
+    public function getPersonToSideModalContent(Request $request)
     {
         $type = new stdClass();
         $personType = null;
         switch ($request->type) {
-            case 'person_custom':
-                $type->id = 10;
-                $type->name = "Gerçek Kişi";
-                $personType = "person";
-                $type->file = "person_custom";
-                break;
-            case 'company_custom':
-                $type->id = 11;
-                $type->name = "Tüzel Kişi";
-                $personType = "company";
-                $type->file = "company_custom";
-                break;
             case 'lawyer':
-                $type->id = 12;
                 $type->name = "Avukat";
                 $personType = "lawyer";
                 $type->file = "person_lawyer";
                 break;
             case 'authorized':
-                $type->id = 13;
                 $type->name = "Yetkili";
                 $personType = "authorized";
                 $type->file = "person_standard";
                 break;
             case 'employee':
-                $type->id = 14;
                 $type->name = "Çalışan";
                 $personType = "employee";
                 $type->file = "person_standard";
                 break;
             case 'representative':
-                $type->id = 15;
                 $type->name = "Kanuni Temsilci";
                 $personType = "representative";
                 $type->file = "person_standard";
                 break;
             case 'commissioner':
-                $type->id = 16;
                 $type->name = "Komisyon Üyesi";
                 $personType = "commissioner";
                 $type->file = "person_standard";
                 break;
             case 'expert':
-                $type->id = 17;
+                $type->name = "Uzman";
+                $personType = "expert";
+                $type->file = "person_standard";
+                break;
+            default:
+                return false;
+        }
+
+        $data = view('mediator.person.modals.' . $type->file, compact('type'))->render();
+        return compact('data', "type", "personType");
+    }
+
+    public function getModalContent(Request $request)
+    {
+        $type = new stdClass();
+        $personType = null;
+        switch ($request->type) {
+            case 'lawyer':
+                $type->id = 3;
+                $type->name = "Avukat";
+                $personType = "lawyer";
+                $type->file = "person_lawyer";
+                break;
+            case 'authorized':
+                $type->id = 1;
+                $type->name = "Yetkili";
+                $personType = "authorized";
+                $type->file = "person_standard";
+                break;
+            case 'employee':
+                $type->id = 1;
+                $type->name = "Çalışan";
+                $personType = "employee";
+                $type->file = "person_standard";
+                break;
+            case 'representative':
+                $type->id = 1;
+                $type->name = "Kanuni Temsilci";
+                $personType = "representative";
+                $type->file = "person_standard";
+                break;
+            case 'commissioner':
+                $type->id = 1;
+                $type->name = "Komisyon Üyesi";
+                $personType = "commissioner";
+                $type->file = "person_standard";
+                break;
+            case 'expert':
+                $type->id = 1;
                 $type->name = "Uzman";
                 $personType = "expert";
                 $type->file = "person_standard";
@@ -554,7 +585,6 @@ class LawsuitController extends Controller
         $fh = fopen('content.txt', 'r');
 
 
-
         $string = "GENEL";
         $claimants = array();
         $claimant_count = -1;
@@ -992,9 +1022,9 @@ class LawsuitController extends Controller
         if ($request->input('lawsuit_subject_type_name') || $request->input('lawsuit_subject_name')) {
             DB::table("custom_lawsuit_types")->insert([
                 "lawsuit_subject_type_name" => $request->input("lawsuit_subject_type_name"),
-                "lawsuit_subject_name"      => $request->input("lawsuit_subject_name"),
-                "lawsuit_id"                => (int) $lawsuit->id,
-                "user_id"                   => (int) auth()->id(),
+                "lawsuit_subject_name" => $request->input("lawsuit_subject_name"),
+                "lawsuit_id" => (int)$lawsuit->id,
+                "user_id" => (int)auth()->id(),
             ]);
         }
 
