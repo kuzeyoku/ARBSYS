@@ -370,7 +370,7 @@
     @include('layout.alert')
     @yield('script')
     <script src="{{ asset("js/plugins/summernote/summernote-ext-print.js") }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}?v={{ time() }}"></script>
     {{-- @if (auth()->user()->restriction == 1)
         <script>
             alert("Kisitli modda kullaniyorsunuz.");

@@ -26,9 +26,10 @@
 
                                 {{ Form::open(['url' => route('invitation_letter.store', $lawsuit), 'method' => 'POST', 'class' => 'kt-form', 'id' => 'kt_form']) }}
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
-                                    data-ktwizard-state="current">
+                                     data-ktwizard-state="current">
                                     <div class="kt-heading kt-heading--md">Hangi taraf(lar) için davet mektubu
-                                        hazırlamak istiyorsunuz?</div>
+                                        hazırlamak istiyorsunuz?
+                                    </div>
                                     @include('mediator.document.layout.side_select')
                                 </div>
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
@@ -77,7 +78,8 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="form-group" style="display: none;" id="each_side_write_question">
+                                            <div class="form-group" style="display: none;"
+                                                 id="each_side_write_question">
                                                 <label>Her taraf için ayrı uyuşmazlık özeti yazmak ister
                                                     misiniz?</label>
                                                 <div class="kt-checkbox-list">
@@ -106,7 +108,7 @@
                                     <div class="kt-heading kt-heading--md">Detaylarınızı İnceleyin ve Gönderin</div>
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v4__form" id="preview-content"
-                                            data-url="{{ route('invitation_letter.preview', $lawsuit) }}">
+                                             data-url="{{ route('invitation_letter.preview', $lawsuit) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +122,7 @@
                                         <div class="kt-wizard-v4__review" id="saved" style="display: none;">
                                             <div class="kt-wizard-v4__review-item">
                                                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                                                    rel="stylesheet">
+                                                      rel="stylesheet">
                                                 <div class="neo-notification row">
                                                     <i class="material-icons col-1 align-middle my-auto">notifications</i>
                                                     <div class="col-11">
@@ -131,7 +133,7 @@
                                             </div>
                                             <div class="kt-wizard-v4__review-item">
                                                 <div class="kt-wizard-v4__review-title" id="side_email_control"
-                                                    data-url="{{ route('invitation_letter.isnull_side_email') }}">
+                                                     data-url="{{ route('invitation_letter.isnull_side_email') }}">
                                                     Taraflar için mail gönderin.
                                                 </div>
                                                 <div class="kt-wizard-v4__review-content d-flex flex-column">
@@ -139,21 +141,21 @@
                                                     <div>
                                                         @foreach ($lawsuit->getClaimants() as $claimant)
                                                             <input class="form-control w-25 mb-3" type="text"
-                                                                name="flower[]" id="values[]"
-                                                                value="{{ $claimant->detail->email }}">
+                                                                   name="flower[]" id="values[]"
+                                                                   value="{{ $claimant->detail->email }}">
                                                         @endforeach
                                                         @foreach ($lawsuit->getDefendants() as $defendant)
                                                             <input class="form-control w-25 mb-3" type="text"
-                                                                name="flower[]" id="values[]"
-                                                                value="{{ $defendant->detail->email }}">
+                                                                   name="flower[]" id="values[]"
+                                                                   value="{{ $defendant->detail->email }}">
                                                         @endforeach
                                                     </div>
                                                     <div class="mt-4">
                                                         <button
-                                                            class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
-                                                            id="send_email"
-                                                            data-url="{{ route('invitation_letter.send_email') }}"
-                                                            style="display: none;">
+                                                                class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                                                id="send_email"
+                                                                data-url="{{ route('invitation_letter.send_email') }}"
+                                                                style="display: none;">
                                                             <i class="far fa-envelope"></i> E-posta Gönder
                                                         </button>
                                                     </div>
@@ -161,7 +163,7 @@
                                             </div>
                                             <div class="kt-wizard-v4__review-item">
                                                 <div class="kt-wizard-v4__review-title">
-                                                    Taraflar için çıktı alın. <br />
+                                                    Taraflar için çıktı alın. <br/>
                                                 </div>
                                                 <div class="kt-wizard-v4__review-content" id="cikti">
                                                 </div>
@@ -171,15 +173,15 @@
                                                 <h1 class="kt-heading kt-heading--lg">Sürece Devam Etmek istiyor
                                                     musunuz?</h1>
                                                 <a class="btn btn-danger btn-lg"
-                                                    href="{{ route('lawsuit.index') }}">İptal</a>
+                                                   href="{{ route('lawsuit.index') }}">İptal</a>
                                                 <a class="btn btn-success btn-lg" href="#next_level"
-                                                    data-toggle="modal">Evet</a>
+                                                   data-toggle="modal">Evet</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="matters_discussed" style="display:none">
-                                    
+
                                 </div>
                                 @include('layout.form_actions')
                                 {{ Form::close() }}
@@ -201,7 +203,7 @@
                     </div>
                     <div class="modal-footer">
                         <a href="{{ route('arbiter_process_info_protocol.create', $lawsuit->id) }}"
-                            class="btn btn-success btn-lg">Evet</a>
+                           class="btn btn-success btn-lg">Evet</a>
                         <a href="{{ route('lawsuit.index') }}" class="btn btn-primary btn-lg">Hayır</a>
                     </div>
                 </div>
@@ -224,7 +226,7 @@
 
             $("#kt_form").ajaxSubmit({
                 url: btn.data('url'),
-                success: function(data) {
+                success: function (data) {
                     KTApp.unprogress(btn);
                     swal.fire({
                         "title": "",
@@ -235,7 +237,8 @@
                 }
             });
         }
-        $(document).on('click', '.print', function() {
+
+        $(document).on('click', '.print', function () {
             var side_id = $(this).data('id');
 
             $("#print-" + side_id).printThis({
@@ -244,7 +247,7 @@
             });
         });
 
-        $("#send_email").on('click', function() {
+        $("#send_email").on('click', function () {
             var btn = $(this);
 
             if (email_count > 0) {
@@ -252,7 +255,7 @@
             } else {
                 var isset = 0;
 
-                $('.send_email_inputs').each(function() {
+                $('.send_email_inputs').each(function () {
                     if ($(this).val() != "") {
                         isset = 1;
                     }
@@ -277,7 +280,7 @@
         var bookIndex = 0;
         var want_write = $("#want_write");
 
-        $("input[name='want_write']").on('change', function() {
+        $("input[name='want_write']").on('change', function () {
             if ($(this).val() == 1) {
                 $("#each_side_write_question").show();
             } else {
@@ -286,9 +289,9 @@
             }
         });
         var disagreement_template = $("#disagreement_template").html();
-        $("input[name='each_side_write']").on('change', function() {
+        $("input[name='each_side_write']").on('change', function () {
             if ($(this).val() == 1) {
-                $.each($("input[name='side_ids[]']:checked"), function() {
+                $.each($("input[name='side_ids[]']:checked"), function () {
                     var textarea = $("<textarea>").attr({
                         "id": "disagreement-" + $(this).val(),
                         "name": "disagreement-" + $(this).val()
@@ -299,7 +302,6 @@
                     want_write.append(textarea);
                     $('#disagreement-' + $(this).val()).summernote();
                 });
-
                 want_write.show();
             } else {
                 want_write.show();

@@ -23,6 +23,10 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="matters_discussed">Müzakere Edilen Hususlar</label>
+                    <textarea name="matters_discussed" id="matters-discussed-textarea" class="form-control" rows="5">{{ $lawsuit->matters_discussed }}</textarea>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="matters-discussed-save">Tamam</button>
