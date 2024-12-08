@@ -301,11 +301,6 @@ $(document).on("change", "#matters-discussed-modal input[type='checkbox']", func
     $("#matters-discussed-textarea").val(matters_discussed.toLowerCase());
 });
 
-$(document).on("click", ".matters-discussed", function () {
-  $("#matters-discussed-modal").modal('show');
-});
-
-var editableArea = `<span class="matters-discussed"><i class="fas fa-edit"></i> Müzakere Edilen Hususlar</span>`
 $(document).on("click", "#matters-discussed-save", function () {
     var matters_discussed = $("#matters-discussed-textarea").val();
     $(".matters-discussed").each(function () {
@@ -313,14 +308,19 @@ $(document).on("click", "#matters-discussed-save", function () {
     });
     const inputValue = $(".matters-discussed").html();
     if (inputValue) {
-
         $.each($("input[name='side_ids[]']:checked"), function () {
-            const editor = $("#disagreement-" + $(this).val()).summernote("code")
-            const newContent = editor.replace(`<span class="matters_discussed"></span>`, `<span class="matters_discussed">${inputValue}</span>`);
-            $('#disagreement-' + $(this).val()).summernote('code', newContent);
+            if ($("#disagreement-" + $(this).val()).length > 0) {
+                const disagreement = $("#disagreement-" + $(this).val()).summernote("code");
+                const replaceContent = disagreement.replace(`<span class="matters_discussed"></span>`, `<span class="matters_discussed">${inputValue}</span>`);
+                $('#disagreement-' + $(this).val()).summernote('code', replaceContent);
+            }
+            if ($("#preview-" + $(this).val()).length > 0) {
+                const preview = $("#preview-" + $(this).val()).summernote("code");
+                const replaceContent = preview.replace(`<span class="matters_discussed"></span>`, `<span class="matters_discussed">${inputValue}</span>`);
+                $('#preview-' + $(this).val()).summernote('code', replaceContent);
+            }
         });
-
-        $("#matters-discussed-modal").modal("hide")
+        $("#matters-discussed-modal").modal("hide");
     }
 });
 
