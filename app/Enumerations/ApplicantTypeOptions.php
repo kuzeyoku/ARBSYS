@@ -6,7 +6,7 @@ class ApplicantTypeOptions
     const COMPANY = 2;
     const LAWYER = 3;
     const AUTHORIZED = 4;
-    const WORKER = 5;
+    const EMPLOYEE = 5;
     const REPRESENTATIVE = 6;
     const EXPERT = 7;
 }

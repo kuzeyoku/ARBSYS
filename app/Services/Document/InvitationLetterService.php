@@ -26,7 +26,6 @@ class InvitationLetterService
 
     public static function replaceKeywords(Request $request, Lawsuit $lawsuit, Side $side)
     {
-
         if ($request->meeting_adress_check == 1 && $request->meeting_address) {
             $meeting_address = ucwords($request->meeting_address);
         } else {

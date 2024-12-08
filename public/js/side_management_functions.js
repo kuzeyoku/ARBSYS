@@ -110,6 +110,21 @@ function modalGenerator() {
                     form.find("#representativeEmail").val(data.data.email);
                 }
             }
+            else if (type === "Komisyon Üyesi") {
+                form = $('#commissionerForm');
+                side_modal = $("#commissionerModalSideManagement");
+                form.find("#commissionerSideId").val(side_id);
+
+                if (data.status === 200) {
+                    form.find("#commissionerId").val(data.data.id);
+                    form.find("#commissionerTcNo").val(data.data.identification);
+                    form.find("#commissionerName").val(data.data.name);
+                    form.find("#commissionerAddress").val(data.data.address);
+                    form.find("#commissionerPhone").val(data.data.phone);
+                    form.find("#commissionerFixedPhone").val(data.data.fixed_phone);
+                    form.find("#commissionerEmail").val(data.data.email);
+                }
+            }
             else if (type === "Uzman Kişi") {
                 form = $('#expertForm');
                 side_modal = $("#expertModalSideManagement");
@@ -264,6 +279,21 @@ function modalEditGenerator() {
                     form.find("#representativePhone").val(data.data.phone);
                     form.find("#representativeFixedPhone").val(data.data.fixed_phone);
                     form.find("#representativeEmail").val(data.data.email);
+                }
+            }
+            else if (type === "Komisyon Üyesi") {
+                form = $('#commissionerForm');
+                side_modal = $("#commissionerModalSideManagement");
+                form.find("#commissionerSideId").val(side_id);
+
+                if (data.status === 200) {
+                    form.find("#commissionerId").val(data.data.id);
+                    form.find("#commissionerTcNo").val(data.data.identification);
+                    form.find("#commissionerName").val(data.data.name);
+                    form.find("#commissionerAddress").val(data.data.address);
+                    form.find("#commissionerPhone").val(data.data.phone);
+                    form.find("#commissionerFixedPhone").val(data.data.fixed_phone);
+                    form.find("#commissionerEmail").val(data.data.email);
                 }
             }
             else if (type === "Uzman Kişi") {

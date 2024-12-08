@@ -1,6 +1,8 @@
+// FIXME: Satıra 2 vekil eklendiğinde ikisini birden çıkarıp ekleme yapılırsa biri silinmiyor
+
 var sides = [];
 var selectedApplicantType = "";
-var lawyerIndex, othersIndex, workersIndex, representativesIndex, expertsIndex;
+var lawyerIndex, authorizedIndex, employeeIndex, representativesIndex, commissionerIndex, expertsIndex;
 var index = 0;
 var activeSide, personType;
 
@@ -253,42 +255,44 @@ $(document).ready(function () {
         //console.log(activeSide.lawyer)
     });
 
-    $("#saveOther").on("click", function (e) {
+    //$("#saveAuthorized").on("click", function (e) { 
+    $(document).on("click", "#saveauthorized", function (e) { // saveOther -> saveAuthorized
         e.preventDefault();
+        console.log("authorized")
 
         var hasError = false;
 
-        let tcNo = $("#otherTcNo").val();
-        let nameSurname = $("#otherName").val();
-        let address = $("#otherAddress").val();
-        let gsm = $("#otherPhone").val();
-        let fixedPhone = $("#otherFixedPhone").val();
-        let email = $("#otherEmail").val();
+        let tcNo = $("input[name='identification']").val();
+        let nameSurname = $("input[name='name']").val();
+        let address = $("input[name='address']").val();
+        let gsm = $("input[name='phone']").val();
+        let fixedPhone = $("input[name='fixed_phone']").val();
+        let email = $("input[name='email']").val();
 
-        $(".orq").each(function () {
-            if ($(this).val() == "" && $(this).attr("id")) {
-                $(this).addClass("errorClass");
-                hasError = true;
-            } else {
-                $(this).removeClass("errorClass");
-            }
-        });
+        $("input[required]").each(function () {
+          if ($(this).val() == "") {
+              $(this).addClass("errorClass");
+              hasError = true;
+          } else {
+              $(this).removeClass("errorClass");
+          }
+      });
 
-        var hasErrorTc = tcValidate($("#otherTcNo"));
+      var hasErrorTc = tcValidate($("input[name='identification']"));
 
-        if (hasErrorTc) {
-            notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-        }
+      if (hasErrorTc) {
+          notification("HATA", "T.C. No 11 hane olmalıdır", "error");
+      }
 
-        if (hasError) {
-            notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
-        }
+      if (hasError) {
+        notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
+      }
 
-        if (hasErrorTc || hasError) {
-            return false;
-        }
+      if (hasErrorTc || hasError) {
+          return false;
+      }
 
-        let others = {
+        let authorized = {
             tc: tcNo,
             name: nameSurname,
             address: address,
@@ -297,63 +301,65 @@ $(document).ready(function () {
             email: email,
         };
 
-        activeSide = getActiveSide(othersIndex);
+        activeSide = getActiveSide(authorizedIndex);
 
-        let activeSideOthers = [];
+        let activeSideAuthorizeds = [];
 
-        if (activeSide.others != null) {
-            for (var i = 0; i < activeSide.others.length; i++) {
-                let row = activeSide.others[i];
-                activeSideOthers.push(row);
+        if (activeSide.authorizeds != null) {
+            for (var i = 0; i < activeSide.authorizeds.length; i++) {
+                let row = activeSide.authorizeds[i];
+                activeSideAuthorizeds.push(row);
             }
         }
 
-        activeSideOthers.push(others);
+        activeSideAuthorizeds.push(authorized);
 
-        activeSide.others = activeSideOthers;
+        activeSide.authorizeds = activeSideAuthorizeds;
 
-        $("#responsibleBlock" + othersIndex).html(
-            getOthersBlock(activeSideOthers, othersIndex)
+        $("#authorizedBlock" + authorizedIndex).html(
+            getAuthorizedsBlock(activeSideAuthorizeds, authorizedIndex)
         );
-        $("#otherModal").modal("hide");
+        // $("#authorizedModal").modal("hide");
+        $("#personModal").modal("hide");
     });
 
-    $("#saveWorker").on("click", function (e) {
+    // Çalışan ekle,
+    $(document).on("click", "#saveemployee", function (e) {
+        
         e.preventDefault();
-
         var hasError = false;
 
-        let tcNo = $("#workerTcNo").val();
-        let nameSurname = $("#workerName").val();
-        let address = $("#workerAddress").val();
-        let gsm = $("#workerPhone").val();
-        let fixedPhone = $("#workerFixedPhone").val();
-        let email = $("#workerEmail").val();
+        let tcNo = $("input[name='identification']").val();
+        let nameSurname = $("input[name='name']").val();
+        let address = $("input[name='address']").val();
+        let gsm = $("input[name='phone']").val();
+        let fixedPhone = $("input[name='fixed_phone']").val();
+        let email = $("input[name='email']").val();
 
-        $(".wrq").each(function () {
-            if ($(this).val() == "" && $(this).attr("id")) {
-                $(this).addClass("errorClass");
-                hasError = true;
-            } else {
-                $(this).removeClass("errorClass");
-            }
-        });
+        $("input[required]").each(function () {
+          if ($(this).val() == "") {
+              $(this).addClass("errorClass");
+              hasError = true;
+          } else {
+              $(this).removeClass("errorClass");
+          }
+      });
 
-        var hasErrorTc = tcValidate($("#workerTcNo"));
+        var hasErrorTc = tcValidate($("input[name='identification']"));
 
         if (hasErrorTc) {
             notification("HATA", "T.C. No 11 hane olmalıdır", "error");
         }
 
         if (hasError) {
-            notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
+          notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
         }
 
         if (hasErrorTc || hasError) {
             return false;
         }
 
-        let workers = {
+        let employees = {
             tc: tcNo,
             name: nameSurname,
             address: address,
@@ -362,38 +368,39 @@ $(document).ready(function () {
             email: email,
         };
 
-        activeSide = getActiveSide(workersIndex);
+        activeSide = getActiveSide(employeeIndex);
 
-        let activeSideWorkers = [];
+        let activeSideEmployees = [];
 
-        if (activeSide.workers != null) {
-            for (var i = 0; i < activeSide.workers.length; i++) {
-                let row = activeSide.workers[i];
-                activeSideWorkers.push(row);
+        if (activeSide.employees != null) {
+            for (var i = 0; i < activeSide.employees.length; i++) {
+                let row = activeSide.employees[i];
+                activeSideEmployees.push(row);
             }
         }
 
-        activeSideWorkers.push(workers);
+        activeSideEmployees.push(employees);
 
-        activeSide.workers = activeSideWorkers;
+        activeSide.employees = activeSideEmployees;
 
-        $("#workerBlock" + workersIndex).html(
-            getWorkersBlock(activeSideWorkers, workersIndex)
+        $("#employeeBlock" + employeeIndex).html(
+            getEmployeesBlock(activeSideEmployees, employeeIndex)
         );
-        $("#workerModal").modal("hide");
+        $("#personModal").modal("hide");
     });
 
-    $("#saverepresentative").on("click", function (e) {
+    // $("#saverepresentative").on("click", function (e) {
+    $(document).on("click", "#saverepresentative", function (e) {
         e.preventDefault();
 
         var hasError = false;
 
-        let tcNo = $("#representativeTcNo").val();
-        let nameSurname = $("#representativeName").val();
-        let address = $("#representativeAddress").val();
-        let gsm = $("#representativePhone").val();
-        let fixedPhone = $("#representativeFixedPhone").val();
-        let email = $("#representativeEmail").val();
+        let tcNo = $("input[name='identification']").val();
+        let nameSurname = $("input[name='name']").val();
+        let address = $("input[name='address']").val();
+        let gsm = $("input[name='phone']").val();
+        let fixedPhone = $("input[name='fixed_phone']").val();
+        let email = $("input[name='email']").val();
 
         $(".rrq").each(function () {
             if ($(this).val() == "" && $(this).attr("id")) {
@@ -404,7 +411,7 @@ $(document).ready(function () {
             }
         });
 
-        var hasErrorTc = tcValidate($("#representativeTcNo"));
+        var hasErrorTc = tcValidate($("input[name='identification']").val());
 
         if (hasErrorTc) {
             notification("HATA", "T.C. No 11 hane olmalıdır", "error");
@@ -418,7 +425,7 @@ $(document).ready(function () {
             return false;
         }
 
-        let representatives = {
+        let representative = {
             tc: tcNo,
             name: nameSurname,
             address: address,
@@ -438,27 +445,93 @@ $(document).ready(function () {
             }
         }
 
-        activeSideRepresentatives.push(representatives);
+        activeSideRepresentatives.push(representative);
 
         activeSide.representatives = activeSideRepresentatives;
 
         $("#representativeBlock" + representativesIndex).html(
             getRepresentativesBlock(activeSideRepresentatives, representativesIndex)
         );
-        $("#representativeModal").modal("hide");
+        $("#personModal").modal("hide");
     });
 
-    $("#saveExpert").on("click", function (e) {
+    $(document).on("click", "#savecommissioner", function (e) {
+      e.preventDefault();
+
+      var hasError = false;
+
+      let tcNo = $("input[name='identification']").val();
+      let nameSurname = $("input[name='name']").val();
+      let address = $("input[name='address']").val();
+      let gsm = $("input[name='phone']").val();
+      let fixedPhone = $("input[name='fixed_phone']").val();
+      let email = $("input[name='email']").val();
+
+      $(".erq").each(function () {
+          if ($(this).val() == "" && $(this).attr("id")) {
+              $(this).addClass("errorClass");
+              hasError = true;
+          } else {
+              $(this).removeClass("errorClass");
+          }
+      });
+
+      var hasErrorTc = tcValidate($("input[name='identification']").val());
+
+      if (hasErrorTc) {
+          notification("HATA", "T.C. No 11 hane olmalıdır", "error");
+      }
+
+      if (hasError) {
+          notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
+      }
+
+      if (hasErrorTc || hasError) {
+          return false;
+      }
+
+      let commissioner = {
+          tc: tcNo,
+          name: nameSurname,
+          address: address,
+          phone: gsm,
+          fixedPhone: fixedPhone,
+          email: email,
+      };
+
+      activeSide = getActiveSide(commissionerIndex);
+
+      let activeSideCommissioners = [];
+
+      if (activeSide.commissioners != null) {
+          for (var i = 0; i < activeSide.commissioners.length; i++) {
+              let row = activeSide.commissioners[i];
+              activeSideCommissioners.push(row);
+          }
+      }
+
+      activeSideCommissioners.push(commissioner);
+
+      activeSide.commissioners = activeSideCommissioners;
+
+      $("#commissionerBlock" + commissionerIndex).html(
+          getCommissionersBlock(activeSideCommissioners, commissionerIndex)
+      );
+      $("#personModal").modal("hide");
+  });
+
+    // $("#saveExpert").on("click", function (e) {
+    $(document).on("click", "#saveexpert", function (e) {
         e.preventDefault();
 
         var hasError = false;
 
-        let tcNo = $("#expertTcNo").val();
-        let nameSurname = $("#expertName").val();
-        let address = $("#expertAddress").val();
-        let gsm = $("#expertPhone").val();
-        let fixedPhone = $("#expertFixedPhone").val();
-        let email = $("#expertEmail").val();
+        let tcNo = $("input[name='identification']").val();
+        let nameSurname = $("input[name='name']").val();
+        let address = $("input[name='address']").val();
+        let gsm = $("input[name='phone']").val();
+        let fixedPhone = $("input[name='fixed_phone']").val();
+        let email = $("input[name='email']").val();
 
         $(".erq").each(function () {
             if ($(this).val() == "" && $(this).attr("id")) {
@@ -469,7 +542,7 @@ $(document).ready(function () {
             }
         });
 
-        var hasErrorTc = tcValidate($("#expertsTcNo"));
+        var hasErrorTc = tcValidate($("input[name='identification']").val());
 
         if (hasErrorTc) {
             notification("HATA", "T.C. No 11 hane olmalıdır", "error");
@@ -510,7 +583,7 @@ $(document).ready(function () {
         $("#expertBlock" + expertsIndex).html(
             getExpertsBlock(activeSideExperts, expertsIndex)
         );
-        $("#expertModal").modal("hide");
+        $("#personModal").modal("hide");
     });
     // ---------------------------------- save modals  ----------------------------------//
 
@@ -530,12 +603,12 @@ $(document).ready(function () {
         $(".cempty").val("");
         $(".crq").closest("form").resetForm();
     });
-    $("#otherModal").on("hide.bs.modal", function () {
+    $("#authorizedModal").on("hide.bs.modal", function () {
         $(".orq").val("");
         $(".oempty").val("");
         $(".orq").closest("form").resetForm();
     });
-    $("#workerModal").on("hide.bs.modal", function () {
+    $("#employeeModal").on("hide.bs.modal", function () {
         $(".wrq").val("");
         $(".wempty").val("");
         $(".wrq").closest("form").resetForm();
@@ -566,26 +639,28 @@ $(document).ready(function () {
             case "employee": //çalışan
                 employeeIndex = $(this).attr("data-index");
                 break;
-            case "respresentative": //temsilci
-                representativeIndex = $(this).attr("data-index");
+            case "representative": //temsilci
+                representativesIndex = $(this).attr("data-index");
                 break;
             case "commissioner": //komisyon üyesi
                 commissionerIndex = $(this).attr("data-index");
                 break;
             case "expert": //Uzman kişi
-                expertIndex = $(this).attr("data-index");
+                expertsIndex = $(this).attr("data-index");
                 break;
         }
     });
 
     $(document).on("click", ".addLawyer", function (e) {
         e.preventDefault();
+        console.log("add lawyer")
         lawyerIndex = $(this).attr("data-index");
         $("#lawyerModal").modal("show");
     });
 
     $(document).on("click", ".removeLawyer", function (e) {
         e.preventDefault();
+        console.log("remove lawyer")
         lawyerIndex = $(this).attr("data-index");
         var lawyerId = $(this).attr("data-id");
         activeSide = getActiveSide(lawyerIndex);
@@ -593,11 +668,20 @@ $(document).ready(function () {
         $("#remove-lawyer-" + lawyerId + "-" + lawyerIndex).remove();
     });
 
-    $(document).on("click", ".addResponsible", function (e) {
+    $(document).on("click", ".addAuthorized", function (e) {
         e.preventDefault();
-        othersIndex = $(this).attr("data-index");
-        $("#otherModal").modal("show");
+        authorizedIndex = $(this).attr("data-index");
+        $("#authorizedModal").modal("show");
     });
+
+    $(document).on("click", ".removeAuthorized", function (e) {
+      e.preventDefault();
+      authorizedIndex = $(this).attr("data-index");
+      var authorizedId = $(this).attr("data-id");
+      activeSide = getActiveSide(authorizedIndex);
+      removeSideInAuthorized(activeSide, authorizedId);
+      $("#remove-authorized-" + authorizedId + "-" + authorizedIndex).remove();
+  });
 
     // Taraf silme scripti
     $(document).on("click", ".deleteSide", function (e) {
@@ -614,29 +698,20 @@ $(document).ready(function () {
         console.log(sides);
     });
 
-    $(document).on("click", ".removeResponsible", function (e) {
+    $(document).on("click", ".addEmployee", function (e) {
         e.preventDefault();
-        othersIndex = $(this).attr("data-index");
-        var otherId = $(this).attr("data-id");
-        activeSide = getActiveSide(othersIndex);
-        removeSideInOther(activeSide, otherId);
-        $("#remove-other-" + otherId + "-" + othersIndex).remove();
+        employeeIndex = $(this).attr("data-index");
+        $("#employeeBeforeModal").modal("hide"); // Bu kalkıcak muhtemelen
+        $("#employeeModal").modal("show");
     });
 
-    $(document).on("click", ".addWorker", function (e) {
+    $(document).on("click", ".removeEmployee", function (e) {
         e.preventDefault();
-        workersIndex = $(this).attr("data-index");
-        $("#workerBeforeModal").modal("hide");
-        $("#workerModal").modal("show");
-    });
-
-    $(document).on("click", ".removeWorker", function (e) {
-        e.preventDefault();
-        workersIndex = $(this).attr("data-index");
-        var workerId = $(this).attr("data-id");
-        activeSide = getActiveSide(workersIndex);
-        removeSideInWorker(activeSide, workerId);
-        $("#remove-worker-" + workerId + "-" + workersIndex).remove();
+        employeeIndex = $(this).attr("data-index");
+        var employeeId = $(this).attr("data-id");
+        activeSide = getActiveSide(employeeIndex);
+        removeSideInEmployee(activeSide, employeeId);
+        $("#remove-employee-" + employeeId + "-" + employeeIndex).remove();
     });
 
     $(document).on("click", ".addRepresentative", function (e) {
@@ -655,6 +730,21 @@ $(document).ready(function () {
             "#remove-representative-" + representativeId + "-" + representativesIndex
         ).remove();
     });
+
+    $(document).on("click", ".addCommissioner", function (e) {
+      e.preventDefault();
+      commissionerIndex = $(this).attr("data-index");
+      $("#commissionerModal").modal("show");
+  });
+
+  $(document).on("click", ".removeCommissioner", function (e) {
+      e.preventDefault();
+      commissionerIndex = $(this).attr("data-index");
+      var commissionerId = $(this).attr("data-id");
+      activeSide = getActiveSide(commissionerIndex);
+      removeSideInCommissioner(activeSide, commissionerId);
+      $("#remove-commissioner-" + commissionerId + "-" + commissionerIndex).remove();
+  });
 
     $(document).on("click", ".addExpert", function (e) {
         e.preventDefault();
@@ -791,13 +881,13 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("click", ".addWorkerBefore", function (e) {
+    $(document).on("click", ".addEmployeeBefore", function (e) {
         e.preventDefault();
-        $("#workerBeforeButton").attr(
+        $("#employeeBeforeButton").attr(
             "data-index",
-            $(".addWorkerBefore").data("index")
+            $(".addEmployeeBefore").data("index")
         );
-        $("#workerBeforeModal").modal("show");
+        $("#employeeBeforeModal").modal("show");
     });
 });
 
@@ -876,7 +966,7 @@ function issetApplicantTypeInSide() {
     return b == 0 || d == 0 ? 1 : 0;
 }
 
-function issetLawyerOrOtherInSide() {
+function issetLawyerOrAuthorizedInSide() {
     for (var i = 0; i < sides.length; i++) {
         var a = 0;
         var b = 0;
@@ -890,7 +980,7 @@ function issetLawyerOrOtherInSide() {
 
         if (
             sides[i].type == 2 &&
-            (sides[i].others == undefined || sides[i].others.length == 0)
+            (sides[i].authorizeds == undefined || sides[i].authorizeds.length == 0)
         ) {
             b = 1;
         }
@@ -933,37 +1023,44 @@ function notification(message, template) {
     };
 }
 
-function removeSideInOther(activeSide, otherId) {
-    let activeSideOthers = [];
+function removeSideInAuthorized(activeSide, authorizedId) { // addResponsible -> addAuthorized ?
+    let activeSideAuthorizeds = [];
 
-    if (activeSide.others != null) {
-        for (var i = 0; i < activeSide.others.length; i++) {
-            let row = activeSide.others[i];
-            if (i != otherId) activeSideOthers.push(row);
+    if (activeSide.authorizeds != null) {
+        for (var i = 0; i < activeSide.authorizeds.length; i++) {
+            let row = activeSide.authorizeds[i];
+            if (i != authorizedId) activeSideAuthorizeds.push(row);
         }
     }
 
-    if (activeSideOthers.length == 0) {
-        $(`#responsibleBlock${activeSide.index}`).empty();
-        $(`#responsibleBlock${activeSide.index}`).append(`
-        YETKİLİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addResponsible" data-index="${activeSide.index}">Ekle</a>
+    if (activeSideAuthorizeds.length == 0) {
+        $(`#authorizedBlock${activeSide.index}`).empty();
+        $(`#authorizedBlock${activeSide.index}`).append(`
+        YETKİLİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addAuthorized addPersonToSide" personType="authorized" data-index="${activeSide.index}">Ekle</a>
         `);
     }
 
-    activeSide.others = activeSideOthers;
+    activeSide.authorizeds = activeSideAuthorizeds;
 }
 
-function removeSideInWorker(activeSide, workerId) {
-    let activeSideWorkers = [];
+function removeSideInEmployee(activeSide, employeeId) {
+    let activeSideEmployees = [];
 
-    if (activeSide.workers != null) {
-        for (var i = 0; i < activeSide.workers.length; i++) {
-            let row = activeSide.workers[i];
-            if (i != workerId) activeSideWorkers.push(row);
+    if (activeSide.employees != null) {
+        for (var i = 0; i < activeSide.employees.length; i++) {
+            let row = activeSide.employees[i];
+            if (i != employeeId) activeSideEmployees.push(row);
         }
     }
 
-    activeSide.workers = activeSideWorkers;
+    if (activeSideEmployees.length == 0) {
+      $(`#employeeBlock${activeSide.index}`).empty();
+      $(`#employeeBlock${activeSide.index}`).append(`
+      Çalışan<br /> <a href="javascript:;" class="btn btn-sm btn-danger addEmployee addPersonToSide" personType="employee" data-index="${activeSide.index}">Ekle</a>
+      `);
+  }
+
+    activeSide.employees = activeSideEmployees;
 }
 
 function removeSideInRepresentative(activeSide, representativeId) {
@@ -979,11 +1076,29 @@ function removeSideInRepresentative(activeSide, representativeId) {
     if (activeSideRepresentatives.length == 0) {
         $(`#representativeBlock${activeSide.index}`).empty();
         $(`#representativeBlock${activeSide.index}`).append(`
-        KANUNİ TEMSİLCİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addRepresentative" data-index="${activeSide.index}">Ekle</a>
+        KANUNİ TEMSİLCİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addRepresentative addPersonToSide" personType="representative" data-index="${activeSide.index}">Ekle</a>
         `);
     }
 
     activeSide.representatives = activeSideRepresentatives;
+}
+
+function removeSideInCommissioner(activeSide, commissionerId) {
+  let activeSideCommissioners = [];
+
+  if (activeSide.commissioners != null) {
+      for (var i = 0; i < activeSide.commissioners.length; i++) {
+          let row = activeSide.commissioners[i];
+          if (i != commissionerId) activeSideCommissioners.push(row);
+      }
+  }
+  if (activeSideCommissioners.length == 0) {
+      $(`#commissionerBlock${activeSide.index}`).empty();
+      $(`#commissionerBlock${activeSide.index}`).append(`
+      KOMİSYON ÜYESİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addCommissioner addPersonToSide" personType="commissioner" data-index="${activeSide.index}">Ekle</a>
+      `);
+  }
+  activeSide.commissioners = activeSideCommissioners;
 }
 
 function removeSideInExpert(activeSide, expertId) {
@@ -998,35 +1113,35 @@ function removeSideInExpert(activeSide, expertId) {
     if (activeSideExperts.length == 0) {
         $(`#expertBlock${activeSide.index}`).empty();
         $(`#expertBlock${activeSide.index}`).append(`
-        UZMAN KİŞİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addExpert" data-index="${activeSide.index}">Ekle</a>
+        UZMAN KİŞİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addExpert addPersonToSide" personType="expert" data-index="${activeSide.index}">Ekle</a>
         `);
     }
     activeSide.experts = activeSideExperts;
 }
 
-function getOthersBlock(others, othersIndex) {
+function getAuthorizedsBlock(authorizeds, authorizedIndex) {
     let text = "Yetkili";
 
-    if (others.length > 1) text = "Yetkililer";
+    if (authorizeds.length > 1) text = "Yetkililer";
 
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addResponsible" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
-        othersIndex +
+        '</strong> - <a class="addAuthorized addPersonToSide" personType="authorized" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        authorizedIndex +
         '">Ekle</a> <br/>';
-    for (var i = 0; i < others.length; i++) {
-        let other = others[i];
+    for (var i = 0; i < authorizeds.length; i++) {
+        let authorized = authorizeds[i];
         html +=
-            '<p id="remove-other-' +
+            '<p id="remove-authorized-' +
             i +
             "-" +
-            othersIndex +
+            authorizedIndex +
             '">' +
-            other.name +
+            authorized.name +
             "/" +
-            ' - <a class="removeResponsible" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
-            othersIndex +
+            ' - <a class="removeAuthorized" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
+            authorizedIndex +
             '" data-id="' +
             i +
             '">Çıkar</a></p>';
@@ -1034,29 +1149,29 @@ function getOthersBlock(others, othersIndex) {
     return html;
 }
 
-function getWorkersBlock(workers, workersIndex) {
+function getEmployeesBlock(employees, employeeIndex) {
     let text = "Çalışan";
 
-    if (workers.length > 1) text = "Çalışanlar";
+    if (employees.length > 1) text = "Çalışanlar";
 
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addWorker" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
-        workersIndex +
+        '</strong> - <a class="addEmployee addPersonToSide" personType="employee" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        employeeIndex +
         '">Ekle</a> <br/>';
-    for (var i = 0; i < workers.length; i++) {
-        let worker = workers[i];
+    for (var i = 0; i < employees.length; i++) {
+        let employee = employees[i];
         html +=
-            '<p id="remove-worker-' +
+            '<p id="remove-employee-' +
             i +
             "-" +
-            workersIndex +
+            employeeIndex +
             '">' +
-            worker.name +
+            employee.name +
             "/" +
-            ' - <a class="removeWorker" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
-            workersIndex +
+            ' - <a class="removeEmployee" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
+            employeeIndex +
             '" data-id="' +
             i +
             '">Çıkar</a></p>';
@@ -1072,7 +1187,7 @@ function getRepresentativesBlock(representatives, representativesIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addRepresentative" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addRepresentative addPersonToSide" personType="representative" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
         representativesIndex +
         '">Ekle</a> <br/>';
     for (var i = 0; i < representatives.length; i++) {
@@ -1094,6 +1209,36 @@ function getRepresentativesBlock(representatives, representativesIndex) {
     return html;
 }
 
+function getCommissionersBlock(commissioners, commissionerIndex) {
+  let text = "Komisyon Üyesi";
+
+  if (commissioners.length > 1) text = "Komisyon Üyeleri";
+
+  var html =
+      "<strong>" +
+      text +
+      '</strong> - <a class="addCommissioner addPersonToSide" personType="commissioner" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+      commissionerIndex +
+      '">Ekle</a> <br/>';
+  for (var i = 0; i < commissioners.length; i++) {
+      let commissioner = commissioners[i];
+      html +=
+          '<p id="remove-commissioner-' +
+          i +
+          "-" +
+          commissionerIndex +
+          '">' +
+          commissioner.name +
+          "/" +
+          ' - <a class="removeCommissioner" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
+          commissionerIndex +
+          '" data-id="' +
+          i +
+          '">Çıkar</a></p>';
+  }
+  return html;
+}
+
 function getExpertsBlock(experts, expertsIndex) {
     let text = "Uzman Kişi";
 
@@ -1102,7 +1247,7 @@ function getExpertsBlock(experts, expertsIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addExpert" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addExpert addPersonToSide" personType="expert" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
         expertsIndex +
         '">Ekle</a> <br/>';
     for (var i = 0; i < experts.length; i++) {
@@ -1146,7 +1291,7 @@ function removeSideInLawyer(activeSide, lawyerId) {
     if (activeSideLawyers.length == 0) {
         $(`#lawyerBlock${activeSide.index}`).empty();
         $(`#lawyerBlock${activeSide.index}`).append(`
-         VEKİL<br /> <a href="javascript:;" class="btn btn-sm btn-danger addLawyer" data-index="${activeSide.index}">Ekle</a>
+         VEKİL<br /> <a href="javascript:;" class="btn btn-sm btn-danger addLawyer addPersonToSide" personType="lawyer" data-index="${activeSide.index}">Ekle</a>
         `);
     }
 

@@ -93,6 +93,12 @@ $(document).ready(function ()
         $('.subside_rrq').closest("form").resetForm();
     });
 
+    $("#commissionerModal").on('hide.bs.modal', function()
+    {
+        $('.subside_rrq').val('');
+        $('.subside_rrq').closest("form").resetForm();
+    });
+
     $("#expertModal").on('hide.bs.modal', function()
     {
         $('.subside_erq').val('');
@@ -119,9 +125,9 @@ $(document).ready(function ()
         if_udf = $(this).data('udf');
     });
 
-    $(document).on('click', ".addWorker", function ()
+    $(document).on('click', ".addEmployee", function ()
     {
-        $("#workerModal").modal('show');
+        $("#employeeModal").modal('show');
 
         side_id = $(this).data('sideid');
         side_type_id = $(this).data('sidetypeid');

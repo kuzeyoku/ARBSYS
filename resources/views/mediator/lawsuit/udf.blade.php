@@ -130,9 +130,9 @@
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1"
                                             data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili
                                             Ekle</a>
-                                        <a href="javascript:;" class="btn btn-sm btn-success addWorker"
+                                        <a href="javascript:;" class="btn btn-sm btn-success addEmployee"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1"
-                                            data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan
+                                            data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan
                                             Ekle</a>
                                         <a href="javascript:;" class="btn btn-sm btn-success addRepresentative"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1"
@@ -185,9 +185,9 @@
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1"
                                             data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili
                                             Ekle</a>
-                                        <a href="javascript:;" class="btn btn-sm btn-success addWorker"
+                                        <a href="javascript:;" class="btn btn-sm btn-success addEmployee"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1"
-                                            data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan
+                                            data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan
                                             Ekle</a>
                                         <a href="javascript:;" class="btn btn-sm btn-success addRepresentative"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1"
@@ -321,9 +321,9 @@
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2"
                                             data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili
                                             Ekle</a>
-                                        <a href="javascript:;" class="btn btn-sm btn-success addWorker"
+                                        <a href="javascript:;" class="btn btn-sm btn-success addEmployee"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2"
-                                            data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan
+                                            data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan
                                             Ekle</a>
                                         <a href="javascript:;" class="btn btn-sm btn-success addRepresentative"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2"
@@ -400,9 +400,9 @@
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2"
                                             data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili
                                             Ekle</a>
-                                        <a href="javascript:;" class="btn btn-sm btn-success addWorker"
+                                        <a href="javascript:;" class="btn btn-sm btn-success addEmployee"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2"
-                                            data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan
+                                            data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan
                                             Ekle</a>
                                         <a href="javascript:;" class="btn btn-sm btn-success addRepresentative"
                                             data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2"
@@ -546,7 +546,7 @@
                                                     <input type="hidden" name="claimant_{{ $index }}_side_type_id" value="1">
                                                     <a href="javascript:;" class="btn btn-sm btn-success addLawyer" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::LAWYER }}">Vekil Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addAuthorized" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili Ekle</a>
-                                                    <a href="javascript:;" class="btn btn-sm btn-success addWorker" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan Ekle</a>
+                                                    <a href="javascript:;" class="btn btn-sm btn-success addEmployee" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addRepresentative" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::REPRESENTATIVE }}">Kanuni Temsilci Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addExpert" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::EXPERT }}">Uzman Kişi Ekle</a></div>`
                         );
@@ -589,7 +589,7 @@
                                                     <input type="hidden" name="claimant_{{ $index }}_side_type_id" value="1">
                                                     <a href="javascript:;" class="btn btn-sm btn-success addLawyer" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::LAWYER }}">Vekil Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addAuthorized" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili Ekle</a>
-                                                    <a href="javascript:;" class="btn btn-sm btn-success addWorker" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan Ekle</a>
+                                                    <a href="javascript:;" class="btn btn-sm btn-success addEmployee" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addRepresentative" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::REPRESENTATIVE }}">Kanuni Temsilci Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addExpert" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="1" data-applicanttypeid="{{ ApplicantTypeOptions::EXPERT }}">Uzman Kişi Ekle</a></div>`
                         );
@@ -632,7 +632,7 @@
                                                     <input type="hidden" name="defendant_{{ $index }}_side_type_id" value="2">
                                                     <a href="javascript:;" class="btn btn-sm btn-success addLawyer" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::LAWYER }}">Vekil Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addAuthorized" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili Ekle</a>
-                                                    <a href="javascript:;" class="btn btn-sm btn-success addWorker" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan Ekle</a>
+                                                    <a href="javascript:;" class="btn btn-sm btn-success addEmployee" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addRepresentative" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::REPRESENTATIVE }}">Kanuni Temsilci Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addExpert" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::EXPERT }}">Uzman Kişi Ekle</a></div>`
                         );
@@ -675,7 +675,7 @@
                                                     <input type="hidden" name="defendant_{{ $index }}_side_type_id" value="2">
                                                     <a href="javascript:;" class="btn btn-sm btn-success addLawyer" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::LAWYER }}">Vekil Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addAuthorized" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::AUTHORIZED }}">Yetkili Ekle</a>
-                                                    <a href="javascript:;" class="btn btn-sm btn-success addWorker" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::WORKER }}">Çalışan Ekle</a>
+                                                    <a href="javascript:;" class="btn btn-sm btn-success addEmployee" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::EMPLOYEE }}">Çalışan Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addRepresentative" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::REPRESENTATIVE }}">Kanuni Temsilci Ekle</a>
                                                     <a href="javascript:;" class="btn btn-sm btn-success addExpert" data-sideid="{{ $index }}" data-udf="1" data-sidetypeid="2" data-applicanttypeid="{{ ApplicantTypeOptions::EXPERT }}">Uzman Kişi Ekle</a></div>`
                         );

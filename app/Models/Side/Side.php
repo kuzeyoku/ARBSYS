@@ -35,7 +35,7 @@ class Side extends Model
 
     public function sub_sides()
     {
-        return $this->hasMany(Side::class, 'parent_id', 'id')->whereNotIn('side_applicant_type_id', [\ApplicantTypeOptions::WORKER]);
+        return $this->hasMany(Side::class, 'parent_id', 'id')->whereNotIn('side_applicant_type_id', [\ApplicantTypeOptions::EMPLOYEE]);
     }
 
     public function getClaimantsAttribute()

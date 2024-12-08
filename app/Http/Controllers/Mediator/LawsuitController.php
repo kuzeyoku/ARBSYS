@@ -255,7 +255,6 @@ class LawsuitController extends Controller
 
                 if (!empty($side["workers"])) {
                     foreach ($side["workers"] as $side_worker) {
-
                         $person = People::updateOrCreate(["identification" => $side_worker["identification"]], [
                             "name" => ucwords($side_worker["name"]),
                             "identification" => $side_worker["identification"],

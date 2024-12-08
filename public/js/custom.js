@@ -301,6 +301,11 @@ $(document).on("change", "#matters-discussed-modal input[type='checkbox']", func
     $("#matters-discussed-textarea").val(matters_discussed.toLowerCase());
 });
 
+$(document).on("click", ".matters-discussed", function () {
+  $("#matters-discussed-modal").modal('show');
+});
+
+var editableArea = `<span class="matters-discussed"><i class="fas fa-edit"></i> Müzakere Edilen Hususlar</span>`
 $(document).on("click", "#matters-discussed-save", function () {
     var matters_discussed = $("#matters-discussed-textarea").val();
     $(".matters-discussed").each(function () {
