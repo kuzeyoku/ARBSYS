@@ -52,7 +52,7 @@ class PersonController extends Controller
     public function getModalContent(Request $request)
     {
         $type = PersonType::find($request->type);
-        $data = view('mediator.person.modals.' . $type->key, compact('type'))->render();
+        $data = view('mediator.person.modals.' . $type->file, compact('type'))->render();
         return compact('data', "type");
     }
 
@@ -61,7 +61,7 @@ class PersonController extends Controller
         $currentType = PersonType::findOrFail($request->current_type);
         $item = $this->getPerson($request->id, $currentType->group);
         $personType = PersonType::findOrFail($request->type);
-        $data = view("mediator.person.modals." . $personType->key, compact("item"))->render();
+        $data = view("mediator.person.modals." . $personType->file, compact("item"))->render();
         $type = $personType->name;
         return compact("data", "type");
     }

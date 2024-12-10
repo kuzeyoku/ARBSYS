@@ -20,7 +20,7 @@ function getModalContent(type) {
             $("#personModal .modal-body form #person_type").prop("disabled", true);
             $("#personModal .modal-footer .personAddButton").attr(
                 "id",
-                "save" + response.personType
+                "save" + response.type.key
             );
             $("#personModal").modal("show");
             $(".selectSearch").select2({
@@ -270,27 +270,27 @@ $(document).ready(function () {
         let email = $("input[name='email']").val();
 
         $("input[required]").each(function () {
-          if ($(this).val() == "") {
-              $(this).addClass("errorClass");
-              hasError = true;
-          } else {
-              $(this).removeClass("errorClass");
-          }
-      });
+            if ($(this).val() == "") {
+                $(this).addClass("errorClass");
+                hasError = true;
+            } else {
+                $(this).removeClass("errorClass");
+            }
+        });
 
-      var hasErrorTc = tcValidate($("input[name='identification']"));
+        var hasErrorTc = tcValidate($("input[name='identification']"));
 
-      if (hasErrorTc) {
-          notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-      }
+        if (hasErrorTc) {
+            notification("HATA", "T.C. No 11 hane olmalıdır", "error");
+        }
 
-      if (hasError) {
-        notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
-      }
+        if (hasError) {
+            notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
+        }
 
-      if (hasErrorTc || hasError) {
-          return false;
-      }
+        if (hasErrorTc || hasError) {
+            return false;
+        }
 
         let authorized = {
             tc: tcNo,
@@ -325,7 +325,7 @@ $(document).ready(function () {
 
     // Çalışan ekle,
     $(document).on("click", "#saveemployee", function (e) {
-        
+
         e.preventDefault();
         var hasError = false;
 
@@ -337,13 +337,13 @@ $(document).ready(function () {
         let email = $("input[name='email']").val();
 
         $("input[required]").each(function () {
-          if ($(this).val() == "") {
-              $(this).addClass("errorClass");
-              hasError = true;
-          } else {
-              $(this).removeClass("errorClass");
-          }
-      });
+            if ($(this).val() == "") {
+                $(this).addClass("errorClass");
+                hasError = true;
+            } else {
+                $(this).removeClass("errorClass");
+            }
+        });
 
         var hasErrorTc = tcValidate($("input[name='identification']"));
 
@@ -352,7 +352,7 @@ $(document).ready(function () {
         }
 
         if (hasError) {
-          notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
+            notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
         }
 
         if (hasErrorTc || hasError) {
@@ -456,69 +456,69 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "#savecommissioner", function (e) {
-      e.preventDefault();
+        e.preventDefault();
 
-      var hasError = false;
+        var hasError = false;
 
-      let tcNo = $("input[name='identification']").val();
-      let nameSurname = $("input[name='name']").val();
-      let address = $("input[name='address']").val();
-      let gsm = $("input[name='phone']").val();
-      let fixedPhone = $("input[name='fixed_phone']").val();
-      let email = $("input[name='email']").val();
+        let tcNo = $("input[name='identification']").val();
+        let nameSurname = $("input[name='name']").val();
+        let address = $("input[name='address']").val();
+        let gsm = $("input[name='phone']").val();
+        let fixedPhone = $("input[name='fixed_phone']").val();
+        let email = $("input[name='email']").val();
 
-      $(".erq").each(function () {
-          if ($(this).val() == "" && $(this).attr("id")) {
-              $(this).addClass("errorClass");
-              hasError = true;
-          } else {
-              $(this).removeClass("errorClass");
-          }
-      });
+        $(".erq").each(function () {
+            if ($(this).val() == "" && $(this).attr("id")) {
+                $(this).addClass("errorClass");
+                hasError = true;
+            } else {
+                $(this).removeClass("errorClass");
+            }
+        });
 
-      var hasErrorTc = tcValidate($("input[name='identification']").val());
+        var hasErrorTc = tcValidate($("input[name='identification']").val());
 
-      if (hasErrorTc) {
-          notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-      }
+        if (hasErrorTc) {
+            notification("HATA", "T.C. No 11 hane olmalıdır", "error");
+        }
 
-      if (hasError) {
-          notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
-      }
+        if (hasError) {
+            notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
+        }
 
-      if (hasErrorTc || hasError) {
-          return false;
-      }
+        if (hasErrorTc || hasError) {
+            return false;
+        }
 
-      let commissioner = {
-          tc: tcNo,
-          name: nameSurname,
-          address: address,
-          phone: gsm,
-          fixedPhone: fixedPhone,
-          email: email,
-      };
+        let commissioner = {
+            tc: tcNo,
+            name: nameSurname,
+            address: address,
+            phone: gsm,
+            fixedPhone: fixedPhone,
+            email: email,
+        };
 
-      activeSide = getActiveSide(commissionerIndex);
+        activeSide = getActiveSide(commissionerIndex);
 
-      let activeSideCommissioners = [];
+        let activeSideCommissioners = [];
 
-      if (activeSide.commissioners != null) {
-          for (var i = 0; i < activeSide.commissioners.length; i++) {
-              let row = activeSide.commissioners[i];
-              activeSideCommissioners.push(row);
-          }
-      }
+        if (activeSide.commissioners != null) {
+            for (var i = 0; i < activeSide.commissioners.length; i++) {
+                let row = activeSide.commissioners[i];
+                activeSideCommissioners.push(row);
+            }
+        }
 
-      activeSideCommissioners.push(commissioner);
+        activeSideCommissioners.push(commissioner);
 
-      activeSide.commissioners = activeSideCommissioners;
+        activeSide.commissioners = activeSideCommissioners;
 
-      $("#commissionerBlock" + commissionerIndex).html(
-          getCommissionersBlock(activeSideCommissioners, commissionerIndex)
-      );
-      $("#personModal").modal("hide");
-  });
+        $("#commissionerBlock" + commissionerIndex).html(
+            getCommissionersBlock(activeSideCommissioners, commissionerIndex)
+        );
+        $("#personModal").modal("hide");
+    });
 
     // $("#saveExpert").on("click", function (e) {
     $(document).on("click", "#saveexpert", function (e) {
@@ -675,13 +675,13 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".removeAuthorized", function (e) {
-      e.preventDefault();
-      authorizedIndex = $(this).attr("data-index");
-      var authorizedId = $(this).attr("data-id");
-      activeSide = getActiveSide(authorizedIndex);
-      removeSideInAuthorized(activeSide, authorizedId);
-      $("#remove-authorized-" + authorizedId + "-" + authorizedIndex).remove();
-  });
+        e.preventDefault();
+        authorizedIndex = $(this).attr("data-index");
+        var authorizedId = $(this).attr("data-id");
+        activeSide = getActiveSide(authorizedIndex);
+        removeSideInAuthorized(activeSide, authorizedId);
+        $("#remove-authorized-" + authorizedId + "-" + authorizedIndex).remove();
+    });
 
     // Taraf silme scripti
     $(document).on("click", ".deleteSide", function (e) {
@@ -732,19 +732,19 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".addCommissioner", function (e) {
-      e.preventDefault();
-      commissionerIndex = $(this).attr("data-index");
-      $("#commissionerModal").modal("show");
-  });
+        e.preventDefault();
+        commissionerIndex = $(this).attr("data-index");
+        $("#commissionerModal").modal("show");
+    });
 
-  $(document).on("click", ".removeCommissioner", function (e) {
-      e.preventDefault();
-      commissionerIndex = $(this).attr("data-index");
-      var commissionerId = $(this).attr("data-id");
-      activeSide = getActiveSide(commissionerIndex);
-      removeSideInCommissioner(activeSide, commissionerId);
-      $("#remove-commissioner-" + commissionerId + "-" + commissionerIndex).remove();
-  });
+    $(document).on("click", ".removeCommissioner", function (e) {
+        e.preventDefault();
+        commissionerIndex = $(this).attr("data-index");
+        var commissionerId = $(this).attr("data-id");
+        activeSide = getActiveSide(commissionerIndex);
+        removeSideInCommissioner(activeSide, commissionerId);
+        $("#remove-commissioner-" + commissionerId + "-" + commissionerIndex).remove();
+    });
 
     $(document).on("click", ".addExpert", function (e) {
         e.preventDefault();
@@ -1054,11 +1054,11 @@ function removeSideInEmployee(activeSide, employeeId) {
     }
 
     if (activeSideEmployees.length == 0) {
-      $(`#employeeBlock${activeSide.index}`).empty();
-      $(`#employeeBlock${activeSide.index}`).append(`
+        $(`#employeeBlock${activeSide.index}`).empty();
+        $(`#employeeBlock${activeSide.index}`).append(`
       Çalışan<br /> <a href="javascript:;" class="btn btn-sm btn-danger addEmployee addPersonToSide" personType="employee" data-index="${activeSide.index}">Ekle</a>
       `);
-  }
+    }
 
     activeSide.employees = activeSideEmployees;
 }
@@ -1084,21 +1084,21 @@ function removeSideInRepresentative(activeSide, representativeId) {
 }
 
 function removeSideInCommissioner(activeSide, commissionerId) {
-  let activeSideCommissioners = [];
+    let activeSideCommissioners = [];
 
-  if (activeSide.commissioners != null) {
-      for (var i = 0; i < activeSide.commissioners.length; i++) {
-          let row = activeSide.commissioners[i];
-          if (i != commissionerId) activeSideCommissioners.push(row);
-      }
-  }
-  if (activeSideCommissioners.length == 0) {
-      $(`#commissionerBlock${activeSide.index}`).empty();
-      $(`#commissionerBlock${activeSide.index}`).append(`
+    if (activeSide.commissioners != null) {
+        for (var i = 0; i < activeSide.commissioners.length; i++) {
+            let row = activeSide.commissioners[i];
+            if (i != commissionerId) activeSideCommissioners.push(row);
+        }
+    }
+    if (activeSideCommissioners.length == 0) {
+        $(`#commissionerBlock${activeSide.index}`).empty();
+        $(`#commissionerBlock${activeSide.index}`).append(`
       KOMİSYON ÜYESİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addCommissioner addPersonToSide" personType="commissioner" data-index="${activeSide.index}">Ekle</a>
       `);
-  }
-  activeSide.commissioners = activeSideCommissioners;
+    }
+    activeSide.commissioners = activeSideCommissioners;
 }
 
 function removeSideInExpert(activeSide, expertId) {
@@ -1210,33 +1210,33 @@ function getRepresentativesBlock(representatives, representativesIndex) {
 }
 
 function getCommissionersBlock(commissioners, commissionerIndex) {
-  let text = "Komisyon Üyesi";
+    let text = "Komisyon Üyesi";
 
-  if (commissioners.length > 1) text = "Komisyon Üyeleri";
+    if (commissioners.length > 1) text = "Komisyon Üyeleri";
 
-  var html =
-      "<strong>" +
-      text +
-      '</strong> - <a class="addCommissioner addPersonToSide" personType="commissioner" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
-      commissionerIndex +
-      '">Ekle</a> <br/>';
-  for (var i = 0; i < commissioners.length; i++) {
-      let commissioner = commissioners[i];
-      html +=
-          '<p id="remove-commissioner-' +
-          i +
-          "-" +
-          commissionerIndex +
-          '">' +
-          commissioner.name +
-          "/" +
-          ' - <a class="removeCommissioner" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
-          commissionerIndex +
-          '" data-id="' +
-          i +
-          '">Çıkar</a></p>';
-  }
-  return html;
+    var html =
+        "<strong>" +
+        text +
+        '</strong> - <a class="addCommissioner addPersonToSide" personType="commissioner" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        commissionerIndex +
+        '">Ekle</a> <br/>';
+    for (var i = 0; i < commissioners.length; i++) {
+        let commissioner = commissioners[i];
+        html +=
+            '<p id="remove-commissioner-' +
+            i +
+            "-" +
+            commissionerIndex +
+            '">' +
+            commissioner.name +
+            "/" +
+            ' - <a class="removeCommissioner" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
+            commissionerIndex +
+            '" data-id="' +
+            i +
+            '">Çıkar</a></p>';
+    }
+    return html;
 }
 
 function getExpertsBlock(experts, expertsIndex) {
