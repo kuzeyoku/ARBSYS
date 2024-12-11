@@ -369,9 +369,13 @@
                                     <span></span>
                                 </label>
                                 <label class="kt-radio">
+                                    <input type="radio" data-type="company_private" name="isPerson" class="personTypeSelect">
+                                    Tüzel Kişi (Özel Hukuk)
+                                    <span></span>
+                                </label>
+                                <label class="kt-radio">
                                     <input type="radio" data-type="company_public" name="isPerson" class="personTypeSelect">
-                                    Tüzel
-                                    Kişi
+                                    Tüzel Kişi (Kamu Hukuku)
                                     <span></span>
                                 </label>
                             </div>

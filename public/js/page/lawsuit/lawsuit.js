@@ -234,7 +234,6 @@ $(document).ready(function () {
             email: email,
         };
         activeSide = getActiveSide(lawyerIndex);
-
         let activeSideLawyers = [];
 
         if (activeSide.lawyer != null) {
@@ -630,22 +629,22 @@ $(document).ready(function () {
         e.preventDefault();
         getModalContent($(this).attr("personType"));
         switch ($(this).attr("personType")) {
-            case "lawyer": //avukat
+            case "person_lawyer": //avukat
                 lawyerIndex = $(this).attr("data-index");
                 break;
-            case "authorized": //yetkili
+            case "person_authorized": //yetkili
                 authorizedIndex = $(this).attr("data-index");
                 break;
-            case "employee": //çalışan
+            case "person_employee": //çalışan
                 employeeIndex = $(this).attr("data-index");
                 break;
-            case "representative": //temsilci
+            case "person_representative": //temsilci
                 representativesIndex = $(this).attr("data-index");
                 break;
-            case "commissioner": //komisyon üyesi
+            case "person_commissioner": //komisyon üyesi
                 commissionerIndex = $(this).attr("data-index");
                 break;
-            case "expert": //Uzman kişi
+            case "person_expert": //Uzman kişi
                 expertsIndex = $(this).attr("data-index");
                 break;
         }
@@ -653,7 +652,6 @@ $(document).ready(function () {
 
     $(document).on("click", ".addLawyer", function (e) {
         e.preventDefault();
-        console.log("add lawyer")
         lawyerIndex = $(this).attr("data-index");
         $("#lawyerModal").modal("show");
     });
@@ -1036,7 +1034,7 @@ function removeSideInAuthorized(activeSide, authorizedId) { // addResponsible ->
     if (activeSideAuthorizeds.length == 0) {
         $(`#authorizedBlock${activeSide.index}`).empty();
         $(`#authorizedBlock${activeSide.index}`).append(`
-        YETKİLİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addAuthorized addPersonToSide" personType="authorized" data-index="${activeSide.index}">Ekle</a>
+        YETKİLİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addAuthorized addPersonToSide" personType="person_authorized" data-index="${activeSide.index}">Ekle</a>
         `);
     }
 
@@ -1056,7 +1054,7 @@ function removeSideInEmployee(activeSide, employeeId) {
     if (activeSideEmployees.length == 0) {
         $(`#employeeBlock${activeSide.index}`).empty();
         $(`#employeeBlock${activeSide.index}`).append(`
-      Çalışan<br /> <a href="javascript:;" class="btn btn-sm btn-danger addEmployee addPersonToSide" personType="employee" data-index="${activeSide.index}">Ekle</a>
+      Çalışan<br /> <a href="javascript:;" class="btn btn-sm btn-danger addEmployee addPersonToSide" personType="person_employee" data-index="${activeSide.index}">Ekle</a>
       `);
     }
 
@@ -1076,7 +1074,7 @@ function removeSideInRepresentative(activeSide, representativeId) {
     if (activeSideRepresentatives.length == 0) {
         $(`#representativeBlock${activeSide.index}`).empty();
         $(`#representativeBlock${activeSide.index}`).append(`
-        KANUNİ TEMSİLCİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addRepresentative addPersonToSide" personType="representative" data-index="${activeSide.index}">Ekle</a>
+        KANUNİ TEMSİLCİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addRepresentative addPersonToSide" personType="person_representative" data-index="${activeSide.index}">Ekle</a>
         `);
     }
 
@@ -1095,7 +1093,7 @@ function removeSideInCommissioner(activeSide, commissionerId) {
     if (activeSideCommissioners.length == 0) {
         $(`#commissionerBlock${activeSide.index}`).empty();
         $(`#commissionerBlock${activeSide.index}`).append(`
-      KOMİSYON ÜYESİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addCommissioner addPersonToSide" personType="commissioner" data-index="${activeSide.index}">Ekle</a>
+      KOMİSYON ÜYESİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addCommissioner addPersonToSide" personType="person_commissioner" data-index="${activeSide.index}">Ekle</a>
       `);
     }
     activeSide.commissioners = activeSideCommissioners;
@@ -1113,7 +1111,7 @@ function removeSideInExpert(activeSide, expertId) {
     if (activeSideExperts.length == 0) {
         $(`#expertBlock${activeSide.index}`).empty();
         $(`#expertBlock${activeSide.index}`).append(`
-        UZMAN KİŞİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addExpert addPersonToSide" personType="expert" data-index="${activeSide.index}">Ekle</a>
+        UZMAN KİŞİ<br /> <a href="javascript:;" class="btn btn-sm btn-danger addExpert addPersonToSide" personType="person_expert" data-index="${activeSide.index}">Ekle</a>
         `);
     }
     activeSide.experts = activeSideExperts;
@@ -1127,7 +1125,7 @@ function getAuthorizedsBlock(authorizeds, authorizedIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addAuthorized addPersonToSide" personType="authorized" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addAuthorized addPersonToSide" personType="person_authorized" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
         authorizedIndex +
         '">Ekle</a> <br/>';
     for (var i = 0; i < authorizeds.length; i++) {
@@ -1157,7 +1155,7 @@ function getEmployeesBlock(employees, employeeIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addEmployee addPersonToSide" personType="employee" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addEmployee addPersonToSide" personType="person_employee" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
         employeeIndex +
         '">Ekle</a> <br/>';
     for (var i = 0; i < employees.length; i++) {
@@ -1187,7 +1185,7 @@ function getRepresentativesBlock(representatives, representativesIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addRepresentative addPersonToSide" personType="representative" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addRepresentative addPersonToSide" personType="person_representative" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
         representativesIndex +
         '">Ekle</a> <br/>';
     for (var i = 0; i < representatives.length; i++) {
@@ -1217,7 +1215,7 @@ function getCommissionersBlock(commissioners, commissionerIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addCommissioner addPersonToSide" personType="commissioner" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addCommissioner addPersonToSide" personType="person_commissioner" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
         commissionerIndex +
         '">Ekle</a> <br/>';
     for (var i = 0; i < commissioners.length; i++) {
@@ -1247,7 +1245,7 @@ function getExpertsBlock(experts, expertsIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addExpert addPersonToSide" personType="expert" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addExpert addPersonToSide" personType="person_expert" href="javascript:;"  style="color: #f27474;font-size: 14px;" data-index="' +
         expertsIndex +
         '">Ekle</a> <br/>';
     for (var i = 0; i < experts.length; i++) {
@@ -1272,8 +1270,8 @@ function getExpertsBlock(experts, expertsIndex) {
 // ---------------------------------- lawyer operations ----------------------------------//
 
 function getActiveSide(lawyerIndex) {
-    for (var i = 0; i < sides.length; i++) {
-        if (sides[i].index == lawyerIndex) {
+    for (let i = 0; i < sides.length; i++) {
+        if (sides[i].index === lawyerIndex) {
             return sides[i];
         }
     }
@@ -1291,7 +1289,7 @@ function removeSideInLawyer(activeSide, lawyerId) {
     if (activeSideLawyers.length == 0) {
         $(`#lawyerBlock${activeSide.index}`).empty();
         $(`#lawyerBlock${activeSide.index}`).append(`
-         VEKİL<br /> <a href="javascript:;" class="btn btn-sm btn-danger addLawyer addPersonToSide" personType="lawyer" data-index="${activeSide.index}">Ekle</a>
+         VEKİL<br /> <a href="javascript:;" class="btn btn-sm btn-danger addLawyer addPersonToSide" personType="person_lawyer" data-index="${activeSide.index}">Ekle</a>
         `);
     }
 
@@ -1328,36 +1326,36 @@ function generateSideBlock(side) {
     html += "</div>";
     html += '<div id="lawyerBlock' + side.index + '">';
     html +=
-        '<button class="btn btn-sm btn-warning addPersonToSide" personType="lawyer" data-index="' +
+        '<button class="btn btn-sm btn-warning addPersonToSide" personType="person_lawyer" data-index="' +
         side.index +
         '"><i class="fas fa-plus"></i> Vekil Ekle</button>';
     html += "</div>";
     html += '<div id="authorizedBlock' + side.index + '">';
     html +=
-        '<button class="btn btn-sm btn-warning addPersonToSide" personType="authorized" data-index="' +
+        '<button class="btn btn-sm btn-warning addPersonToSide" personType="person_authorized" data-index="' +
         side.index +
         '"><i class="fas fa-plus"></i> Yetkili Ekle</button>';
     html += "</div>";
     html += '<div id="employeeBlock' + side.index + '">';
     html +=
-        '<button class="btn btn-sm btn-warning addPersonToSide" personType="employee" data-index="' +
+        '<button class="btn btn-sm btn-warning addPersonToSide" personType="person_employee" data-index="' +
         side.index +
         '"><i class="fas fa-plus"></i> Çalışan Ekle</button>';
     html += "</div>";
     html += '<div id="representativeBlock' + side.index + '">';
     html +=
-        '<button class="btn btn-sm btn-warning addPersonToSide" personType="representative" data-index="' +
+        '<button class="btn btn-sm btn-warning addPersonToSide" personType="person_representative" data-index="' +
         side.index +
         '"><i class="fas fa-plus"></i> Kanuni Temsilci Ekle</button>';
     html += "</div>";
     html += '<div id="commissionerBlock' + side.index + '">';
     html +=
-        '<button class="btn btn-sm btn-warning addPersonToSide" personType="commissioner" data-index="' +
+        '<button class="btn btn-sm btn-warning addPersonToSide" personType="person_commissioner" data-index="' +
         side.index +
         '"><i class="fas fa-plus"></i> Komisyon Üyesi Ekle</button>';
     html += "</div>";
     html += '<div id="expertBlock' + side.index + '">';
-    html += '<button class="btn btn-sm btn-warning addPersonToSide" personType="expert" data-index="' +
+    html += '<button class="btn btn-sm btn-warning addPersonToSide" personType="person_expert" data-index="' +
         side.index + '"><i class="fas fa-plus"></i> Uzman Kişi Ekle</button>';
     html += "</div>";
     html += '<div id="' + side.index + '">';
@@ -1389,7 +1387,7 @@ function getLawyerBlock(lawyers, lawyerIndex) {
     var html =
         "<strong>" +
         text +
-        '</strong> - <a class="addLawyer addPersonToSide" personType="lawyer" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
+        '</strong> - <a class="addLawyer addPersonToSide" personType="person_lawyer" href="javascript:;" style="color: #f27474;font-size: 14px;" data-index="' +
         lawyerIndex +
         '">Ekle</a> <br />';
     for (var i = 0; i < lawyers.length; i++) {
