@@ -106,15 +106,15 @@
                                                                 <span></span>
                                                             </label>
                                                             <label class="kt-radio">
-                                                                <input type="radio" data-type="company_private" name="isPerson"
+                                                                <input type="radio" data-type="company_public" name="isPerson"
                                                                     class="personTypeSelect"> Tüzel Kişi
                                                                 <span></span>
                                                             </label>
-                                                            <label class="kt-radio">
-                                                                <input type="radio" data-type="company_public" name="isPerson"
-                                                                       class="personTypeSelect"> Kamu Tüzel Kişisi
+                                                            {{-- <label class="kt-radio">
+                                                                <input type="radio" personType="person_custom" name="isPerson"
+                                                                    class="personTypeSelect"> Kamu Tüzel Kişisi
                                                                 <span></span>
-                                                            </label>
+                                                            </label> --}}
                                                         </div>
                                                     </div>
                                                 </div>
