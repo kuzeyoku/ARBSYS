@@ -14,9 +14,9 @@ function getModalContent(type) {
         },
         success: function (response) {
             $("#personModal .modal-header h5").text(response.type.name);
-            $("#personModal .modal-body form").html(response.data);
-            $("#personModal .modal-body form #person_type").prop("disabled", true);
-            $("#personModal .modal-footer .personAddButton").attr(
+            $("#personModal form .modal-body").html(response.data);
+            $("#personModal form .modal-body  #person_type").prop("disabled", true);
+            $("#personModal form .modal-footer .personAddButton").attr(
                 "id",
                 "save" + response.personType
             );
@@ -66,51 +66,14 @@ $(document).ready(function () {
     //Gerçek Kişi Ekleme İşlemi
     $(document).on("click", "#saveperson", function (e) {
         e.preventDefault();
-        var hasError = false;
-        let name = $("input[name='name']").val();
-        let identification = $("input[name='identification']").val();
-        let tax_office = $("input[name='tax_office']").val();
-        let tax_number = $("input[name='tax_number']").val();
-        let address = $("textarea[name='address']").val();
-        let phone = $("input[name='phone']").val();
-        let fixed_phone = $("input[name='fixed_phone']").val();
-        let email = $("input[name='email']").val();
-        let kep_address = $("input[name='kep_address']").val();
-        let check = getCheckElements();
-
-        $("input[required]").each(function () {
-            if ($(this).val() == "") {
-                $(this).addClass("errorClass");
-                hasError = true;
-            } else {
-                $(this).removeClass("errorClass");
-            }
-        });
-
-        if (hasError) {
-            notification("Lütfen Tüm Zorunlu Alanları Doldurun.", "error");
-        }
-
-        if (hasError) {
-            return false;
-        }
-
-        let side = {
-            index: index,
-            name: name,
-            identification: identification,
-            tax_office: tax_office,
-            tax_number: tax_number,
-            address: address,
-            phone: phone,
-            fixed_phone: fixed_phone,
-            email: email,
-            kep_address: kep_address,
-            check: check,
-            applicantType: selectedApplicantType,
-            type: 1,
-        };
-
+        let formData = $(this).closest("form").serializeArray();
+        let side = formData.reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        side.index = index;
+        side.applicantType = selectedApplicantType;
+        side.type = 1;
         sides.push(side);
         $("#personModal").modal("hide");
         generateSideBlock(side);
@@ -120,54 +83,166 @@ $(document).ready(function () {
     //Tüzel Kişi Ekleme İşlemi
     $(document).on("click", "#savecompany", function (e) {
         e.preventDefault();
-        var hasError = false;
-        let name = $("input[name='name']").val();
-        let detsis_number = $("input[name='detsis_number']").val();
-        let mersis_number = $("input[name='mersis_number']").val();
-        let tax_office = $("input[name='tax_office']").val();
-        let tax_number = $("input[name='tax_number']").val();
-        let address = $("textarea[name='address']").val();
-        let phone = $("input[name='phone']").val();
-        let fixed_phone = $("input[name='fixed_phone']").val();
-        let email = $("input[name='email']").val();
-        let kep_address = $("input[name='kep_address']").val();
-        let check = getCheckElements();
-
-        $("input[required]").each(function () {
-            if ($(this).val() == "") {
-                $(this).addClass("errorClass");
-                hasError = true;
-            } else {
-                $(this).removeClass("errorClass");
-            }
-        });
-        if (hasError) {
-            notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
-        }
-        if (hasError) {
-            return false;
-        }
-        let side = {
-            index: index,
-            name: name,
-            detsis_number: detsis_number,
-            mersis_number: mersis_number,
-            tax_office: tax_office,
-            tax_number: tax_number,
-            address: address,
-            phone: phone,
-            fixed_phone: fixed_phone,
-            email: email,
-            kep_address: kep_address,
-            check: check,
-            applicantType: selectedApplicantType,
-            type: 2,
-        };
+        let formData = $(this).closest("form").serializeArray();
+        let side = formData.reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        side.index = index;
+        side.applicantType = selectedApplicantType;
+        side.type = 2;
         sides.push(side);
         $("#personModal").modal("hide");
         generateSideBlock(side);
         index++;
     });
+
+
+    //Avukat Ekleme İşlemi
+    $(document).on("click", "#savelawyer", function (e) {
+        e.preventDefault();
+        activeSide = getActiveSide(lawyerIndex);
+        let lawyer = $(this).closest("form").serializeArray().reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        lawyer.id = generateUniqueId();
+        let activeSideLawyers = [];
+        if (activeSide.lawyers != null) {
+            for (var i = 0; i < activeSide.lawyers.length; i++) {
+                let row = activeSide.lawyers[i];
+                activeSideLawyers.push(row);
+            }
+        }
+        activeSideLawyers.push(lawyer);
+        activeSide.lawyers = activeSideLawyers;
+        $("#lawyerBlock" + lawyerIndex).html(
+            getMemberBlock(activeSideLawyers, lawyerIndex, Members.LAWYER.toLowerCase())
+        );
+        $("#personModal").modal("hide");
+    });
+
+    //$("#saveAuthorized").on("click", function (e) { 
+    $(document).on("click", "#saveauthorized", function (e) { // saveOther -> saveAuthorized
+        e.preventDefault();
+        let authorized = $(this).closest("form").serializeArray().reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        authorized.id = generateUniqueId();
+        activeSide = getActiveSide(authorizedIndex);
+        let activeSideAuthorizeds = [];
+        if (activeSide.authorizeds != null) {
+            for (var i = 0; i < activeSide.authorizeds.length; i++) {
+                let row = activeSide.authorizeds[i];
+                activeSideAuthorizeds.push(row);
+            }
+        }
+        activeSideAuthorizeds.push(authorized);
+        activeSide.authorizeds = activeSideAuthorizeds;
+        $("#authorizedBlock" + authorizedIndex).html(
+            getMemberBlock(activeSideAuthorizeds, authorizedIndex, Members.AUTHORIZED.toLowerCase())
+        );
+        $("#personModal").modal("hide");
+    });
+
+    // Çalışan ekle,
+    $(document).on("click", "#saveemployee", function (e) {
+        e.preventDefault();
+        let employee = $(this).closest("form").serializeArray().reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        employee.id = generateUniqueId();
+        activeSide = getActiveSide(employeeIndex);
+        let activeSideEmployees = [];
+
+        if (activeSide.employees != null) {
+            for (var i = 0; i < activeSide.employees.length; i++) {
+                let row = activeSide.employees[i];
+                activeSideEmployees.push(row);
+            }
+        }
+        activeSideEmployees.push(employee);
+        activeSide.employees = activeSideEmployees;
+        $("#employeeBlock" + employeeIndex).html(
+            getMemberBlock(activeSideEmployees, employeeIndex, Members.EMPLOYEE.toLowerCase())
+        );
+        $("#personModal").modal("hide");
+    });
+
+    // $("#saverepresentative").on("click", function (e) {
+    $(document).on("click", "#saverepresentative", function (e) {
+        e.preventDefault();
+        let representative = $(this).closest("form").serializeArray().reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        representative.id = generateUniqueId();
+        activeSide = getActiveSide(representativeIndex);
+        let activeSideRepresentatives = [];
+        if (activeSide.representatives != null) {
+            for (var i = 0; i < activeSide.representatives.length; i++) {
+                let row = activeSide.representatives[i];
+                activeSideRepresentatives.push(row);
+            }
+        }
+        activeSideRepresentatives.push(representative);
+        activeSide.representatives = activeSideRepresentatives;
+        $("#representativeBlock" + representativeIndex).html(
+            getMemberBlock(activeSideRepresentatives, representativeIndex, Members.REPRESENTATIVE.toLowerCase())
+        );
+        $("#personModal").modal("hide");
+    });
+
+    $(document).on("click", "#savecommissioner", function (e) {
+        e.preventDefault();
+
+        let commissioner = $(this).closest("form").serializeArray().reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        commissioner.id = generateUniqueId();
+        activeSide = getActiveSide(commissionerIndex);
+        let activeSideCommissioners = [];
+        if (activeSide.commissioners != null) {
+            for (var i = 0; i < activeSide.commissioners.length; i++) {
+                let row = activeSide.commissioners[i];
+                activeSideCommissioners.push(row);
+            }
+        }
+        activeSideCommissioners.push(commissioner);
+        activeSide.commissioners = activeSideCommissioners;
+        $("#commissionerBlock" + commissionerIndex).html(
+            getMemberBlock(activeSideCommissioners, commissionerIndex, Members.COMMISSIONER.toLowerCase())
+        );
+        $("#personModal").modal("hide");
+    });
+
+    // $("#saveExpert").on("click", function (e) {
+    $(document).on("click", "#saveexpert", function (e) {
+        e.preventDefault();
+        let experts = $(this).closest("form").serializeArray().reduce((acc, item) => {
+            acc[item.name] = item.value;
+            return acc;
+        }, {});
+        experts.id = generateUniqueId();
+        activeSide = getActiveSide(expertIndex);
+        let activeSideExperts = [];
+        if (activeSide.experts != null) {
+            for (var i = 0; i < activeSide.experts.length; i++) {
+                let row = activeSide.experts[i];
+                activeSideExperts.push(row);
+            }
+        }
+        activeSideExperts.push(experts);
+        activeSide.experts = activeSideExperts;
+        $("#expertBlock" + expertIndex).html(
+            getMemberBlock(activeSideExperts, expertIndex, Members.EXPERT.toLowerCase())
+        );
+        $("#personModal").modal("hide");
+    });
+
 
     //Tutanakta Gösterilecek Verilerin İzin Kontrolü
     function getCheckElements() {
@@ -189,405 +264,6 @@ $(document).ready(function () {
         return null;
     }
 
-    //Avukat Ekleme İşlemi
-    $(document).on("click", "#savelawyer", function (e) {
-        e.preventDefault();
-
-        var hasError = false;
-
-        let identification = $("input[name='identification']").val();
-        let name = $("input[name='name']").val();
-        let address = $("input[name='address']").val();
-        let phone = $("input[name='phone']").val();
-        let fixed_phone = $("input[name='fixed_phone']").val();
-        let baro = $("input[name='baro']").val();
-        let registration_no = $("input[name='registration_no']").val();
-        let email = $("input[name='email']").val();
-
-        $("input[required]").each(function () {
-            if ($(this).val() == "") {
-                $(this).addClass("errorClass");
-                hasError = true;
-            } else {
-                $(this).removeClass("errorClass");
-            }
-        });
-
-        if (hasError) {
-            notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
-        }
-
-        if (hasError) {
-            return false;
-        }
-
-        activeSide = getActiveSide(lawyerIndex);
-        var lawyerArrLength = 0
-        if (activeSide.lawyers != null) { lawyerArrLength = activeSide.lawyers.length }
-        let lawyer = {
-            id: generateUniqueId(),
-            identification: identification,
-            name: name,
-            address: address,
-            phone: phone,
-            fixed_phone: fixed_phone,
-            baro: baro,
-            registration_no: registration_no,
-            email: email,
-        };
-
-        let activeSideLawyers = [];
-
-        if (activeSide.lawyers != null) {
-            for (var i = 0; i < activeSide.lawyers.length; i++) {
-                let row = activeSide.lawyers[i];
-                activeSideLawyers.push(row);
-            }
-        }
-
-        activeSideLawyers.push(lawyer);
-
-        activeSide.lawyers = activeSideLawyers;
-
-        $("#lawyerBlock" + lawyerIndex).html(
-            getMemberBlock(activeSideLawyers, lawyerIndex, Members.LAWYER.toLowerCase())
-        );
-        $("#personModal").modal("hide");
-    });
-
-    //$("#saveAuthorized").on("click", function (e) { 
-    $(document).on("click", "#saveauthorized", function (e) { // saveOther -> saveAuthorized
-        e.preventDefault();
-
-        var hasError = false;
-
-        let tcNo = $("input[name='identification']").val();
-        let nameSurname = $("input[name='name']").val();
-        let address = $("input[name='address']").val();
-        let gsm = $("input[name='phone']").val();
-        let fixedPhone = $("input[name='fixed_phone']").val();
-        let email = $("input[name='email']").val();
-
-        $("input[required]").each(function () {
-          if ($(this).val() == "") {
-              $(this).addClass("errorClass");
-              hasError = true;
-          } else {
-              $(this).removeClass("errorClass");
-          }
-      });
-
-      var hasErrorTc = tcValidate($("input[name='identification']"));
-
-      if (hasErrorTc) {
-          notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-      }
-
-      if (hasError) {
-        notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
-      }
-
-      if (hasErrorTc || hasError) {
-          return false;
-      }
-
-        let authorized = {
-            id: generateUniqueId(),
-            tc: tcNo,
-            name: nameSurname,
-            address: address,
-            phone: gsm,
-            fixedPhone: fixedPhone,
-            email: email,
-        };
-
-        activeSide = getActiveSide(authorizedIndex);
-
-        let activeSideAuthorizeds = [];
-
-        if (activeSide.authorizeds != null) {
-            for (var i = 0; i < activeSide.authorizeds.length; i++) {
-                let row = activeSide.authorizeds[i];
-                activeSideAuthorizeds.push(row);
-            }
-        }
-
-        activeSideAuthorizeds.push(authorized);
-
-        activeSide.authorizeds = activeSideAuthorizeds;
-
-        $("#authorizedBlock" + authorizedIndex).html(
-            getMemberBlock(activeSideAuthorizeds, authorizedIndex, Members.AUTHORIZED.toLowerCase())
-        );
-        $("#personModal").modal("hide");
-    });
-
-    // Çalışan ekle,
-    $(document).on("click", "#saveemployee", function (e) {
-        
-        e.preventDefault();
-        var hasError = false;
-
-        let tcNo = $("input[name='identification']").val();
-        let nameSurname = $("input[name='name']").val();
-        let address = $("input[name='address']").val();
-        let gsm = $("input[name='phone']").val();
-        let fixedPhone = $("input[name='fixed_phone']").val();
-        let email = $("input[name='email']").val();
-
-        $("input[required]").each(function () {
-          if ($(this).val() == "") {
-              $(this).addClass("errorClass");
-              hasError = true;
-          } else {
-              $(this).removeClass("errorClass");
-          }
-      });
-
-        var hasErrorTc = tcValidate($("input[name='identification']"));
-
-        if (hasErrorTc) {
-            notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-        }
-
-        if (hasError) {
-          notification("Lütfen Tüm Zorunlu Alanları Doldurun", "error");
-        }
-
-        if (hasErrorTc || hasError) {
-            return false;
-        }
-
-        let employees = {
-            id: generateUniqueId(),
-            tc: tcNo,
-            name: nameSurname,
-            address: address,
-            phone: gsm,
-            fixedPhone: fixedPhone,
-            email: email,
-        };
-
-        activeSide = getActiveSide(employeeIndex);
-
-        let activeSideEmployees = [];
-
-        if (activeSide.employees != null) {
-            for (var i = 0; i < activeSide.employees.length; i++) {
-                let row = activeSide.employees[i];
-                activeSideEmployees.push(row);
-            }
-        }
-
-        activeSideEmployees.push(employees);
-
-        activeSide.employees = activeSideEmployees;
-
-        $("#employeeBlock" + employeeIndex).html(
-            getMemberBlock(activeSideEmployees, employeeIndex, Members.EMPLOYEE.toLowerCase())
-        );
-        $("#personModal").modal("hide");
-    });
-
-    // $("#saverepresentative").on("click", function (e) {
-    $(document).on("click", "#saverepresentative", function (e) {
-        e.preventDefault();
-
-        var hasError = false;
-
-        let tcNo = $("input[name='identification']").val();
-        let nameSurname = $("input[name='name']").val();
-        let address = $("input[name='address']").val();
-        let gsm = $("input[name='phone']").val();
-        let fixedPhone = $("input[name='fixed_phone']").val();
-        let email = $("input[name='email']").val();
-
-        $(".rrq").each(function () {
-            if ($(this).val() == "" && $(this).attr("id")) {
-                $(this).addClass("errorClass");
-                hasError = true;
-            } else {
-                $(this).removeClass("errorClass");
-            }
-        });
-
-        var hasErrorTc = tcValidate($("input[name='identification']").val());
-
-        if (hasErrorTc) {
-            notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-        }
-
-        if (hasError) {
-            notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
-        }
-
-        if (hasErrorTc || hasError) {
-            return false;
-        }
-
-        let representative = {
-            id: generateUniqueId(),
-            tc: tcNo,
-            name: nameSurname,
-            address: address,
-            phone: gsm,
-            fixedPhone: fixedPhone,
-            email: email,
-        };
-
-        activeSide = getActiveSide(representativeIndex);
-
-        let activeSideRepresentatives = [];
-
-        if (activeSide.representatives != null) {
-            for (var i = 0; i < activeSide.representatives.length; i++) {
-                let row = activeSide.representatives[i];
-                activeSideRepresentatives.push(row);
-            }
-        }
-
-        activeSideRepresentatives.push(representative);
-
-        activeSide.representatives = activeSideRepresentatives;
-
-        $("#representativeBlock" + representativeIndex).html(
-            getMemberBlock(activeSideRepresentatives, representativeIndex, Members.REPRESENTATIVE.toLowerCase())
-        );
-        $("#personModal").modal("hide");
-    });
-
-    $(document).on("click", "#savecommissioner", function (e) {
-      e.preventDefault();
-
-      var hasError = false;
-
-      let tcNo = $("input[name='identification']").val();
-      let nameSurname = $("input[name='name']").val();
-      let address = $("input[name='address']").val();
-      let gsm = $("input[name='phone']").val();
-      let fixedPhone = $("input[name='fixed_phone']").val();
-      let email = $("input[name='email']").val();
-
-      $(".erq").each(function () {
-          if ($(this).val() == "" && $(this).attr("id")) {
-              $(this).addClass("errorClass");
-              hasError = true;
-          } else {
-              $(this).removeClass("errorClass");
-          }
-      });
-
-      var hasErrorTc = tcValidate($("input[name='identification']").val());
-
-      if (hasErrorTc) {
-          notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-      }
-
-      if (hasError) {
-          notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
-      }
-
-      if (hasErrorTc || hasError) {
-          return false;
-      }
-
-      let commissioner = {
-          id: generateUniqueId(),
-          tc: tcNo,
-          name: nameSurname,
-          address: address,
-          phone: gsm,
-          fixedPhone: fixedPhone,
-          email: email,
-      };
-
-      activeSide = getActiveSide(commissionerIndex);
-
-      let activeSideCommissioners = [];
-
-      if (activeSide.commissioners != null) {
-          for (var i = 0; i < activeSide.commissioners.length; i++) {
-              let row = activeSide.commissioners[i];
-              activeSideCommissioners.push(row);
-          }
-      }
-
-      activeSideCommissioners.push(commissioner);
-
-      activeSide.commissioners = activeSideCommissioners;
-
-      $("#commissionerBlock" + commissionerIndex).html(
-          getMemberBlock(activeSideCommissioners, commissionerIndex, Members.COMMISSIONER.toLowerCase())
-      );
-      $("#personModal").modal("hide");
-  });
-
-    // $("#saveExpert").on("click", function (e) {
-    $(document).on("click", "#saveexpert", function (e) {
-        e.preventDefault();
-
-        var hasError = false;
-
-        let tcNo = $("input[name='identification']").val();
-        let nameSurname = $("input[name='name']").val();
-        let address = $("input[name='address']").val();
-        let gsm = $("input[name='phone']").val();
-        let fixedPhone = $("input[name='fixed_phone']").val();
-        let email = $("input[name='email']").val();
-
-        $(".erq").each(function () {
-            if ($(this).val() == "" && $(this).attr("id")) {
-                $(this).addClass("errorClass");
-                hasError = true;
-            } else {
-                $(this).removeClass("errorClass");
-            }
-        });
-
-        var hasErrorTc = tcValidate($("input[name='identification']").val());
-
-        if (hasErrorTc) {
-            notification("HATA", "T.C. No 11 hane olmalıdır", "error");
-        }
-
-        if (hasError) {
-            notification("HATA", "İşaretli alanlar boş bırakılamaz", "error");
-        }
-
-        if (hasErrorTc || hasError) {
-            return false;
-        }
-
-        let experts = {
-            id: generateUniqueId(),
-            tc: tcNo,
-            name: nameSurname,
-            address: address,
-            phone: gsm,
-            fixedPhone: fixedPhone,
-            email: email,
-        };
-
-        activeSide = getActiveSide(expertIndex);
-
-        let activeSideExperts = [];
-
-        if (activeSide.experts != null) {
-            for (var i = 0; i < activeSide.experts.length; i++) {
-                let row = activeSide.experts[i];
-                activeSideExperts.push(row);
-            }
-        }
-
-        activeSideExperts.push(experts);
-
-        activeSide.experts = activeSideExperts;
-
-        $("#expertBlock" + expertIndex).html(
-            getMemberBlock(activeSideExperts, expertIndex, Members.EXPERT.toLowerCase())
-        );
-        $("#personModal").modal("hide");
-    });
     // ---------------------------------- save modals  ----------------------------------//
 
     // ----------------------------------  modal events  ----------------------------------//
@@ -630,7 +306,7 @@ $(document).ready(function () {
 
     // ---------------------------------- lawyer operations ----------------------------------//
     $(document).on("click", ".addPersonToSide", function (e) {
-      console.log("add Person To Side", Date().toString())
+        console.log("add Person To Side", Date().toString())
         e.preventDefault();
         getModalContent($(this).attr("personType"));
         const personType = $(this).attr("personType");
@@ -638,31 +314,31 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".addMember", function (e) {
-      e.preventDefault();
-      const personType = $(this).attr("personType");
-      const memberIndex = $(this).attr("data-index");
-      window[personType + "Index"] = memberIndex;
-      $(`#${personType}Modal`).modal("show");
-  });
+        e.preventDefault();
+        const personType = $(this).attr("personType");
+        const memberIndex = $(this).attr("data-index");
+        window[personType + "Index"] = memberIndex;
+        $(`#${personType}Modal`).modal("show");
+    });
 
     function removeSideInMember(activeSide, memberId, memberType) {
-      let activeSideMembers = [];
-      let activeSideArray = activeSide[`${memberType}s`];
-      let title = Localization[memberType].tr;
-      if (activeSideArray != null) {
-          for (let i = 0; i < activeSideArray.length; i++) {
-              let row = activeSideArray[i];
-              if (row.id != memberId) activeSideMembers.push(row);
-          }
-      }
-      if (activeSideMembers.length == 0) {
-          $(`#${memberType.toLowerCase()}Block${activeSide.index}`).empty();
-          $(`#${memberType.toLowerCase()}Block${activeSide.index}`).append(`
+        let activeSideMembers = [];
+        let activeSideArray = activeSide[`${memberType}s`];
+        let title = Localization[memberType].tr;
+        if (activeSideArray != null) {
+            for (let i = 0; i < activeSideArray.length; i++) {
+                let row = activeSideArray[i];
+                if (row.id != memberId) activeSideMembers.push(row);
+            }
+        }
+        if (activeSideMembers.length == 0) {
+            $(`#${memberType.toLowerCase()}Block${activeSide.index}`).empty();
+            $(`#${memberType.toLowerCase()}Block${activeSide.index}`).append(`
            ${title}<br /> <a href="javascript:;" class="btn btn-sm btn-danger addMember add${capitalizeFirstLetter(memberType)} addPersonToSide" personType="${memberType.toLowerCase()}" data-index="${activeSide.index}">Ekle</a>
           `);
-      }
-      activeSide[`${memberType}s`] = activeSideMembers;
-  }
+        }
+        activeSide[`${memberType}s`] = activeSideMembers;
+    }
 
     $(document).on("click", ".removeMember", function (e) {
         e.preventDefault();
@@ -971,13 +647,13 @@ function limitText(text, limit) {
 }
 
 function generateSideBlock(side) {
-  const cardClass = side.applicantType === "BAŞVURUCU" ? "bg-light" : "bg-secondary";
-  const tcOrTax = side.type === 1
-      ? `TC Kimlik No: ${side.identification}`
-      : `Mersis No: ${side.mersis_number}`;
+    const cardClass = side.applicantType === "BAŞVURUCU" ? "bg-light" : "bg-secondary";
+    const tcOrTax = side.type === 1
+        ? `TC Kimlik No: ${side.identification}`
+        : `Mersis No: ${side.mersis_number}`;
 
-  const createButton = (blockId, personType, label) => {
-      return `
+    const createButton = (blockId, personType, label) => {
+        return `
           <div id="${blockId}${side.index}">
               <button class="btn btn-sm btn-warning addPersonToSide" 
                       personType="${personType}" 
@@ -985,16 +661,16 @@ function generateSideBlock(side) {
                   <i class="fas fa-plus"></i> ${label}
               </button>
           </div>`;
-  };
+    };
 
-  const deleteButton = `
+    const deleteButton = `
       <div id="${side.index}">
           <button class="btn btn-sm btn-danger deleteSide" data-index="${side.index}">
               <i class="fas fa-times"></i> Taraf Sil
           </button>
       </div>`;
 
-  const html = `
+    const html = `
       <div id="sideCard-${side.index}" class="w-100">
           <div class="card ${cardClass}">
               <div class="card-body" style="color: #000000;">
@@ -1013,26 +689,26 @@ function generateSideBlock(side) {
           </div>
       </div>`;
 
-  if (side.applicantType === "BAŞVURUCU") {
-      $(".sideBasvuranRow").append(html);
-  } else if (side.applicantType === "DİĞER TARAF") {
-      $(".sideKarsiTarafRow").append(html);
-  }
+    if (side.applicantType === "BAŞVURUCU") {
+        $(".sideBasvuranRow").append(html);
+    } else if (side.applicantType === "DİĞER TARAF") {
+        $(".sideKarsiTarafRow").append(html);
+    }
 
-  $("#applicant_add_button").show();
-  $("#applicant_select").remove();
+    $("#applicant_add_button").show();
+    $("#applicant_select").remove();
 }
 
 function generateUniqueId() {
-  return (
-      Math.random().toString(36).substr(2, 9) +
-      Math.random().toString(36).substr(2, 9)
-  );
+    return (
+        Math.random().toString(36).substr(2, 9) +
+        Math.random().toString(36).substr(2, 9)
+    );
 }
 
-function getMemberBlock(members, memberIndex, memberType){
-  let text = members.length > 1 ? Localization[`${memberType}s`].tr : Localization[memberType].tr;
-  const addButtonHtml = `
+function getMemberBlock(members, memberIndex, memberType) {
+    let text = members.length > 1 ? Localization[`${memberType}s`].tr : Localization[memberType].tr;
+    const addButtonHtml = `
         <strong class="member-block-title">${text}</strong> - 
         <a 
             class="add${capitalizeFirstLetter(memberType)} addPersonToSide" 
@@ -1083,71 +759,71 @@ $.validator.addMethod("application_date_required", function (value) {
 });
 
 function capitalizeFirstLetter(input) {
-  return input
-      .toLowerCase()
-      .replace(/(^\w|\s\w)/g, match => match.toUpperCase());
+    return input
+        .toLowerCase()
+        .replace(/(^\w|\s\w)/g, match => match.toUpperCase());
 }
 
 /* Fonksiyonlar */
 
 /* ENUMS */
 const Members = Object.freeze({
-  LAWYER:   "LAWYER",
-  AUTHORIZED:  "AUTHORIZED",
-  EMPLOYEE: "EMPLOYEE",
-  REPRESENTATIVE: "REPRESENTATIVE",
-  COMMISSIONER: "COMMISSIONER",
-  EXPERT: "EXPERT"
+    LAWYER: "LAWYER",
+    AUTHORIZED: "AUTHORIZED",
+    EMPLOYEE: "EMPLOYEE",
+    REPRESENTATIVE: "REPRESENTATIVE",
+    COMMISSIONER: "COMMISSIONER",
+    EXPERT: "EXPERT"
 });
 
 /* Strings */
 const Localization = {
-  "lawyer": {
-    "tr": "Vekil",
-    "en": "Lawyer"
-  },
-  "lawyers": {
-    "tr": "Vekiller",
-    "en": "Lawyers"
-  },
-  "authorized": {
-    "tr": "Yetkili",
-    "en": "Authorized"
-  },
-  "authorizeds": {
-    "tr": "Yetkililer",
-    "en": "Authorizeds"
-  },
-  "employee": {
-    "tr": "Çalışan",
-    "en": "Employee"
-  },
-  "employees": {
-    "tr": "Çalışanlar",
-    "en": "Employees"
-  },
-  "representative": {
-    "tr": "Kanuni Temsilci",
-    "en": "Representative"
-  },
-  "representatives": {
-    "tr": "Kanuni Temsilciler",
-    "en": "Representatives"
-  },
-  "commissioner": {
-    "tr": "Komisyon Üyesi",
-    "en": "Commissioner"
-  },
-  "commissioners": {
-    "tr": "Komisyon Üyeleri",
-    "en": "Commissioners"
-  },
-  "expert": {
-    "tr": "Uzman Kişi",
-    "en": "Expert"
-  },
-  "experts": {
-    "tr": "Uzman Kişiler",
-    "en": "Experts"
-  }
+    "lawyer": {
+        "tr": "Vekil",
+        "en": "Lawyer"
+    },
+    "lawyers": {
+        "tr": "Vekiller",
+        "en": "Lawyers"
+    },
+    "authorized": {
+        "tr": "Yetkili",
+        "en": "Authorized"
+    },
+    "authorizeds": {
+        "tr": "Yetkililer",
+        "en": "Authorizeds"
+    },
+    "employee": {
+        "tr": "Çalışan",
+        "en": "Employee"
+    },
+    "employees": {
+        "tr": "Çalışanlar",
+        "en": "Employees"
+    },
+    "representative": {
+        "tr": "Kanuni Temsilci",
+        "en": "Representative"
+    },
+    "representatives": {
+        "tr": "Kanuni Temsilciler",
+        "en": "Representatives"
+    },
+    "commissioner": {
+        "tr": "Komisyon Üyesi",
+        "en": "Commissioner"
+    },
+    "commissioners": {
+        "tr": "Komisyon Üyeleri",
+        "en": "Commissioners"
+    },
+    "expert": {
+        "tr": "Uzman Kişi",
+        "en": "Expert"
+    },
+    "experts": {
+        "tr": "Uzman Kişiler",
+        "en": "Experts"
+    }
 }

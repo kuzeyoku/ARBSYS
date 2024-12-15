@@ -329,17 +329,17 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form>
+                    <form>
+                        <div class="modal-body">
 
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
-                        <button type="button" class="btn personAddButton" style="background: #149FFC; color: white;"
-                                id="">Ekle
-                        </button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                            <button type="button" class="btn personAddButton" style="background: #149FFC; color: white;"
+                                    id="">Ekle
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

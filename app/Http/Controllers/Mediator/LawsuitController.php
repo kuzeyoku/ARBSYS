@@ -79,7 +79,7 @@ class LawsuitController extends Controller
 
     public function store(Request $request)
     {
-
+        dd($request->all());
         DB::beginTransaction();
 
         try {
@@ -106,7 +106,7 @@ class LawsuitController extends Controller
 
                 if ($side["type"] == 1) {
 
-                    $person = People::updateOrCreate(["identification" => $side["identification"]], [
+                    $person = People::create([
                         "name" => ucwords($side["name"]),
                         "identification" => $side["identification"],
                         "address" => ucwords($side["address"]),
@@ -116,7 +116,7 @@ class LawsuitController extends Controller
                         "user_id" => auth()->id(),
                         "type_id" => 1,
                         "check" => $side["check"] ? json_encode($side["check"]) : null,
-                    ]);
+                    ]); //Kişi Oluşturuldu
 
                     $side = Side::create([
                         "person_id" => $person->id,
@@ -124,38 +124,35 @@ class LawsuitController extends Controller
                         "lawsuit_id" => $lawsuit->id,
                         "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                         "user_id" => auth()->user()->id,
-                    ]);
+                    ]); //Taraf Oluşturuldu
 
                     $parent_side_id = $side->id;
-                }
+                } //Kişi Tarafı Oluşturuldu
                 if ($side["type"] == 2) {
 
-                    $company = Company::updateOrCreate(
-                        ["mersis_number" => $side["mersis_number"], "user_id" => auth()->id()],
-                        [
-                            "name" => ucwords($side["name"]),
-                            "tax_number" => $side["tax_number"],
-                            "tax_office_id" => $side["tax_office_id"] ?? 0,
-                            "mersis_number" => $side["mersis_number"],
-                            "detsis_number" => $side["detsis_number"],
-                            "address" => ucwords($side["address"]),
-                            "fixed_phone" => $side["fixed_phone"] ?? "",
-                            "email" => $side["email"] ?? "",
-                            "user_id" => auth()->id(),
-                            "type_id" => $side["type"],
-                            "check" => $side["check"] ? json_encode($side["check"]) : null,
-                        ]
-                    );
+                    $company = Company::reate([
+                        "name" => ucwords($side["name"]),
+                        "tax_number" => $side["tax_number"],
+                        "tax_office_id" => $side["tax_office_id"] ?? 0,
+                        "mersis_number" => $side["mersis_number"],
+                        "detsis_number" => $side["detsis_number"],
+                        "address" => ucwords($side["address"]),
+                        "fixed_phone" => $side["fixed_phone"] ?? "",
+                        "email" => $side["email"] ?? "",
+                        "user_id" => auth()->id(),
+                        "type_id" => $side["type"],
+                        "check" => $side["check"] ? json_encode($side["check"]) : null,
+                    ]); //Şirket Oluşturuldu
                     $side = Side::create([
                         "company_id" => $company->id,
                         "side_applicant_type_id" => 2,
                         "lawsuit_id" => $lawsuit->id,
                         "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                         "user_id" => auth()->user()->id,
-                    ]);
+                    ]); //Taraf Oluşturuldu
 
                     $parent_side_id = $side->id;
-                }
+                } //Şirket Tarafı Oluşturuldu
 
                 if (!empty($side["others"])) {
                     foreach ($side["others"] as $side_other) {
@@ -179,19 +176,19 @@ class LawsuitController extends Controller
                             "user_id" => auth()->user()->id,
                         ]);
                     }
-                }
+                } //TODO: İncele
 
-                if (!empty($side["lawyer"])) {
-                    foreach ($side["lawyer"] as $side_lawyer) {
-                        $lawyer = Lawyer::updateOrCreate(["identification" => $side_lawyer["identification"]], [
-                            "name" => ucwords($side_lawyer["name"]),
-                            "identification" => $side_lawyer["identification"],
-                            "address" => ucwords($side_lawyer["address"]),
-                            "phone" => $side_lawyer["phone"],
-                            "fixed_phone" => $side_lawyer["fixedPhone"] ?? "",
-                            "email" => $side_lawyer["email"] ?? "",
-                            "baro_id" => $side_lawyer["baro"],
-                            "registration_no" => $side_lawyer["regNo"],
+                if (!empty($side["lawyers"])) {
+                    foreach ($side["lawyers"] as $lawyer) {
+                        $lawyer = Lawyer::create([
+                            "name" => ucwords($lawyer["name"]),
+                            "identification" => $lawyer["identification"],
+                            "address" => ucwords($lawyer["address"]),
+                            "phone" => $lawyer["phone"],
+                            "fixed_phone" => $lawyer["fixedPhone"] ?? "",
+                            "email" => $lawyer["email"] ?? "",
+                            "baro_id" => $lawyer["baro"],
+                            "registration_no" => $lawyer["regNo"],
                             "user_id" => auth()->id()
                         ]);
 
@@ -206,8 +203,8 @@ class LawsuitController extends Controller
                     }
                 }
 
-                if (!empty($side["workers"])) {
-                    foreach ($side["workers"] as $side_worker) {
+                if (!empty($side["employees"])) {
+                    foreach ($side["employees"] as $side_worker) {
                         $person = People::updateOrCreate(["identification" => $side_worker["identification"]], [
                             "name" => ucwords($side_worker["name"]),
                             "identification" => $side_worker["identification"],
