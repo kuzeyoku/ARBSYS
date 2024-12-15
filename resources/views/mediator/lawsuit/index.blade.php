@@ -14,7 +14,7 @@
                 <div class="col-2">
                     <div class="kt-form__actions mt-2">
                         <a href="{{ route('lawsuit.archive_index') }}" style="width: 100%;"
-                            class="btn btn-warning justify-content-center align-items-center">Arşivlenmiş Dosyalar</a>
+                           class="btn btn-warning justify-content-center align-items-center">Arşivlenmiş Dosyalar</a>
                     </div>
                 </div>
             </div>
@@ -34,43 +34,43 @@
                 <div class="kt-portlet__body py-4 px-4">
                     <table class="table table-striped table-bordered" id="dataTable">
                         <thead>
-                            <tr>
-                                <th style="width: 150px;">BAŞVURUCU</th>
-                                <th style="width: 150px;">KARŞI TARAF</th>
-                                <th>YIL</th>
-                                <th>BAŞV. DOSYA NO</th>
-                                <th>ARB. DOSYA NO</th>
-                                <th>UYUŞMAZLIK TÜRÜ</th>
-                                <th>BAŞVURU TARİHİ</th>
-                                <th>GÖREVİN KABUL TARİHİ</th>
-                                <th>SON SÜRE</th>
-                                <th>SÜREÇ BİLGİSİ</th>
-                                <th>İŞLEMLER</th>
-                            </tr>
+                        <tr>
+                            <th style="width: 150px;">BAŞVURUCU</th>
+                            <th style="width: 150px;">KARŞI TARAF</th>
+                            <th>YIL</th>
+                            <th>BAŞV. DOSYA NO</th>
+                            <th>ARB. DOSYA NO</th>
+                            <th>UYUŞMAZLIK TÜRÜ</th>
+                            <th>BAŞVURU TARİHİ</th>
+                            <th>GÖREVİN KABUL TARİHİ</th>
+                            <th>SON SÜRE</th>
+                            <th>SÜREÇ BİLGİSİ</th>
+                            <th>İŞLEMLER</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
-                                <tr>
-                                    <td>{{ $item->claimantName }}</td>
-                                    <td>{{ $item->defendantName }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->application_date)->format('Y') }}</td>
-                                    <td>{{ $item->application_document_no }}</td>
-                                    <td>{{ $item->mediation_document_no }}</td>
-                                    <td>{{ $item->lawsuit_subject_type->name ?? null }}</td>
-                                    <td>{{ $item->application_date }}</td>
-                                    <td>{{ $item->job_date }}</td>
-                                    <td>{!! $item->last_time !!}</td>
-                                    <td>{!! $item->getProcessStatus() !!}</td>
-                                    <td>@include('mediator.lawsuit.process', compact('item'))</td>
-                                </tr>
-                            @endforeach
+                        @foreach ($lawsuits as $lawsuit)
+                            <tr>
+                                <td>{{ $lawsuit->claimantName }}</td>
+                                <td>{{ $lawsuit->defendantName }}</td>
+                                <td>{{ \Carbon\Carbon::parse($lawsuit->application_date)->format('Y') }}</td>
+                                <td>{{ $lawsuit->application_document_no }}</td>
+                                <td>{{ $lawsuit->mediation_document_no }}</td>
+                                <td>{{ $lawsuit->lawsuit_subject_type->name ?? null }}</td>
+                                <td>{{ $lawsuit->application_date }}</td>
+                                <td>{{ $lawsuit->job_date }}</td>
+                                <td>{!! $lawsuit->last_time !!}</td>
+                                <td>{!! $lawsuit->getProcessStatus() !!}</td>
+                                <td>@include('mediator.lawsuit.process', compact('item'))</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         <div class="modal" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog"
-            id="dosya-sistemden-kapatildi">
+             id="dosya-sistemden-kapatildi">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -114,7 +114,7 @@
                                 @foreach ($agreement_types->where('back_to_work', true) as $type)
                                     <label class="kt-checkbox">
                                         <input type="radio" name="subject_answer" value="{{ $type->id }}"
-                                            data-template="{{ $type->description }}"> {{ $type->name }}
+                                               data-template="{{ $type->description }}"> {{ $type->name }}
                                         <span></span>
                                     </label>
                                 @endforeach
@@ -135,7 +135,7 @@
     </div>
     @if (Request::get('tutanak'))
         <div class="modal fade" id="tutanak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -151,7 +151,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">HAYIR</button>
                         <a href="{{ route('arbiter_process_info_protocol.create', Request::get('tutanak')) }}"
-                            class="btn btn-success">EVET</a>
+                           class="btn btn-success">EVET</a>
                     </div>
                 </div>
             </div>

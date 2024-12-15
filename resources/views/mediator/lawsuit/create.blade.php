@@ -81,7 +81,7 @@
 
                                     <!--begin: Form Wizard Step 1-->
                                     <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
-                                        data-ktwizard-state="current">
+                                         data-ktwizard-state="current">
                                         <div class="kt-heading kt-heading--md">Taraf Bilgilerini Giriniz</div>
                                         <div class="kt-form__section kt-form__section--first">
                                             <div class="kt-wizard-v4__form">
@@ -89,7 +89,7 @@
                                                     <div class="form-group">
                                                         <label for="applicant_type">Taraf Sıfatı</label>
                                                         <select class="form-control" id="applicant_type"
-                                                            name="applicant_type">
+                                                                name="applicant_type">
                                                             <option value="0">-- Seçiniz --</option>
                                                             <option value="1">Başvurucu</option>
                                                             <option value="2">Diğer Taraf</option>
@@ -99,15 +99,15 @@
                                                         <label>Gerçek Kişi/Tüzel Kişi</label>
                                                         <div class="kt-radio-inline row">
                                                             <input type="hidden" class="modalContentUrl"
-                                                                data-url="{{ route('lawsuit.getModalContent') }}">
+                                                                   data-url="{{ route('lawsuit.getModalContent') }}">
                                                             <label class="kt-radio">
-                                                                <input type="radio" data-type="person_taxpayer" name="isPerson"
-                                                                    class="personTypeSelect"> Gerçek Kişi
+                                                                <input type="radio" data-type="person" name="isPerson"
+                                                                       class="personTypeSelect"> Gerçek Kişi
                                                                 <span></span>
                                                             </label>
                                                             <label class="kt-radio">
-                                                                <input type="radio" data-type="company_public" name="isPerson"
-                                                                    class="personTypeSelect"> Tüzel Kişi
+                                                                <input type="radio" data-type="company" name="isPerson"
+                                                                       class="personTypeSelect"> Tüzel Kişi
                                                                 <span></span>
                                                             </label>
                                                             {{-- <label class="kt-radio">
@@ -121,8 +121,9 @@
                                                 <div class="row sideBasvuranRow mt-3"></div>
                                                 <div class="row sideKarsiTarafRow mt-3"></div>
                                                 <button class="btn btn-primary mt-3" type="button" style="display: none"
-                                                    id="applicant_add_button" data-toggle="modal"
-                                                    data-target="#applicantModal">Taraf Ekle</button>
+                                                        id="applicant_add_button" data-toggle="modal"
+                                                        data-target="#applicantModal">Taraf Ekle
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -135,19 +136,21 @@
                                             <div class="kt-wizard-v4__form">
                                                 <div class="form-group">
                                                     <input type="hidden" name="delivery_by">
-                                                    <label for="delivery_by">Arabuluculuk Görevini Nasıl Üstlendiniz ?</label>
+                                                    <label for="delivery_by">Arabuluculuk Görevini Nasıl Üstlendiniz
+                                                        ?</label>
                                                     {{ Form::select('lawsuit_type', App\Models\Lawsuit\LawsuitType::selectToArray(), 'default', ['class' => 'form-control', 'id' => 'delivery_by', 'placeholder' => '--Seçiniz--']) }}
                                                 </div>
                                                 <div class="form-group" style="display:none;"
-                                                    id="lawsuit_subject_types_select">
+                                                     id="lawsuit_subject_types_select">
                                                     <label for="lawsuit_subject_types">Uyuşmazlık Türü</label>
                                                     {{ Form::select('lawsuit_subject_type', App\Models\Lawsuit\LawsuitSubjectType::selectToArray(), 'default', ['class' => 'form-control', 'id' => 'lawsuit_subject_types', 'placeholder' => '--Seçiniz--']) }}
 
                                                 </div>
-                                                <div class="form-group" style="display:none;" id="lawsuit_subjects_select">
+                                                <div class="form-group" style="display:none;"
+                                                     id="lawsuit_subjects_select">
                                                     <label for="lawsuit_subjects">Uyuşmazlık Konusu</label>
                                                     <select class="form-control" id="lawsuit_subjects"
-                                                        name="lawsuit_subject">
+                                                            name="lawsuit_subject">
                                                     </select>
                                                 </div>
                                             </div>
@@ -177,39 +180,39 @@
                                                 <div class="form-group" id="application_document_no">
                                                     <label>Başvuru Dosya No :</label>
                                                     <input type="text" class="form-control"
-                                                        name="application_document_no" autocomplete="off"
-                                                        placeholder="{{ date('Y') }}/" />
+                                                           name="application_document_no" autocomplete="off"
+                                                           placeholder="{{ date('Y') }}/"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Arabuluculuk Dosya No :</label>
                                                     <input type="text" class="form-control"
-                                                        name="mediation_document_no" autocomplete="off"
-                                                        placeholder="{{ date('Y') }}/" />
+                                                           name="mediation_document_no" autocomplete="off"
+                                                           placeholder="{{ date('Y') }}/"/>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6" id="application_date">
                                                         <div class="form-group">
                                                             <label>Başvuru Tarihi :</label>
                                                             <input type="date" class="form-control application_date"
-                                                                name="application_date" autocomplete="off">
+                                                                   name="application_date" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="col-6" id="job_date">
                                                         <div class="form-group">
                                                             <label>Görevi Kabul Tarihi :</label>
                                                             <input type="date" class="form-control job_date "
-                                                                name="job_date" autocomplete="off">
+                                                                   name="job_date" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-group" id="process_start_date"
-                                                            style="display: none;">
+                                                             style="display: none;">
                                                             <label>Sürecin Başlangıç Tarihi :</label>
                                                             <input type="text"
-                                                                class="form-control datepicker datedotmask"
-                                                                name="process_start_date" autocomplete="off">
+                                                                   class="form-control datepicker datedotmask"
+                                                                   name="process_start_date" autocomplete="off">
                                                         </div>
                                                         <div class="form-group" style="display: none">
                                                             <label for="process_type_id">Süreç Bilgisi: </label>
@@ -222,8 +225,8 @@
                                                         <div class="form-group" id="result_date" style="display:none;">
                                                             <label>Sonuçlandırma Tarihi :</label>
                                                             <input type="text"
-                                                                class="form-control datepicker datedotmask"
-                                                                name="result_date" autocomplete="off">
+                                                                   class="form-control datepicker datedotmask"
+                                                                   name="result_date" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -238,20 +241,20 @@
                                         <div class="kt-form__section kt-form__section--first">
                                             <div class="kt-wizard-v4__review">
                                                 <div id="print_content">
-                                                        <div class="kt-wizard-v4__review-title">
-                                                            Taraf Detayları
-                                                        </div>
-                                                        <div class="kt-wizard-v4__review-content" id="step1_details">
-                                                        </div>
-                                                        <div class="kt-wizard-v4__review-content" id="step2_details">
-                                                        </div>
-                                                        <div class="kt-wizard-v4__review-content" id="step3_details">
-                                                        </div>
+                                                    <div class="kt-wizard-v4__review-title">
+                                                        Taraf Detayları
+                                                    </div>
+                                                    <div class="kt-wizard-v4__review-content" id="step1_details">
+                                                    </div>
+                                                    <div class="kt-wizard-v4__review-content" id="step2_details">
+                                                    </div>
+                                                    <div class="kt-wizard-v4__review-content" id="step3_details">
+                                                    </div>
                                                 </div>
                                                 <div class="kt-wizard-v4__review-item" id="saved"
-                                                    style="display: none;">
+                                                     style="display: none;">
                                                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                                                        rel="stylesheet">
+                                                          rel="stylesheet">
                                                     <div class="neo-notification row">
                                                         <i class="material-icons col-1 align-middle my-auto">notifications</i>
                                                         <div class="col-11">
@@ -266,19 +269,19 @@
                                     </div>
                                     <div class="kt-form__actions">
                                         <button
-                                            class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
-                                            data-ktwizard-type="action-prev">
+                                                class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                                data-ktwizard-type="action-prev">
                                             GERİ
                                         </button>
                                         <button type="button"
-                                            class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-save-button"
-                                            data-toggle="modal" data-target="#exampleModal"
-                                            data-ktwizard-type="action-submit">
+                                                class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-save-button"
+                                                data-toggle="modal" data-target="#exampleModal"
+                                                data-ktwizard-type="action-submit">
                                             KAYDET
                                         </button>
                                         <button
-                                            class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-next-button-date-logic"
-                                            data-ktwizard-type="action-next">
+                                                class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-next-button-date-logic"
+                                                data-ktwizard-type="action-next">
                                             İLERİ
                                         </button>
                                     </div>
@@ -291,7 +294,7 @@
         </div>
         <!--------------------------------------- INFO MODALS --------------------------------------->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -306,11 +309,12 @@
                     </div>
                     <div class="modal-footer">
                         <a href="{{ route('invitation_letter.create', 0) }}" id="davet-mektubu-olustur"
-                            class="btn btn-primary">Davet
+                           class="btn btn-primary">Davet
                             Mektubu
                             Oluştur</a>
                         <button type="button" id="dosya-olustur" class="btn btn-success">Kaydet ve Dosyalarıma
-                            Git</button>
+                            Git
+                        </button>
                     </div>
                 </div>
             </div>
@@ -333,7 +337,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                         <button type="button" class="btn personAddButton" style="background: #149FFC; color: white;"
-                            id="">Ekle</button>
+                                id="">Ekle
+                        </button>
                     </div>
                 </div>
             </div>
@@ -362,14 +367,14 @@
                             <label>Gerçek Kişi/Tüzel Kişi</label>
                             <div class="kt-radio-inline">
                                 <input type="hidden" class="modalContentUrl"
-                                    data-url="{{ route('lawsuit.getModalContent') }}">
+                                       data-url="{{ route('lawsuit.getModalContent') }}">
                                 <label class="kt-radio">
-                                    <input type="radio" data-type="person_taxpayer" name="isPerson" class="personTypeSelect">
+                                    <input type="radio" data-type="person" name="isPerson" class="personTypeSelect">
                                     Gerçek Kişi
                                     <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                    <input type="radio" data-type="company_public" name="isPerson" class="personTypeSelect">
+                                    <input type="radio" data-type="company" name="isPerson" class="personTypeSelect">
                                     Tüzel
                                     Kişi
                                     <span></span>

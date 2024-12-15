@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Mediator;
 
-use stdClass;
-use ZipArchive;
 use Carbon\Carbon;
 use App\Models\Side\Side;
 use App\Models\PersonType;
 use App\Models\Side\Lawyer;
 use App\Models\Side\People;
 use App\Models\Side\Company;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
 use App\Services\HelperService;
@@ -25,6 +24,7 @@ use App\Models\Lawsuit\LawsuitResultType;
 use App\Models\Lawsuit\LawsuitProcessType;
 use App\Models\Lawsuit\LawsuitSubjectType;
 use App\Models\AgreementType\AgreementType;
+use ZipArchive;
 
 class LawsuitController extends Controller
 {
@@ -45,74 +45,27 @@ class LawsuitController extends Controller
         }));
     }
 
-    public function getModalContent(Request $request)
+    public function getModalContent(Request $request): array
     {
-        $type = new stdClass();
-        $personType = null;
-        switch ($request->type) {
-            case "person_taxpayer":
-                $type->id = 2;
-                $type->name = "Gerçek Kişi (Vergi Mükellefi)";
-                $type->file = "person_taxpayer";
-                $personType = "person";
-                break;
-            case "company_public":
-                $type->id = 9;
-                $type->name = "Tüzel Kişi (Kamu)";
-                $type->file = "company_public";
-                $personType = "company";
-                break;
-            case 'lawyer':
-                $type->id = 3;
-                $type->name = "Avukat";
-                $personType = "lawyer";
-                $type->file = "person_lawyer";
-                break;
-            case 'authorized':
-                $type->id = 1;
-                $type->name = "Yetkili";
-                $personType = "authorized";
-                $type->file = "person_standard";
-                break;
-            case 'employee':
-                $type->id = 1;
-                $type->name = "Çalışan";
-                $personType = "employee";
-                $type->file = "person_standard";
-                break;
-            case 'representative':
-                $type->id = 1;
-                $type->name = "Kanuni Temsilci";
-                $personType = "representative";
-                $type->file = "person_standard";
-                break;
-            case 'commissioner':
-                $type->id = 1;
-                $type->name = "Komisyon Üyesi";
-                $personType = "commissioner";
-                $type->file = "person_standard";
-                break;
-            case 'expert':
-                $type->id = 1;
-                $type->name = "Uzman";
-                $personType = "expert";
-                $type->file = "person_standard";
-                break;
-            default:
-                return false;
-        }
-
-        $data = view('mediator.person.modals.' . $type->file, compact('type'))->render();
+        $personType = $request->type;
+        if ($request->type == "person"):
+            $type = PersonType::where("key", "taxpayer")->first();
+        elseif ($request->type == "company"):
+            $type = PersonType::where("key", "public")->first();
+        else:
+            $type = PersonType::where("key", $request->type)->first();
+            $personType = $type->key;
+        endif;
+        $file = $type->group == 3 ? "company_" : "person_";
+        $data = view('mediator.person.modals.' . $file . $type->key, compact('type'))->render();
         return compact('data', "type", "personType");
     }
 
     public function index()
     {
         $agreement_types = AgreementType::all();
-        $data = Lawsuit::whereIsArchive(0)
-            ->whereUserId(auth()->id())
-            ->get();
-        return view('mediator.lawsuit.index', compact('agreement_types', "data"));
+        $lawsuits = Lawsuit::active()->get();
+        return view('mediator.lawsuit.index', compact('agreement_types', "lawsuits"));
     }
 
     public function create()
@@ -145,7 +98,7 @@ class LawsuitController extends Controller
                 "lawsuit_process_type_id" => $request->process_type,
                 "lawsuit_result_type_id" => $request->result_type,
                 "result_date" => Carbon::parse($request->result_date)->format('Y-m-d'),
-                "user_id" => auth()->id(),
+                "user_id" => auth()->user()->id,
             ]); //Dosya Oluşturuldu
 
             foreach ($request->sides as $side) {
@@ -387,9 +340,7 @@ class LawsuitController extends Controller
 
     public function archive_index()
     {
-        $items = Lawsuit::whereIsArchive(1)
-            ->whereUserId(auth()->id())
-            ->get();
+        $items = Lawsuit::archive()->get();
         return view('mediator.lawsuit.archive', compact('items'));
     }
 
@@ -400,7 +351,7 @@ class LawsuitController extends Controller
         return redirect()->back()->with('success', 'Dava Arşivlendi');
     }
 
-    public function unArchive(Lawsuit $lawsuit)
+    public function unArchive(Lawsuit $lawsuit): RedirectResponse
     {
         $lawsuit->is_archive = false;
         $lawsuit->save();

@@ -8,13 +8,23 @@ use App\Models\Document\DocumentTypeTemplate;
 use App\Models\Log;
 use App\Models\MediationOffice;
 use App\Models\Side\Side;
+use App\Services\Document\InvitationLetterService;
+use ApplicantTypeOptions;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\MediationCenter;
 use App\Models\Meeting;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use SideTypeOptions;
 
+/**
+ * @property false|mixed $is_archive
+ * @method static whereIsArchive(int $int)
+ */
 class Lawsuit extends Model
 {
 
@@ -48,79 +58,89 @@ class Lawsuit extends Model
             ->first();
     }
 
-    public function mediation_center()
+    public function scopeArchive($query)
+    {
+        return $query->where('is_archive', 1);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_archive', 0);
+    }
+
+    public function mediation_center(): BelongsTo
     {
         return $this->belongsTo(MediationCenter::class);
     }
 
-    public function mediation_office()
+    public function mediation_office(): BelongsTo
     {
         return $this->belongsTo(MediationOffice::class);
     }
 
-    public function lawsuit_process_type()
+    public function lawsuit_process_type(): BelongsTo
     {
         return $this->belongsTo(LawsuitProcessType::class);
     }
 
-    public function lawsuit_result_type()
+    public function lawsuit_result_type(): BelongsTo
     {
         return $this->belongsTo(LawsuitResultType::class);
     }
 
-    public function lawsuit_subject()
+    public function lawsuit_subject(): BelongsTo
     {
         return $this->belongsTo(LawsuitSubject::class);
     }
 
-    public function lawsuit_subject_type()
+    public function lawsuit_subject_type(): BelongsTo
     {
         return $this->belongsTo(LawsuitSubjectType::class);
     }
 
-    public function lawsuit_type()
+    public function lawsuit_type(): BelongsTo
     {
         return $this->belongsTo(LawsuitType::class);
     }
 
-    public function notes()
+    public function notes(): HasOne
     {
         return $this->hasOne(LawsuitNotes::class);
     }
 
-    public function sides()
+    public function sides(): HasMany
     {
         return $this->hasMany(Side::class)->where("parent_id", null);
     }
 
-    public function documents()
+    public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
     }
 
-    public function logs()
+    public function logs(): HasMany
     {
         return $this->hasMany(Log::class)->orderBy('created_at', 'desc');
     }
 
-    public function getHasMeetingProtocolAttribute()
+    public function getHasMeetingProtocolAttribute(): bool
     {
         return $this->documents()->where('document_type_id', 5)->exists();
     }
 
-    public function getHasFinalProtocolAttribute()
+    public function getHasFinalProtocolAttribute(): bool
     {
         return $this->documents()->where('document_type_id', 7)->exists();
     }
 
-    public function getClaimants()
+    public function getClaimants(): Collection
     {
-        return $this->sides()->where('side_type_id', \SideTypeOptions::CLAIMANT)->get();
+        return $this->sides()->where('side_type_id', SideTypeOptions::CLAIMANT)->get();
     }
 
-    public function getDefendants()
+    public function getDefendants(): Collection
     {
-        return $this->sides()->where('side_type_id', \SideTypeOptions::DEFENDANT)->get();
+        return $this->sides()->where('side_type_id', SideTypeOptions::DEFENDANT)->get();
     }
 
     public function getSubjectTypeAttribute()
@@ -135,27 +155,27 @@ class Lawsuit extends Model
 
     public function getClaimantTypeAttribute()
     {
-        $side = Side::where('lawsuit_id', $this->id)->where('side_type_id', \SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::INDIVIDUAL, \ApplicantTypeOptions::COMPANY])->first();
+        $side = Side::where('lawsuit_id', $this->id)->where('side_type_id', SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->first();
 
         return !is_null($side) ? $side->side_applicant_type_id : null;
     }
 
     public function getClaimantAttribute()
     {
-        return $this->sides()->where('side_type_id', \SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::INDIVIDUAL, \ApplicantTypeOptions::COMPANY])->first();
+        return $this->sides()->where('side_type_id', SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->first();
     }
 
     public function getDefendantAttribute()
     {
-        return $this->sides()->where('side_type_id', \SideTypeOptions::DEFENDANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::INDIVIDUAL, \ApplicantTypeOptions::COMPANY])->first();
+        return $this->sides()->where('side_type_id', SideTypeOptions::DEFENDANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->first();
     }
 
-    public function getDisagreementTemplateAttribute()
+    public function getDisagreementTemplateAttribute(): string
     {
-        return \App\Services\Document\InvitationLetterService::getDisagreement($this);
+        return InvitationLetterService::getDisagreement($this);
     }
 
-    public function meeting()
+    public function meeting(): HasOne
     {
         return $this->hasOne(Meeting::class);
     }
@@ -171,10 +191,9 @@ class Lawsuit extends Model
     }
 
 
-
     function getClaimantNameAttribute()
     {
-        $sides = Side::where('lawsuit_id', $this->id)->where('side_type_id', \SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::INDIVIDUAL, \ApplicantTypeOptions::COMPANY])->get();
+        $sides = Side::where('lawsuit_id', $this->id)->where('side_type_id', SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->get();
         $names = "";
         if (!is_null($sides)) {
             if ($sides->count() > 1) {
@@ -190,7 +209,7 @@ class Lawsuit extends Model
 
     public function getDefendantNameAttribute()
     {
-        $sides = Side::where('lawsuit_id', $this->id)->where('side_type_id', \SideTypeOptions::DEFENDANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::INDIVIDUAL, \ApplicantTypeOptions::COMPANY])->get();
+        $sides = Side::where('lawsuit_id', $this->id)->where('side_type_id', SideTypeOptions::DEFENDANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->get();
         $names = "";
         if (!is_null($sides)) {
             if ($sides->count() > 1) {
@@ -217,7 +236,7 @@ class Lawsuit extends Model
     protected static function booted()
     {
         static::addGlobalScope('user_id', function (Builder $builder) {
-            $builder->where('user_id', auth()->id());
+            $builder->where('user_id', auth()->user()->id);
         });
     }
 
@@ -240,7 +259,7 @@ class Lawsuit extends Model
     //     return LawsuitService::getTemplate($this, 5, 'meeting');
     // }
 
-    public function getLastTimeAttribute()
+    public function getLastTimeAttribute(): string
     {
         $addDay = null;
         $now = Carbon::today();
@@ -266,7 +285,7 @@ class Lawsuit extends Model
     }
 
 
-    public function getProcessStatus()
+    public function getProcessStatus(): string
     {
         $statuses = [
             1 => ['title' => 'Açık', 'progress' => 25],
