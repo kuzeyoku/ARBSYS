@@ -145,8 +145,6 @@
                                                 görüntülemek için kaydet butonu ile kaydedebilirsiniz.
                                             </p>
                                             <div class="kt-wizard-v4__review-item" id="saved" style="display: none;">
-                                                <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                                                    rel="stylesheet">
                                                 <div class="neo-notification row">
                                                     <i class="material-icons col-1 align-middle my-auto">notifications</i>
                                                     <div class="col-11">
