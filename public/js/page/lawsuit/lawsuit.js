@@ -97,152 +97,60 @@ $(document).ready(function () {
         index++;
     });
 
-
-    //Avukat Ekleme İşlemi
     $(document).on("click", "#savelawyer", function (e) {
         e.preventDefault();
-        activeSide = getActiveSide(lawyerIndex);
-        let lawyer = $(this).closest("form").serializeArray().reduce((acc, item) => {
-            acc[item.name] = item.value;
-            return acc;
-        }, {});
-        lawyer.id = generateUniqueId();
-        let activeSideLawyers = [];
-        if (activeSide.lawyers != null) {
-            for (var i = 0; i < activeSide.lawyers.length; i++) {
-                let row = activeSide.lawyers[i];
-                activeSideLawyers.push(row);
-            }
-        }
-        activeSideLawyers.push(lawyer);
-        activeSide.lawyers = activeSideLawyers;
-        $("#lawyerBlock" + lawyerIndex).html(
-            getMemberBlock(activeSideLawyers, lawyerIndex, Members.LAWYER.toLowerCase())
-        );
-        $("#personModal").modal("hide");
+        saveMember(this, Members.LAWYER.toLowerCase(), lawyerIndex);
     });
 
-    //$("#saveAuthorized").on("click", function (e) { 
-    $(document).on("click", "#saveauthorized", function (e) { // saveOther -> saveAuthorized
+    $(document).on("click", "#saveauthorized", function (e) {
         e.preventDefault();
-        let authorized = $(this).closest("form").serializeArray().reduce((acc, item) => {
-            acc[item.name] = item.value;
-            return acc;
-        }, {});
-        authorized.id = generateUniqueId();
-        activeSide = getActiveSide(authorizedIndex);
-        let activeSideAuthorizeds = [];
-        if (activeSide.authorizeds != null) {
-            for (var i = 0; i < activeSide.authorizeds.length; i++) {
-                let row = activeSide.authorizeds[i];
-                activeSideAuthorizeds.push(row);
-            }
-        }
-        activeSideAuthorizeds.push(authorized);
-        activeSide.authorizeds = activeSideAuthorizeds;
-        $("#authorizedBlock" + authorizedIndex).html(
-            getMemberBlock(activeSideAuthorizeds, authorizedIndex, Members.AUTHORIZED.toLowerCase())
-        );
-        $("#personModal").modal("hide");
+        saveMember(this, Members.AUTHORIZED.toLowerCase(), authorizedIndex);
     });
 
-    // Çalışan ekle,
     $(document).on("click", "#saveemployee", function (e) {
         e.preventDefault();
-        let employee = $(this).closest("form").serializeArray().reduce((acc, item) => {
-            acc[item.name] = item.value;
-            return acc;
-        }, {});
-        employee.id = generateUniqueId();
-        activeSide = getActiveSide(employeeIndex);
-        let activeSideEmployees = [];
-
-        if (activeSide.employees != null) {
-            for (var i = 0; i < activeSide.employees.length; i++) {
-                let row = activeSide.employees[i];
-                activeSideEmployees.push(row);
-            }
-        }
-        activeSideEmployees.push(employee);
-        activeSide.employees = activeSideEmployees;
-        $("#employeeBlock" + employeeIndex).html(
-            getMemberBlock(activeSideEmployees, employeeIndex, Members.EMPLOYEE.toLowerCase())
-        );
-        $("#personModal").modal("hide");
+        saveMember(this, Members.EMPLOYEE.toLowerCase(), employeeIndex);
     });
 
-    // $("#saverepresentative").on("click", function (e) {
     $(document).on("click", "#saverepresentative", function (e) {
         e.preventDefault();
-        let representative = $(this).closest("form").serializeArray().reduce((acc, item) => {
-            acc[item.name] = item.value;
-            return acc;
-        }, {});
-        representative.id = generateUniqueId();
-        activeSide = getActiveSide(representativeIndex);
-        let activeSideRepresentatives = [];
-        if (activeSide.representatives != null) {
-            for (var i = 0; i < activeSide.representatives.length; i++) {
-                let row = activeSide.representatives[i];
-                activeSideRepresentatives.push(row);
-            }
-        }
-        activeSideRepresentatives.push(representative);
-        activeSide.representatives = activeSideRepresentatives;
-        $("#representativeBlock" + representativeIndex).html(
-            getMemberBlock(activeSideRepresentatives, representativeIndex, Members.REPRESENTATIVE.toLowerCase())
-        );
-        $("#personModal").modal("hide");
+        saveMember(this, Members.REPRESENTATIVE.toLowerCase(), representativeIndex);
     });
 
     $(document).on("click", "#savecommissioner", function (e) {
         e.preventDefault();
-
-        let commissioner = $(this).closest("form").serializeArray().reduce((acc, item) => {
-            acc[item.name] = item.value;
-            return acc;
-        }, {});
-        commissioner.id = generateUniqueId();
-        activeSide = getActiveSide(commissionerIndex);
-        let activeSideCommissioners = [];
-        if (activeSide.commissioners != null) {
-            for (var i = 0; i < activeSide.commissioners.length; i++) {
-                let row = activeSide.commissioners[i];
-                activeSideCommissioners.push(row);
-            }
-        }
-        activeSideCommissioners.push(commissioner);
-        activeSide.commissioners = activeSideCommissioners;
-        $("#commissionerBlock" + commissionerIndex).html(
-            getMemberBlock(activeSideCommissioners, commissionerIndex, Members.COMMISSIONER.toLowerCase())
-        );
-        $("#personModal").modal("hide");
+        saveMember(this, Members.COMMISSIONER.toLowerCase(), commissionerIndex);
     });
 
-    // $("#saveExpert").on("click", function (e) {
     $(document).on("click", "#saveexpert", function (e) {
         e.preventDefault();
-        let experts = $(this).closest("form").serializeArray().reduce((acc, item) => {
+        saveMember(this, Members.EXPERT.toLowerCase(), expertIndex);
+    });
+
+    function saveMember(self, memberType, memberIndex){
+        let activeSideMembers = [];
+        let member = $(self).closest("form").serializeArray().reduce((acc, item) => {
             acc[item.name] = item.value;
             return acc;
         }, {});
-        experts.id = generateUniqueId();
-        activeSide = getActiveSide(expertIndex);
-        let activeSideExperts = [];
-        if (activeSide.experts != null) {
-            for (var i = 0; i < activeSide.experts.length; i++) {
-                let row = activeSide.experts[i];
-                activeSideExperts.push(row);
+        member.id = generateUniqueId();
+        activeSide = getActiveSide(memberIndex);
+        let activeSideArray = activeSide[`${memberType}s`]
+
+        if (activeSideArray != null) {
+            for (var i = 0; i < activeSideArray.length; i++) {
+                let row = activeSideArray[i];
+                activeSideMembers.push(row);
             }
         }
-        activeSideExperts.push(experts);
-        activeSide.experts = activeSideExperts;
-        $("#expertBlock" + expertIndex).html(
-            getMemberBlock(activeSideExperts, expertIndex, Members.EXPERT.toLowerCase())
+
+        activeSideMembers.push(member);
+        activeSide[`${memberType}s`] = activeSideMembers;
+        $(`#${memberType}Block${memberIndex}`).html(
+            getMemberBlock(activeSideMembers, memberIndex, memberType)
         );
         $("#personModal").modal("hide");
-    });
-
+    }
 
     //Tutanakta Gösterilecek Verilerin İzin Kontrolü
     function getCheckElements() {
@@ -499,110 +407,36 @@ $(document).ready(function () {
 /* Fonksiyonlar */
 
 function tcValidate(input) {
-    return false; // Kaldırılacak
-
-    var tcNo = input.val();
-
-    tcNo = tcNo.replace(/_/g, "");
-
-    console.log(tcNo);
-
-    if (tcNo.trim().length !== 11) {
-        input.addClass("errorClass");
-
-        return true;
-    } else {
-        input.removeClass("errorClass");
-
-        return false;
-    }
+    return false; // kaldırılacak
+    const tcNo = input.val().replace(/_/g, "").trim();
+    const isValid = tcNo.length === 11;
+    input.toggleClass("errorClass", !isValid);
+    return !isValid;
 }
 
 function mersisValidate(input) {
-    var mersisNo = input.val();
-
-    mersisNo = mersisNo.replace(/_/g, "");
-    mersisNo = mersisNo.replace(/ /g, "");
-
-    console.log(mersisNo);
-
-    if (mersisNo.trim().length !== 16) {
-        input.addClass("errorClass");
-
-        return true;
-    } else {
-        input.removeClass("errorClass");
-
-        return false;
-    }
+    const mersisNo = input.val().replace(/[_ ]/g, "").trim();
+    const isValid = mersisNo.length === 16;
+    input.toggleClass("errorClass", !isValid);
+    return !isValid;
 }
 
 function taxValidate(input) {
-    var taxNo = input.val();
-
-    taxNo = taxNo.replace(/_/g, "");
-
-    console.log(taxNo);
-
-    if (taxNo.trim().length !== 10) {
-        input.addClass("errorClass");
-
-        return true;
-    } else {
-        input.removeClass("errorClass");
-
-        return false;
-    }
+    const taxNo = input.val().replace(/_/g, "").trim();
+    const isValid = taxNo.length === 10;
+    input.toggleClass("errorClass", !isValid);
+    return !isValid;
 }
 
 function issetApplicantTypeInSide() {
-    var b = 0;
-    var d = 0;
-
-    for (var i = 0; i < sides.length; i++) {
-        if (sides[i].applicantType == "BAŞVURUCU") {
-            b = 1;
-        }
-        if (sides[i].applicantType == "DİĞER TARAF") {
-            d = 1;
-        }
-    }
-
-    return b == 0 || d == 0 ? 1 : 0;
-}
-
-function issetLawyerOrAuthorizedInSide() {
-    for (var i = 0; i < sides.length; i++) {
-        var a = 0;
-        var b = 0;
-
-        if (
-            sides[i].type == 2 &&
-            (sides[i].lawyer == undefined || sides[i].lawyer.length == 0)
-        ) {
-            a = 1;
-        }
-
-        if (
-            sides[i].type == 2 &&
-            (sides[i].authorizeds == undefined || sides[i].authorizeds.length == 0)
-        ) {
-            b = 1;
-        }
-
-        if (a == 1 && b == 1) {
-            return 1;
-        }
-    }
-
-    return 0;
+    const hasApplicant = sides.some(side => side.applicantType === "BAŞVURUCU");
+    const hasOtherSide = sides.some(side => side.applicantType === "DİĞER TARAF");
+    return !(hasApplicant && hasOtherSide) ? 1 : 0;
 }
 
 function getStep() {
     return parseInt(
-        $(
-            "[data-ktwizard-type='step'][data-ktwizard-state='current'] div div.kt-wizard-v4__nav-number"
-        ).text()
+        $("[data-ktwizard-type='step'][data-ktwizard-state='current'] div div.kt-wizard-v4__nav-number").text()
     );
 }
 
@@ -630,9 +464,9 @@ function notification(message, template) {
 
 // ---------------------------------- lawyer operations ----------------------------------//
 
-function getActiveSide(lawyerIndex) {
+function getActiveSide(memberIndex) {
     for (var i = 0; i < sides.length; i++) {
-        if (sides[i].index == lawyerIndex) {
+        if (sides[i].index == memberIndex) {
             return sides[i];
         }
     }
@@ -721,7 +555,6 @@ function getMemberBlock(members, memberIndex, memberType) {
         </a>
         <br />
     `;
-    // ${capitalizeFirstLetter(memberType)}
     const membersHtml = members
         .map((member, i) => `
             <p id="remove-${memberType}-${i}-${memberIndex}">
@@ -763,8 +596,6 @@ function capitalizeFirstLetter(input) {
         .toLowerCase()
         .replace(/(^\w|\s\w)/g, match => match.toUpperCase());
 }
-
-/* Fonksiyonlar */
 
 /* ENUMS */
 const Members = Object.freeze({
