@@ -4,7 +4,14 @@ namespace App\Models\Side;
 
 use App\Models\Lawsuit\Lawsuit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property mixed $person_id
+ * @property mixed $company_id
+ * @property mixed $lawyer_id
+ */
 class Side extends Model
 {
     public $fillable = [
@@ -28,29 +35,14 @@ class Side extends Model
             return $this->belongsTo(Lawyer::class, 'lawyer_id');
     }
 
-    public function main_side()
+    public function main_side(): HasOne
     {
         return $this->hasOne(Side::class, 'id', 'parent_id');
     }
 
-    public function sub_sides()
+    public function sub_sides(): HasMany
     {
-        return $this->hasMany(Side::class, 'parent_id', 'id')->whereNotIn('side_applicant_type_id', [\ApplicantTypeOptions::EMPLOYEE]);
-    }
-
-    public function getClaimantsAttribute()
-    {
-        return Side::where('lawsuit_id', $this->lawsuit_id)->where('side_type_id', \SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::INDIVIDUAL, \ApplicantTypeOptions::COMPANY])->get();
-    }
-
-    public function getClaimantAttribute()
-    {
-        return Side::where('lawsuit_id', $this->lawsuit_id)->where('side_type_id', \SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::INDIVIDUAL, \ApplicantTypeOptions::COMPANY])->first();
-    }
-
-    public function getClaimantLawyerAttribute()
-    {
-        return Side::where('lawsuit_id', $this->lawsuit_id)->where('side_type_id', \SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [\ApplicantTypeOptions::LAWYER])->first();
+        return $this->hasMany(Side::class, 'parent_id');
     }
 
     public function getLawyerAttribute()

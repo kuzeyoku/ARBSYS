@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="kt-heading kt-heading--md">Başvurucu</div>
-                @foreach ($lawsuit->getClaimants() as $claimant)
+                @foreach ($lawsuit->claimants as $claimant)
                     <div class="form-group">
                         <div class="kt-checkbox-list">
                             <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">
@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-6">
                 <div class="kt-heading kt-heading--md">Diğer Taraf</div>
-                @foreach ($lawsuit->getDefendants() as $defendant)
+                @foreach ($lawsuit->defendants as $defendant)
                     <div class="form-group">
                         <div class="kt-checkbox-list">
                             <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">

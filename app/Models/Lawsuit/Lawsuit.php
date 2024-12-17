@@ -19,10 +19,12 @@ use App\Models\Meeting;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 use SideTypeOptions;
 
 /**
  * @property false|mixed $is_archive
+ * @property mixed $defendants
  * @method static whereIsArchive(int $int)
  */
 class Lawsuit extends Model
@@ -133,16 +135,6 @@ class Lawsuit extends Model
         return $this->documents()->where('document_type_id', 7)->exists();
     }
 
-    public function getClaimants(): Collection
-    {
-        return $this->sides()->where('side_type_id', SideTypeOptions::CLAIMANT)->get();
-    }
-
-    public function getDefendants(): Collection
-    {
-        return $this->sides()->where('side_type_id', SideTypeOptions::DEFENDANT)->get();
-    }
-
     public function getSubjectTypeAttribute()
     {
         return $this->lawsuit_subject_type->name ?? "";
@@ -153,21 +145,14 @@ class Lawsuit extends Model
         return $this->lawsuit_subject->name ?? "";
     }
 
-    public function getClaimantTypeAttribute()
+    public function getClaimantsAttribute(): Collection
     {
-        $side = Side::where('lawsuit_id', $this->id)->where('side_type_id', SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->first();
-
-        return !is_null($side) ? $side->side_applicant_type_id : null;
+        return $this->sides()->where('side_type_id', SideTypeOptions::CLAIMANT)->whereNull("parent_id")->get();
     }
 
-    public function getClaimantAttribute()
+    public function getDefendantsAttribute(): Collection
     {
-        return $this->sides()->where('side_type_id', SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->first();
-    }
-
-    public function getDefendantAttribute()
-    {
-        return $this->sides()->where('side_type_id', SideTypeOptions::DEFENDANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->first();
+        return $this->sides()->where('side_type_id', SideTypeOptions::DEFENDANT)->whereNull("parent_id")->get();
     }
 
     public function getDisagreementTemplateAttribute(): string
@@ -207,19 +192,14 @@ class Lawsuit extends Model
         return $names;
     }
 
-    public function getDefendantNameAttribute()
+    public function getDefendantNameAttribute(): string
     {
-        $sides = Side::where('lawsuit_id', $this->id)->where('side_type_id', SideTypeOptions::DEFENDANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->get();
         $names = "";
-        if (!is_null($sides)) {
-            if ($sides->count() > 1) {
-                foreach ($sides as $index => $side) {
-                    $names .= (isset($side->detail) ? $side->detail->name : "") . ($index != $sides->count() ? ", " : "");
-                }
-            } else {
-                return $names = isset($sides[0]->detail) ? $sides[0]->detail->name : "";
+        if ($this->defendants->isNotEmpty())
+            foreach ($this->defendants as $index => $side) {
+                $names .= isset($side->detail) ? Str::limit($side->detail->name, 20) : "";
+                $names .= $index < $this->defendants->count() - 1 ? ", " : "";
             }
-        }
         return $names;
     }
 
@@ -275,13 +255,13 @@ class Lawsuit extends Model
             }
         }
         if (!is_null($addDay)) {
-            $result = "<span class='text-success'>" . $addDay->format('d.m.Y') . "</span>";
+            $result = " < span class='text-success' > " . $addDay->format('d.m.Y') . "</span > ";
             if ($now->gte($addDay)) {
-                $result = "<span class='text-danger'>" . $addDay->format('d.m.Y') . "</span>";
+                $result = "<span class='text-danger' > " . $addDay->format('d.m.Y') . "</span > ";
             }
             return $result;
         }
-        return "-";
+        return " - ";
     }
 
 
@@ -297,8 +277,8 @@ class Lawsuit extends Model
 
         $type = $this->lawsuit_process_type_id;
 
-        return '<div class="d-flex flex-column"><strong class="pb-2">' . $statuses[$type]["title"] . '</strong><div class="progress">
-                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: ' . $statuses[$type]["progress"] . '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+        return '<div class="d - flex flex - column"><strong class="pb - 2">' . $statuses[$type]["title"] . '</strong><div class="progress">
+                <div class="progress - bar progress - bar - striped" role="progressbar" style="width: ' . $statuses[$type]["progress"] . ' % " aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
               </div></div>';
     }
 

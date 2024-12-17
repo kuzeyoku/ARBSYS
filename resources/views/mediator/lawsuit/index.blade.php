@@ -61,7 +61,7 @@
                                 <td>{{ $lawsuit->job_date }}</td>
                                 <td>{!! $lawsuit->last_time !!}</td>
                                 <td>{!! $lawsuit->getProcessStatus() !!}</td>
-                                <td>@include('mediator.lawsuit.process', compact('item'))</td>
+                                <td>@include('mediator.lawsuit.process', compact('lawsuit'))</td>
                             </tr>
                         @endforeach
                         </tbody>

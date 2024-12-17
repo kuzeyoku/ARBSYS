@@ -13,7 +13,7 @@ use App\Models\Document\DocumentTypeTemplate;
 class InvitationLetterService
 {
 
-    public static function getDisagreement(Lawsuit $lawsuit)
+    public static function getDisagreement(Lawsuit $lawsuit): string
     {
         $disagreements = [
             2 => 'Başvurucu ' . HelperService::nameFormat($lawsuit->claimantName ?? null) . ' (' . HelperService::nameFormat($lawsuit->claimant->lawyer->detail->name ?? null) . ') şirketiniz aleyhine İzmir ....... İcra Müdürlüğü ‘nün ........... sayılı dosyası ile ilamsız takip başlattığını, takibe konu alacağın taraflar arasındaki cari hesaptan kaynaklandığını, ilamsız takibe karşı tarafınızca itiraz edildiğini ve takibin durduğunu, açmadan önce uyuşmazlığın arabuluculuk yoluyla çok daha kısa sürede, daha ekonomik ve dostane şekilde çözülebilmesi, bunun mümkün olmaması halinde ise dava şartının yerine getirilmiş olması için tarafınıza arabuluculuk daveti göndermemi talep etmiştir.',
@@ -51,14 +51,13 @@ class InvitationLetterService
 
 
         //dd($disagreement);
-
         $list = array(
             "@DavaOzeti" => $disagreement,
             "@AliciAdSoyad" => "<strong>" . HelperService::nameFormat($side->detail->name) . " " . HelperService::nameFormat($side->detail->surname) . "</strong>" . ($side->side_applicant_type_id == 2 ? " Yetkilisi" : ""),
             "@AliciAdres" => HelperService::addressFormat($side->detail->address),
             "@ArabuluculukBurosu" => $lawsuit->mediation_office->name . " Arabuluculuk Bürosu",
-            "@BasvuranAdSoyad" => HelperService::nameFormat($side->claimants->first()->detail->name) ?? "",
-            "@BasvuranTCKNo" => $side->claimants->first()->detail->identification ?? "",
+            "@BasvuranAdSoyad" => HelperService::nameFormat($lawsuit->claimants->first()->detail->name) ?? "",
+            "@BasvuranTCKNo" => $lawsuit->claimants->first()->detail->identification ?? "",
             "@BasvuranAvukat" => isset($side->claimant_lawyer->detail->name) && !is_null($side->claimant_lawyer->detail->name) ? "vekili " . HelperService::nameFormat($side->claimant_lawyer->detail->name) . ($side->claimant->side_applicant_type_id == 2 ? ", şirket vekili sıfatıyla" : "") : "",
             "@BugunTarih" => Carbon::now()->format('d.m.Y'),
             "@ToplantiTarih" => Carbon::parse($request->meeting_date)->format('d/m/Y'),

@@ -137,12 +137,12 @@
                                                 <div class="kt-wizard-v4__review-content d-flex flex-column">
                                                     <strong>Gönderilecek E-postalar;</strong>
                                                     <div>
-                                                        @foreach ($lawsuit->getClaimants() as $claimant)
+                                                        @foreach ($lawsuit->claimants as $claimant)
                                                             <input class="form-control w-25 mb-3" type="text"
                                                                    name="flower[]" id="values[]"
                                                                    value="{{ $claimant->detail->email }}">
                                                         @endforeach
-                                                        @foreach ($lawsuit->getDefendants() as $defendant)
+                                                        @foreach ($lawsuit->defendants as $defendant)
                                                             <input class="form-control w-25 mb-3" type="text"
                                                                    name="flower[]" id="values[]"
                                                                    value="{{ $defendant->detail->email }}">
