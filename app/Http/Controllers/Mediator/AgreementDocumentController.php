@@ -28,7 +28,7 @@ class AgreementDocumentController extends Controller
             $document_content = $request->preview;
 
             Document::create([
-                'document_type_id' => 6,
+                'document_type_id' => 5,
                 'lawsuit_id' => $lawsuit->id,
                 'html' => $document_content,
                 'created_user_id' => auth()->id(),

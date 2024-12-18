@@ -60,8 +60,8 @@
                                                 değişkenler
                                                 kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri ile
                                                 değiştirilecektir.</p>
-                                            <textarea name="preview" id="preview_area" data-url="{{ route('agreement_document.preview', $lawsuit) }}">
-                                                </textarea>
+                                            <textarea name="preview" id="preview-area" data-url="{{ route('agreement_document.preview', $lawsuit) }}">
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -100,21 +100,16 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 @include('layout.form_actions')
-
+                                @include('mediator.document.layout.result_modal')
+                                @include('mediator.document.layout.matters_discussed_modal')
                                 {{ Form::close() }}
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <textarea id="summernote_template" name="preview" style="display: none;">
-        </textarea>
 
         <div class="modal" tabindex="-1" role="dialog" id="yes">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -170,8 +165,6 @@
                 </div>
             </div>
         </div>
-        @include('mediator.document.layout.result_modal')
-        @include('mediator.document.layout.matters_discussed_modal')
     </div>
 @endsection
 @section('script')

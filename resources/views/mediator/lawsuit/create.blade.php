@@ -78,7 +78,6 @@
                                 <!--begin: Form Wizard Form-->
                                 <form class="kt-form" id="kt_form" method="POST" action="{{ route('lawsuit.store') }}">
                                     @csrf
-
                                     <!--begin: Form Wizard Step 1-->
                                     <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
                                          data-ktwizard-state="current">
@@ -98,16 +97,18 @@
                                                     <div class="form-group">
                                                         <label>Gerçek Kişi/Tüzel Kişi</label>
                                                         <div class="kt-radio-inline row">
-                                                            <input type="hidden" class="modalContentUrl"
-                                                                   data-url="{{ route('api.get_person_modal_content') }}">
                                                             <label class="kt-radio">
                                                                 <input type="radio" data-type="person" name="isPerson"
-                                                                       class="personTypeSelect"> Gerçek Kişi
+                                                                       class="personTypeSelect"
+                                                                       data-url="{{route("api.get_person_modal_content")}}">
+                                                                Gerçek Kişi
                                                                 <span></span>
                                                             </label>
                                                             <label class="kt-radio">
                                                                 <input type="radio" data-type="company" name="isPerson"
-                                                                       class="personTypeSelect"> Tüzel Kişi
+                                                                       class="personTypeSelect"
+                                                                       data-url="{{route("api.get_person_modal_content")}}">
+                                                                Tüzel Kişi
                                                                 <span></span>
                                                             </label>
                                                             {{-- <label class="kt-radio">
@@ -364,17 +365,16 @@
                         <div class="form-group">
                             <label>Gerçek Kişi/Tüzel Kişi</label>
                             <div class="kt-radio-inline">
-                                <input type="hidden" class="modalContentUrl"
-                                       data-url="{{ route('api.get_person_modal_content') }}">
                                 <label class="kt-radio">
-                                    <input type="radio" data-type="person" name="isPerson" class="personTypeSelect">
+                                    <input type="radio" data-type="person" name="isPerson" class="personTypeSelect"
+                                           data-url="{{route("api.get_person_modal_content")}}">
                                     Gerçek Kişi
                                     <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                    <input type="radio" data-type="company" name="isPerson" class="personTypeSelect">
-                                    Tüzel
-                                    Kişi
+                                    <input type="radio" data-type="company" name="isPerson" class="personTypeSelect"
+                                           data-url="{{route("api.get_person_modal_content")}}">
+                                    Tüzel Kişi
                                     <span></span>
                                 </label>
                             </div>

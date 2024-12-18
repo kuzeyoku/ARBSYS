@@ -125,6 +125,11 @@ class Lawsuit extends Model
         return $this->hasMany(Log::class)->orderBy('created_at', 'desc');
     }
 
+    public function hasDocument($document_type_id): bool
+    {
+        return $this->documents()->where("document_type_id", $document_type_id)->exists();
+    }
+
     public function getHasMeetingProtocolAttribute(): bool
     {
         return $this->documents()->where('document_type_id', 5)->exists();

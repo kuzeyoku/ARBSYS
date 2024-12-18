@@ -3,7 +3,7 @@
 </div>
 <div class="template text-justify" identifier="template">
     <table>
-        @foreach ($lawsuit->getClaimants() as $claimant)
+        @foreach ($lawsuit->claimants as $claimant)
             <tr>
                 <td>BAŞVURUCU</td>
                 <td>:</td>
@@ -57,7 +57,7 @@
                 </tr>
             @endforeach
         @endforeach
-        @foreach ($lawsuit->getDefendants() as $defendant)
+        @foreach ($lawsuit->defendants as $defendant)
             <tr>
                 <td>DİĞER TARAF</td>
                 <td>:</td>
@@ -142,7 +142,7 @@
     </tr>
     <tr class="vertical-top">
         <td>
-            @foreach ($lawsuit->getClaimants() as $claimant)
+            @foreach ($lawsuit->claimants as $claimant)
                 <h1 class="title">TARAF</h1>
                 <div class="line">{{ $claimant->detail->name }}</div>
                 @if ($claimant->side_applicant_type_id == ApplicantTypeOptions::INDIVIDUAL && in_array($claimant->id, $side_ids))
@@ -160,7 +160,7 @@
             @endforeach
         </td>
         <td>
-            @foreach ($lawsuit->getDefendants() as $defendant)
+            @foreach ($lawsuit->defendants as $defendant)
                 <h1 class="title">TARAF</h1>
                 <p>{{ $defendant->detail->name }}</p>
                 @if ($defendant->side_applicant_type_id == ApplicantTypeOptions::INDIVIDUAL && in_array($defendant->id, $side_ids))

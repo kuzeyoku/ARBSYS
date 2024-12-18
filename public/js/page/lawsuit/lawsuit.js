@@ -4,10 +4,10 @@ var lawyerIndex, authorizedIndex, employeeIndex, representativeIndex, commission
 var index = 0;
 var activeSide, personType;
 
-function getModalContent(type) {
+function getModalContent(url, type) {
     $.ajax({
-        url: $(".modalContentUrl").data("url"),
-        type: "post",
+        url: $(".personTypeSelect").data("url"),
+        type: "POST",
         data: {
             _token: $("meta[name='csrf-token']").attr("content"),
             type: type,
@@ -51,7 +51,7 @@ $(document).ready(function () {
             return false;
         }
         $("#applicantModal").modal("hide");
-        getModalContent($(this).data("type"));
+        getModalContent($(this).data("url"), $(this).data("type"));
     });
 
     //Taraf Tanımlama İşlemi
@@ -127,7 +127,7 @@ $(document).ready(function () {
         saveMember(this, Members.EXPERT.toLowerCase(), expertIndex);
     });
 
-    function saveMember(self, memberType, memberIndex){
+    function saveMember(self, memberType, memberIndex) {
         let activeSideMembers = [];
         let member = $(self).closest("form").serializeArray().reduce((acc, item) => {
             acc[item.name] = item.value;
@@ -214,10 +214,10 @@ $(document).ready(function () {
 
     // ---------------------------------- lawyer operations ----------------------------------//
     $(document).on("click", ".addPersonToSide", function (e) {
-        console.log("add Person To Side", Date().toString())
         e.preventDefault();
-        getModalContent($(this).attr("personType"));
         const personType = $(this).attr("personType");
+        const url = $(this).attr("data-url");
+        getModalContent(url, personType);
         window[personType + "Index"] = $(this).attr("data-index");
     });
 

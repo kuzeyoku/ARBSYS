@@ -61,12 +61,12 @@ var KTWizard4 = (function () {
       if (wizard.getStep() == 3 && preview == 0) {
         formEl.ajaxSubmit({
           data: { sides: sides },
-          url: $("#preview_area").data("url"),
+          url: $("#preview-area").data("url"),
           success: function (data) {
-            $("#preview_area").val(data);
-            $("#preview_area").summernote();
+            $("#preview-area").val(data);
+            $("#preview-area").summernote();
 
-            $("#preview_area").val(data);
+            $("#preview-area").val(data);
 
             preview = 1;
             lawsuit_subject_id = data.lawsuit_subject_id;

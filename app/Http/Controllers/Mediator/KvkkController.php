@@ -20,30 +20,24 @@ class KvkkController extends Controller
 
     public function store(Request $request, Lawsuit $lawsuit)
     {
-        Log::create([
-            'user_id' => Auth()->user()->id,
-            'lawsuit_id' => $lawsuit->id,
-            'event' => 'Kvkk Belgesi oluşturuldu.',
-        ]);
-
-        $lawsuit->lawsuit_process_type_id = 2;
-        $lawsuit->save();
-
-        DB::beginTransaction();
-        $document_content = $request->preview;
         try {
             Document::create([
-                'document_type_id' => 3,
-                'lawsuit_id' => $lawsuit->id,
-                'html' => $document_content,
-                'created_user_id' => auth()->user()->id,
+                "document_type_id" => 3,
+                "lawsuit_id" => $lawsuit->id,
+                "html" => $request->preview,
+                "created_user_id" => auth()->user()->id,
             ]);
-            DB::commit();
+            $lawsuit->lawsuit_process_type()->associate(2);
+            $lawsuit->save();
+            Log::create([
+                "user_id" => auth()->user()->id,
+                "lawsuit_id" => $lawsuit->id,
+                "event" => "Kvkk Belgesi oluşturuldu.",
+            ]);
         } catch (\Exception $e) {
-            DB::rollback();
             throw $e;
         }
-        $response = view("mediator.document.print", compact("document_content"))->render();
+        $response = view("mediator.document.print", ["document_content" => $request->preview])->render();
         return response()->json($response);
     }
 

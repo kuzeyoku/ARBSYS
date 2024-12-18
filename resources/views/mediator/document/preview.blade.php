@@ -3,7 +3,7 @@
         <table class="sides" style="margin-bottom:20px">
             <tr>
                 <td class="left">
-                    @foreach ($lawsuit->getClaimants() as $claimant)
+                    @foreach ($lawsuit->claimants as $claimant)
                         <h1 class="title">TARAF</h1>
                         <div class="line">{{ App\Services\HelperService::nameFormat($claimant->detail->name) }}</div>
                         @if ($claimant->side_applicant_type_id == ApplicantTypeOptions::INDIVIDUAL && in_array($claimant->id, $sides))
@@ -22,7 +22,7 @@
                     @endforeach
                 </td>
                 <td class="right">
-                    @foreach ($lawsuit->getDefendants() as $defendant)
+                    @foreach ($lawsuit->defendants as $defendant)
                         <h1 class="title">TARAF</h1>
                         <div class="line">{{ App\Services\HelperService::nameFormat($defendant->detail->name) }}</div>
                         @if ($defendant->side_applicant_type_id == ApplicantTypeOptions::INDIVIDUAL && in_array($defendant->id, $sides))

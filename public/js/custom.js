@@ -322,24 +322,26 @@ $(document).on("change", "#matters-discussed-modal input[type='checkbox']", func
 });
 
 $(document).on("click", "#matters-discussed-save", function () {
-    var matters_discussed = $("#matters-discussed-textarea").val();
-    $(".matters-discussed").each(function () {
-        $(this).html(matters_discussed.toLowerCase());
-    });
-    const inputValue = $(".matters-discussed").html();
+    $(".matters-discussed").text($("#matters-discussed-textarea").val().toLowerCase());
+    const inputValue = $(".matters-discussed").text();
     if (inputValue) {
         $.each($("input[name='side_ids[]']:checked"), function () {
             if ($("#disagreement-" + $(this).val()).length > 0) {
                 const disagreement = $("#disagreement-" + $(this).val()).summernote("code");
-                const replaceContent = disagreement.replace(`<span class="matters_discussed"></span>`, `<span class="matters_discussed">${inputValue}</span>`);
+                const replaceContent = disagreement.replace(`<span class="matters-discussed"></span>`, `<span class="matters-discussed">${inputValue}</span>`);
                 $('#disagreement-' + $(this).val()).summernote('code', replaceContent);
             }
             if ($("#preview-" + $(this).val()).length > 0) {
                 const preview = $("#preview-" + $(this).val()).summernote("code");
-                const replaceContent = preview.replace(`<span class="matters_discussed"></span>`, `<span class="matters_discussed">${inputValue}</span>`);
+                const replaceContent = preview.replace(`<span class="matters-discussed"></span>`, `<span class="matters-discussed">${inputValue}</span>`);
                 $('#preview-' + $(this).val()).summernote('code', replaceContent);
             }
         });
+        if($("#preview-area").length > 0) {
+            const previewContent = $("#preview-area").summernote("code");
+            const replaceContent = previewContent.replace(`<span class="matters-discussed"></span>`, `<span class="matters-discussed">${inputValue}</span>`);
+            $("#preview-area").summernote("code", replaceContent);
+        }
         $("#matters-discussed-modal").modal("hide");
     }
 });
@@ -350,9 +352,12 @@ function result_modal() {
 
 function result_save() {
     var result = $('textarea[name="result"]').val();
-    $('[id="result"]').each(function () {
+    $("#result").each(function () {
         $(this).html(result);
     });
+    const previewContent = $("#preview-area").summernote("code");
+    const replaceContent = previewContent.replace(`<span class="result"></span>`, `<span class="result">${result}</span>`);
+    $("#preview-area").summernote("code", replaceContent);
 }
 
 $("#cikti_btn").on("click", function () {

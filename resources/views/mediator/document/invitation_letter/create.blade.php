@@ -178,10 +178,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="matters_discussed" style="display:none">
-
-                                </div>
                                 @include('layout.form_actions')
+                                @include('mediator.document.layout.matters_discussed_modal')
                                 {{ Form::close() }}
                             </div>
                         </div>
@@ -207,34 +205,14 @@
                 </div>
             </div>
         </div>
-        @include('mediator.document.layout.matters_discussed_modal')
-        @include('mediator.document.layout.result_modal')
     </div>
 @endsection
 @section('script')
-    <script>
-        var email_count = 0;
-    </script>
     <script src="{{ asset('js/page/invitation_letter/wizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
     <script>
-        function sendEmail(btn) {
-            KTApp.progress(btn);
 
-            $("#kt_form").ajaxSubmit({
-                url: btn.data('url'),
-                success: function (data) {
-                    KTApp.unprogress(btn);
-                    swal.fire({
-                        "title": "",
-                        "text": "Davet mektubu başarıyla gönderildi.",
-                        "type": "success",
-                        "confirmButtonClass": "btn btn-secondary"
-                    });
-                }
-            });
-        }
 
         $(document).on('click', '.print', function () {
             var side_id = $(this).data('id');
@@ -245,34 +223,7 @@
             });
         });
 
-        $("#send_email").on('click', function () {
-            var btn = $(this);
 
-            if (email_count > 0) {
-                sendEmail(btn);
-            } else {
-                var isset = 0;
-
-                $('.send_email_inputs').each(function () {
-                    if ($(this).val() != "") {
-                        isset = 1;
-                    }
-                });
-
-                if (isset == 1) {
-                    sendEmail(btn);
-                } else {
-                    KTApp.unprogress(btn);
-                    swal.fire({
-                        "title": "",
-                        "text": "Davet mektubu göndermek için lütfen en az bir email adresi yazınız!",
-                        "type": "error",
-                        "confirmButtonClass": "btn btn-secondary"
-                    });
-                }
-            }
-
-        });
     </script>
     <script>
         var bookIndex = 0;
