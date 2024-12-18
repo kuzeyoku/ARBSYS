@@ -1,4 +1,11 @@
-{{ Form::hidden('type', 9) }}
+<div class="form-group row">
+    <div class="col-sm-4">
+        {{ Form::label('Kişilerimden Seç', null, ['class' => 'font-weight-bold']) }}
+    </div>
+    <div class="col-sm-8">
+        {{ Form::select('company', $companies, 'default', ['class' => 'form-control selectSearch companySelect', 'placeholder' => '--Seçiniz--', 'data-url' => route('api.get_company_data')]) }}
+    </div>
+</div>
 <div class="form-group row">
     <div class="col-sm-4">
         {{ Form::label('Ünvanı', null, ['class' => 'font-weight-bold']) }}

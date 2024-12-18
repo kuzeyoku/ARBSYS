@@ -49,12 +49,12 @@ class PersonController extends Controller
         return compact("data", "type");
     }
 
-    public function getModalContent(Request $request)
+/*    public function getModalContent(Request $request)
     {
         $type = PersonType::find($request->type);
         $data = view('mediator.person.modals.' . $type->key, compact('type'))->render();
         return compact('data', "type");
-    }
+    }*/
 
     public function getEditModalContent(Request $request)
     {

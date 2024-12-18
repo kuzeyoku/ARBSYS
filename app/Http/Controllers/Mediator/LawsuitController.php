@@ -45,7 +45,7 @@ class LawsuitController extends Controller
         }));
     }
 
-    public function getModalContent(Request $request): array
+/*    public function getModalContent(Request $request): array
     {
         $personType = $request->type;
         if ($request->type == "person"):
@@ -59,7 +59,7 @@ class LawsuitController extends Controller
         $file = $type->group == 3 ? "company_" : "person_";
         $data = view('mediator.person.modals.' . $file . $type->key, compact('type'))->render();
         return compact('data', "type", "personType");
-    }
+    }*/
 
     public function index()
     {

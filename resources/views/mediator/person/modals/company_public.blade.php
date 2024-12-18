@@ -10,7 +10,7 @@
         @if (isset($item))
             {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'id' => 'person_type', 'data-url' => route('person.getEditModalContent', $item)]) }}
         @else
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'id' => 'person_type', 'data-url' => route('person.getModalContent')]) }}
+            {{ Form::select('type', App\Models\PersonType::selectToArray(), $personType->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'id' => 'person_type', 'data-url' => route('person.getModalContent')]) }}
         @endif
     </div>
 </div>

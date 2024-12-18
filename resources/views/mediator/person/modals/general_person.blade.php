@@ -1,4 +1,3 @@
-{{ Form::hidden('type', 2) }}
 <div class="form-group row">
     <div class="col-sm-4">
         {{ Form::label('Kişilerimden Seç', null, ['class' => 'font-weight-bold']) }}

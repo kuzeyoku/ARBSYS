@@ -36,6 +36,11 @@ class Company extends Model
         return $this->tax_number . " - " . $this->name;
     }
 
+    public static function selectToArray()
+    {
+        return self::pluck("name", "id");
+    }
+
     public function type()
     {
         return $this->belongsTo(PersonType::class, "type_id", "id");

@@ -99,7 +99,7 @@
                                                         <label>Gerçek Kişi/Tüzel Kişi</label>
                                                         <div class="kt-radio-inline row">
                                                             <input type="hidden" class="modalContentUrl"
-                                                                   data-url="{{ route('lawsuit.getModalContent') }}">
+                                                                   data-url="{{ route('api.get_person_modal_content') }}">
                                                             <label class="kt-radio">
                                                                 <input type="radio" data-type="person" name="isPerson"
                                                                        class="personTypeSelect"> Gerçek Kişi
@@ -365,7 +365,7 @@
                             <label>Gerçek Kişi/Tüzel Kişi</label>
                             <div class="kt-radio-inline">
                                 <input type="hidden" class="modalContentUrl"
-                                       data-url="{{ route('lawsuit.getModalContent') }}">
+                                       data-url="{{ route('api.get_person_modal_content') }}">
                                 <label class="kt-radio">
                                     <input type="radio" data-type="person" name="isPerson" class="personTypeSelect">
                                     Gerçek Kişi

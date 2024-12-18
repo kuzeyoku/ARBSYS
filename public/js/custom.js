@@ -132,6 +132,26 @@ $(document).on("change", ".personSelect", function () {
     });
 });
 
+$(document).on("change", ".companySelect", function () {
+    let url = $(this).data("url");
+    let id = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            _token: $("meta[name='csrf-token']").attr("content"),
+            id: id,
+        },
+    }).done(function (response) {
+        $("input[name=name]").val(response.name);
+        $("input[name=tax_number]").val(response.tax_number);
+        $("input[name=mersis]").val(response.mersis);
+        $("input[name=phone]").val(response.phone);
+        $("input[name=email]").val(response.email);
+        $("textarea[name=address]").val(response.address);
+    });
+});
+
 //Genel Silme Butonu Aksiyonu
 $(".delete-btn").on("click", function () {
     let deleteBtn = $(this);
@@ -181,8 +201,8 @@ $(document).on("change", "#personModal #person_type", function () {
             type: type,
         },
         success: function (response) {
-            $("#personModal #formContent").html(response.data);
-            $("#personModal .modal-title").html(response.type.name);
+            $("#personModal #formContent").html(response.formData);
+            $("#personModal .modal-title").html(response.personType.name);
             $(".selectSearch").select2({
                 theme: "bootstrap4",
             });

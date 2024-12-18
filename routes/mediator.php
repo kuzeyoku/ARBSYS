@@ -179,5 +179,6 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::post("/api/get_mediation_center_address", "DataController@getMediationCenterAddress")->name("get_mediation_center_address");
     Route::post("/api/get_person_data", "DataController@getPersonData")->name("api.get_person_data");
     Route::post("/api/get_lawywer_data", "DataController@getLawyerData")->name("api.get_lawywer_data");
-    Route::post("/api/get_company_data", "DataController@getLawsuitData")->name("api.get_company_data");
+    Route::post("/api/get_company_data", "DataController@getCompanyData")->name("api.get_company_data");
+    Route::post("/api/get_person_modal_content", "DataController@getPersonModalContent")->name("api.get_person_modal_content");
 });

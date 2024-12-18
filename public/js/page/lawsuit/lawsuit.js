@@ -13,12 +13,12 @@ function getModalContent(type) {
             type: type,
         },
         success: function (response) {
-            $("#personModal .modal-header h5").text(response.type.name);
-            $("#personModal form .modal-body").html(response.data);
+            $("#personModal .modal-header h5").text(response.personType.name);
+            $("#personModal form .modal-body").html(response.formContent);
             $("#personModal form .modal-body  #person_type").prop("disabled", true);
             $("#personModal form .modal-footer .personAddButton").attr(
                 "id",
-                "save" + response.personType
+                "save" + response.saveId
             );
             $("#personModal").modal("show");
             $(".selectSearch").select2({
