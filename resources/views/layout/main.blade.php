@@ -9,8 +9,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/typeahead.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{asset("css/select2-bootstrap4.min.css")}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{asset("css/select2.min.css")}}">
+    <script src="{{asset("js/jquery.js")}}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+
 
     @yield('style')
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}"/>
