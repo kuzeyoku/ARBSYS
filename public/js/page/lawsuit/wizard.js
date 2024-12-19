@@ -25,10 +25,9 @@ var KTWizard4 = (function () {
       if (issetApplicantTypeInSide()) {
         wizardObj.stop(); // don't go to the next step
         swal.fire({
-          title: "",
           text: "En az bir Başvurucu ve  bir Diğer Taraf bilgisi girmek zorunludur!",
-          type: "error",
-          confirmButtonClass: "btn btn-secondary",
+          icon: "error",
+          confirmButtonText: "Tamam",
         });
       }
       if (wizard.getStep() === 3) {

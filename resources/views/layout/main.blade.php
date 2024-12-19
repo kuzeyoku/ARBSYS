@@ -10,7 +10,11 @@
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/typeahead.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{asset("css/select2.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/sweetalert2.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/all.min.css")}}">
     <script src="{{asset("js/jquery.js")}}"></script>
+    <script src="{{asset("js/general.js")}}"></script>
+
     <script src="{{ asset('js/app.js') }}"></script>
 
 
@@ -350,6 +354,8 @@
         }
     };
 </script>
+<script src="{{asset("js/sweetalert2.all.min.js")}}"></script>
+<script src="{{asset("js/select2.min.js")}}"></script>
 @include('layout.alert')
 @yield('script')
 <script src="{{ asset("js/plugins/summernote/summernote-ext-print.js") }}"></script>
