@@ -57,9 +57,9 @@ $(document).ready(function () {
     //Taraf Tanımlama İşlemi
     $(document).on("change", "#applicant_type", function () {
         if ($(this).val() == 1) {
-            selectedApplicantType = "BAŞVURUCU";
+            selectedApplicantType = Enums.Sides.APPLICANT;
         } else if ($(this).val() == 2) {
-            selectedApplicantType = "DİĞER TARAF";
+            selectedApplicantType = Enums.Sides.OTHER_SIDE;
         }
     });
 
@@ -402,8 +402,8 @@ function taxValidate(input) {
 }
 
 function issetApplicantTypeInSide() {
-    const hasApplicant = sides.some(side => side.applicantType === "BAŞVURUCU");
-    const hasOtherSide = sides.some(side => side.applicantType === "DİĞER TARAF");
+    const hasApplicant = sides.some(side => side.applicantType === Enums.Sides.APPLICANT);
+    const hasOtherSide = sides.some(side => side.applicantType === Enums.Sides.OTHER_SIDE);
     return !(hasApplicant && hasOtherSide) ? 1 : 0;
 }
 

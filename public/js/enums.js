@@ -8,4 +8,9 @@ class Enums {
         COMMISSIONER: "COMMISSIONER",
         EXPERT: "EXPERT"
     });
+
+    static Sides = Object.freeze({
+        APPLICANT: "BAŞVURUCU",
+        OTHER_SIDE: "DİĞER TARAF"
+    });
 }
