@@ -70,4 +70,6 @@
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="{{ asset('js/localization.js') }}"></script>
+    <script src="{{ asset('js/enums.js') }}"></script>
 @endsection

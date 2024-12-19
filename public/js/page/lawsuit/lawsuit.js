@@ -57,9 +57,9 @@ $(document).ready(function () {
     //Taraf Tanımlama İşlemi
     $(document).on("change", "#applicant_type", function () {
         if ($(this).val() == 1) {
-            selectedApplicantType = "BAŞVURUCU";
+            selectedApplicantType = Enums.Sides.APPLICANT;
         } else if ($(this).val() == 2) {
-            selectedApplicantType = "DİĞER TARAF";
+            selectedApplicantType = Enums.Sides.OTHER_SIDE;
         }
     });
 
@@ -99,58 +99,33 @@ $(document).ready(function () {
 
     $(document).on("click", "#savelawyer", function (e) {
         e.preventDefault();
-        saveMember(this, Members.LAWYER.toLowerCase(), lawyerIndex);
+        saveMember(this, Enums.Members.LAWYER.toLowerCase(), lawyerIndex);
     });
 
     $(document).on("click", "#saveauthorized", function (e) {
         e.preventDefault();
-        saveMember(this, Members.AUTHORIZED.toLowerCase(), authorizedIndex);
+        saveMember(this, Enums.Members.AUTHORIZED.toLowerCase(), authorizedIndex);
     });
 
     $(document).on("click", "#saveemployee", function (e) {
         e.preventDefault();
-        saveMember(this, Members.EMPLOYEE.toLowerCase(), employeeIndex);
+        saveMember(this, Enums.Members.EMPLOYEE.toLowerCase(), employeeIndex);
     });
 
     $(document).on("click", "#saverepresentative", function (e) {
         e.preventDefault();
-        saveMember(this, Members.REPRESENTATIVE.toLowerCase(), representativeIndex);
+        saveMember(this, Enums.Members.REPRESENTATIVE.toLowerCase(), representativeIndex);
     });
 
     $(document).on("click", "#savecommissioner", function (e) {
         e.preventDefault();
-        saveMember(this, Members.COMMISSIONER.toLowerCase(), commissionerIndex);
+        saveMember(this, Enums.Members.COMMISSIONER.toLowerCase(), commissionerIndex);
     });
 
     $(document).on("click", "#saveexpert", function (e) {
         e.preventDefault();
-        saveMember(this, Members.EXPERT.toLowerCase(), expertIndex);
+        saveMember(this, Enums.Members.EXPERT.toLowerCase(), expertIndex);
     });
-
-    function saveMember(self, memberType, memberIndex) {
-        let activeSideMembers = [];
-        let member = $(self).closest("form").serializeArray().reduce((acc, item) => {
-            acc[item.name] = item.value;
-            return acc;
-        }, {});
-        member.id = generateUniqueId();
-        activeSide = getActiveSide(memberIndex);
-        let activeSideArray = activeSide[`${memberType}s`]
-
-        if (activeSideArray != null) {
-            for (var i = 0; i < activeSideArray.length; i++) {
-                let row = activeSideArray[i];
-                activeSideMembers.push(row);
-            }
-        }
-
-        activeSideMembers.push(member);
-        activeSide[`${memberType}s`] = activeSideMembers;
-        $(`#${memberType}Block${memberIndex}`).html(
-            getMemberBlock(activeSideMembers, memberIndex, memberType)
-        );
-        $("#personModal").modal("hide");
-    }
 
     //Tutanakta Gösterilecek Verilerin İzin Kontrolü
     function getCheckElements() {
@@ -172,9 +147,7 @@ $(document).ready(function () {
         return null;
     }
 
-    // ---------------------------------- save modals  ----------------------------------//
-
-    // ----------------------------------  modal events  ----------------------------------//
+    // Modal Events
     $("#personModal").on("hide.bs.modal", function () {
         $(".prq").val("");
         $(".pempty").val("");
@@ -429,8 +402,8 @@ function taxValidate(input) {
 }
 
 function issetApplicantTypeInSide() {
-    const hasApplicant = sides.some(side => side.applicantType === "BAŞVURUCU");
-    const hasOtherSide = sides.some(side => side.applicantType === "DİĞER TARAF");
+    const hasApplicant = sides.some(side => side.applicantType === Enums.Sides.APPLICANT);
+    const hasOtherSide = sides.some(side => side.applicantType === Enums.Sides.OTHER_SIDE);
     return !(hasApplicant && hasOtherSide) ? 1 : 0;
 }
 
@@ -462,8 +435,7 @@ function notification(message, template) {
     };
 }
 
-// ---------------------------------- lawyer operations ----------------------------------//
-
+// Lawyer Operations
 function getActiveSide(memberIndex) {
     for (var i = 0; i < sides.length; i++) {
         if (sides[i].index == memberIndex) {
@@ -480,102 +452,6 @@ function limitText(text, limit) {
     }
 }
 
-function generateSideBlock(side) {
-    const cardClass = side.applicantType === "BAŞVURUCU" ? "bg-light" : "bg-secondary";
-    const tcOrTax = side.type === 1
-        ? `TC Kimlik No: ${side.identification}`
-        : `Mersis No: ${side.mersis_number}`;
-
-    const createButton = (blockId, personType, label) => {
-        return `
-          <div id="${blockId}${side.index}">
-              <button class="btn btn-sm btn-warning addPersonToSide" 
-                      personType="${personType}" 
-                      data-index="${side.index}">
-                  <i class="fas fa-plus"></i> ${label}
-              </button>
-          </div>`;
-    };
-
-    const deleteButton = `
-      <div id="${side.index}">
-          <button class="btn btn-sm btn-danger deleteSide" data-index="${side.index}">
-              <i class="fas fa-times"></i> Taraf Sil
-          </button>
-      </div>`;
-
-    const html = `
-      <div id="sideCard-${side.index}" class="w-100">
-          <div class="card ${cardClass}">
-              <div class="card-body" style="color: #000000;">
-                  <div class="d-flex flex-row justify-content-between align-items-center">
-                      <div>${side.applicantType}</div>
-                      <div style="width:220px">${limitText(side.name, 30)}<br />${tcOrTax}</div>
-                      ${createButton("lawyerBlock", "lawyer", "Vekil Ekle")}
-                      ${createButton("authorizedBlock", "authorized", "Yetkili Ekle")}
-                      ${createButton("employeeBlock", "employee", "Çalışan Ekle")}
-                      ${createButton("representativeBlock", "representative", "Kanuni Temsilci Ekle")}
-                      ${createButton("commissionerBlock", "commissioner", "Komisyon Üyesi Ekle")}
-                      ${createButton("expertBlock", "expert", "Uzman Kişi Ekle")}
-                      ${deleteButton}
-                  </div>
-              </div>
-          </div>
-      </div>`;
-
-    if (side.applicantType === "BAŞVURUCU") {
-        $(".sideBasvuranRow").append(html);
-    } else if (side.applicantType === "DİĞER TARAF") {
-        $(".sideKarsiTarafRow").append(html);
-    }
-
-    $("#applicant_add_button").show();
-    $("#applicant_select").remove();
-}
-
-function generateUniqueId() {
-    return (
-        Math.random().toString(36).substr(2, 9) +
-        Math.random().toString(36).substr(2, 9)
-    );
-}
-
-function getMemberBlock(members, memberIndex, memberType) {
-    let text = members.length > 1 ? Localization[`${memberType}s`].tr : Localization[memberType].tr;
-    const addButtonHtml = `
-        <strong class="member-block-title">${text}</strong> - 
-        <a 
-            class="add${capitalizeFirstLetter(memberType)} addPersonToSide" 
-            personType="${memberType}" 
-            href="javascript:;" 
-            style="color: #f27474; font-size: 14px;" 
-            data-index="${memberIndex}"
-        >
-            Ekle
-        </a>
-        <br />
-    `;
-    const membersHtml = members
-        .map((member, i) => `
-            <p id="remove-${memberType}-${i}-${memberIndex}">
-                ${member.name} /
-                <a 
-                    class="removeMember"
-                    personType="${memberType}" 
-                    href="javascript:;" 
-                    style="color: #f27474; font-size: 14px;" 
-                    data-index="${memberIndex}" 
-                    data-id="${member.id}" 
-                >
-                    Çıkar
-                </a>
-            </p>
-        `)
-        .join("");
-
-    return addButtonHtml + membersHtml;
-}
-
 $.validator.addMethod("application_date_required", function (value) {
     var application_date = moment(
         $("#application_date input").val(),
@@ -590,71 +466,3 @@ $.validator.addMethod("application_date_required", function (value) {
 
     return true;
 });
-
-function capitalizeFirstLetter(input) {
-    return input
-        .toLowerCase()
-        .replace(/(^\w|\s\w)/g, match => match.toUpperCase());
-}
-
-/* ENUMS */
-const Members = Object.freeze({
-    LAWYER: "LAWYER",
-    AUTHORIZED: "AUTHORIZED",
-    EMPLOYEE: "EMPLOYEE",
-    REPRESENTATIVE: "REPRESENTATIVE",
-    COMMISSIONER: "COMMISSIONER",
-    EXPERT: "EXPERT"
-});
-
-/* Strings */
-const Localization = {
-    "lawyer": {
-        "tr": "Vekil",
-        "en": "Lawyer"
-    },
-    "lawyers": {
-        "tr": "Vekiller",
-        "en": "Lawyers"
-    },
-    "authorized": {
-        "tr": "Yetkili",
-        "en": "Authorized"
-    },
-    "authorizeds": {
-        "tr": "Yetkililer",
-        "en": "Authorizeds"
-    },
-    "employee": {
-        "tr": "Çalışan",
-        "en": "Employee"
-    },
-    "employees": {
-        "tr": "Çalışanlar",
-        "en": "Employees"
-    },
-    "representative": {
-        "tr": "Kanuni Temsilci",
-        "en": "Representative"
-    },
-    "representatives": {
-        "tr": "Kanuni Temsilciler",
-        "en": "Representatives"
-    },
-    "commissioner": {
-        "tr": "Komisyon Üyesi",
-        "en": "Commissioner"
-    },
-    "commissioners": {
-        "tr": "Komisyon Üyeleri",
-        "en": "Commissioners"
-    },
-    "expert": {
-        "tr": "Uzman Kişi",
-        "en": "Expert"
-    },
-    "experts": {
-        "tr": "Uzman Kişiler",
-        "en": "Experts"
-    }
-}

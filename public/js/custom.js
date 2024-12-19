@@ -366,3 +366,130 @@ $("#cikti_btn").on("click", function () {
         loadCSS: "/css/print.css",
     });
 });
+
+function capitalizeFirstLetter(input) {
+    return input
+        .toLowerCase()
+        .replace(/(^\w|\s\w)/g, match => match.toUpperCase());
+}
+
+function saveMember(self, memberType, memberIndex) {
+    let activeSideMembers = [];
+    let member = $(self).closest("form").serializeArray().reduce((acc, item) => {
+        acc[item.name] = item.value;
+        return acc;
+    }, {});
+    member.id = generateUniqueId();
+    activeSide = getActiveSide(memberIndex);
+    let activeSideArray = activeSide[`${memberType}s`]
+
+    if (activeSideArray != null) {
+        for (var i = 0; i < activeSideArray.length; i++) {
+            let row = activeSideArray[i];
+            activeSideMembers.push(row);
+        }
+    }
+
+    activeSideMembers.push(member);
+    activeSide[`${memberType}s`] = activeSideMembers;
+    $(`#${memberType}Block${memberIndex}`).html(
+        getMemberBlock(activeSideMembers, memberIndex, memberType)
+    );
+    $("#personModal").modal("hide");
+}
+
+function generateSideBlock(side) {
+    const cardClass = side.applicantType === "BAŞVURUCU" ? "bg-light" : "bg-secondary";
+    const tcOrTax = side.type === 1
+        ? `TC Kimlik No: ${side.identification}`
+        : `Mersis No: ${side.mersis_number}`;
+
+    const createButton = (blockId, personType, label) => {
+        return `
+          <div id="${blockId}${side.index}">
+              <button class="btn btn-sm btn-warning addPersonToSide" 
+                      personType="${personType}" 
+                      data-index="${side.index}">
+                  <i class="fas fa-plus"></i> ${label}
+              </button>
+          </div>`;
+    };
+
+    const deleteButton = `
+      <div id="${side.index}">
+          <button class="btn btn-sm btn-danger deleteSide" data-index="${side.index}">
+              <i class="fas fa-times"></i> Taraf Sil
+          </button>
+      </div>`;
+
+    const html = `
+      <div id="sideCard-${side.index}" class="w-100">
+          <div class="card ${cardClass}">
+              <div class="card-body" style="color: #000000;">
+                  <div class="d-flex flex-row justify-content-between align-items-center">
+                      <div>${side.applicantType}</div>
+                      <div style="width:220px">${limitText(side.name, 30)}<br />${tcOrTax}</div>
+                      ${createButton("lawyerBlock", "lawyer", "Vekil Ekle")}
+                      ${createButton("authorizedBlock", "authorized", "Yetkili Ekle")}
+                      ${createButton("employeeBlock", "employee", "Çalışan Ekle")}
+                      ${createButton("representativeBlock", "representative", "Kanuni Temsilci Ekle")}
+                      ${createButton("commissionerBlock", "commissioner", "Komisyon Üyesi Ekle")}
+                      ${createButton("expertBlock", "expert", "Uzman Kişi Ekle")}
+                      ${deleteButton}
+                  </div>
+              </div>
+          </div>
+      </div>`;
+
+    if (side.applicantType === "BAŞVURUCU") {
+        $(".sideBasvuranRow").append(html);
+    } else if (side.applicantType === "DİĞER TARAF") {
+        $(".sideKarsiTarafRow").append(html);
+    }
+
+    $("#applicant_add_button").show();
+    $("#applicant_select").remove();
+}
+
+function getMemberBlock(members, memberIndex, memberType) {
+    let text = members.length > 1 ? Localization[`${memberType}s`].tr : Localization[memberType].tr;
+    const addButtonHtml = `
+        <strong class="member-block-title">${text}</strong> - 
+        <a 
+            class="add${capitalizeFirstLetter(memberType)} addPersonToSide" 
+            personType="${memberType}" 
+            href="javascript:;" 
+            style="color: #f27474; font-size: 14px;" 
+            data-index="${memberIndex}"
+        >
+            Ekle
+        </a>
+        <br />
+    `;
+    const membersHtml = members
+        .map((member, i) => `
+            <p id="remove-${memberType}-${i}-${memberIndex}">
+                ${member.name} /
+                <a 
+                    class="removeMember"
+                    personType="${memberType}" 
+                    href="javascript:;" 
+                    style="color: #f27474; font-size: 14px;" 
+                    data-index="${memberIndex}" 
+                    data-id="${member.id}" 
+                >
+                    Çıkar
+                </a>
+            </p>
+        `)
+        .join("");
+
+    return addButtonHtml + membersHtml;
+}
+
+function generateUniqueId() {
+    return (
+        Math.random().toString(36).substr(2, 9) +
+        Math.random().toString(36).substr(2, 9)
+    );
+}
