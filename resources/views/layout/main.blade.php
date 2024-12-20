@@ -6,13 +6,10 @@
     <meta name="description" content="Updates and statistics">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/typeahead.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{asset("css/select2.min.css")}}">
-    <link rel="stylesheet" href="{{asset("css/sweetalert2.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/all.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/line-awesome.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/toastr.min.css")}}">
