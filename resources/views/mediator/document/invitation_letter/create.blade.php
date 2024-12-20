@@ -38,11 +38,11 @@
                                         <div class="kt-wizard-v4__form">
                                             <div class="form-group">
                                                 {{ Form::label('Toplantı Tarihi') }}
-                                                {{ Form::text('meeting_date', $lawsuit->meeting_date, ['class' => 'form-control datepicker']) }}
+                                                {{ Form::date('meeting_date', $lawsuit->meeting_date, ['class' => 'form-control datepicker']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::label('Toplantı Saati') }}
-                                                {{ Form::text('meeting_start_hour', $lawsuit->meeting_start_hour, ['class' => 'form-control timepicker']) }}
+                                                {{ Form::time('meeting_start_hour', $lawsuit->meeting_start_hour, ['class' => 'form-control timepicker']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::label('Toplantı Yeri') }}

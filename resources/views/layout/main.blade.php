@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="{{asset("css/select2.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/sweetalert2.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/all.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/line-awesome.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/toastr.min.css")}}">
+    <link href="https://cdn.datatables.net/v/bs4/dt-2.1.8/date-1.5.4/r-3.0.3/datatables.min.css" rel="stylesheet">
     <script src="{{asset("js/jquery.js")}}"></script>
     <script src="{{asset("js/general.js")}}"></script>
 
@@ -356,6 +359,15 @@
 </script>
 <script src="{{asset("js/sweetalert2.all.min.js")}}"></script>
 <script src="{{asset("js/select2.min.js")}}"></script>
+<script src="{{asset("js/jquery.inputmask.min.js")}}"></script>
+<script src="{{asset("js/jquery.validate.min.js")}}"></script>
+<script src="{{asset("js/additional-methods.min.js")}}"></script>
+<script src="{{asset("js/js.cookie.js")}}"></script>
+<script src="{{asset("js/toastr.min.js")}}"></script>
+<script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.2.2/dist/jquery.form.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-js/1.3.0/sticky.compile.js"></script>
+<script src="https://cdn.datatables.net/v/bs5/dt-2.1.8/date-1.5.4/r-3.0.3/datatables.min.js"></script>
+
 @include('layout.alert')
 @yield('script')
 <script src="{{ asset("js/plugins/summernote/summernote-ext-print.js") }}"></script>
