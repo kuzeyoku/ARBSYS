@@ -6,6 +6,8 @@
     <meta name="description" content="Updates and statistics">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/typeahead.css') }}" rel="stylesheet" type="text/css">
@@ -14,12 +16,8 @@
     <link rel="stylesheet" href="{{asset("css/all.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/line-awesome.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/toastr.min.css")}}">
-    <link href="https://cdn.datatables.net/v/bs4/dt-2.1.8/date-1.5.4/r-3.0.3/datatables.min.css" rel="stylesheet">
-    <script src="{{asset("js/jquery.js")}}"></script>
-    <script src="{{asset("js/general.js")}}"></script>
-
-    <script src="{{ asset('js/app.js') }}"></script>
-
+    <link rel="stylesheet" href="{{asset("css/summernote.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/datatables.min.css")}}">
 
     @yield('style')
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}"/>
@@ -357,32 +355,22 @@
         }
     };
 </script>
+<script src="{{asset("js/jquery.js")}}"></script>
+<script src="{{asset("js/jquery.widgets.js")}}"></script>
+<script src="{{asset("js/popper.min.js")}}"></script>
+<script src="{{asset("js/bootstrap.min.js")}}"></script>
+<script src="{{asset("js/summernote.min.js")}}"></script>
 <script src="{{asset("js/sweetalert2.all.min.js")}}"></script>
 <script src="{{asset("js/select2.min.js")}}"></script>
-<script src="{{asset("js/jquery.inputmask.min.js")}}"></script>
-<script src="{{asset("js/jquery.validate.min.js")}}"></script>
-<script src="{{asset("js/additional-methods.min.js")}}"></script>
-<script src="{{asset("js/js.cookie.js")}}"></script>
 <script src="{{asset("js/toastr.min.js")}}"></script>
-<script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.2.2/dist/jquery.form.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-js/1.3.0/sticky.compile.js"></script>
-<script src="https://cdn.datatables.net/v/bs5/dt-2.1.8/date-1.5.4/r-3.0.3/datatables.min.js"></script>
-
+<script src="{{asset("js/sticky.compile.js")}}"></script>
+<script src="{{asset("js/datatables.min.js")}}"></script>
+<script src="{{asset("js/general.js")}}"></script>
 @include('layout.alert')
 @yield('script')
 <script src="{{ asset("js/plugins/summernote/summernote-ext-print.js") }}"></script>
 <script src="{{ asset('js/custom.js') }}?v={{ time() }}"></script>
 <script src="{{ asset('js/localization.js') }}?v={{ time() }}"></script>
 <script src="{{ asset('js/enums.js') }}"></script>
-    {{-- @if (auth()->user()->restriction == 1)
-        <script>
-            alert("Kisitli modda kullaniyorsunuz.");
-        </>
-    @endif --}}
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXNHQS2" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe>
-    </noscript>
 </body>
-
 </html>
