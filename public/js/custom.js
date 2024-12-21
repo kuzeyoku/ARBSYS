@@ -83,7 +83,9 @@ $(".selectSearch").select2({
     theme: "bootstrap4",
 });
 
-$(".summernote").summernote({});
+$(".summernote").summernote({
+    lang: "tr-TR",
+});
 
 $("#mediation_center").on("change", function () {
     url = $(this).data("url");

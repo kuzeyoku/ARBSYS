@@ -357,6 +357,7 @@
 <script src="{{asset("js/popper.min.js")}}"></script>
 <script src="{{asset("js/bootstrap.min.js")}}"></script>
 <script src="{{asset("js/summernote.min.js")}}"></script>
+<script src="{{asset("js/summernote-tr-TR.js")}}"></script>
 <script src="{{asset("js/sweetalert2.all.min.js")}}"></script>
 <script src="{{asset("js/select2.min.js")}}"></script>
 <script src="{{asset("js/toastr.min.js")}}"></script>

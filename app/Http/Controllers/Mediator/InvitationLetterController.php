@@ -29,7 +29,7 @@ class InvitationLetterController extends Controller
             ]);
 
             $lawsuit->lawsuit_process_type_id = 2;
-            $lawsuit->matters_discussed = $request->matters_discussed;
+            $lawsuit->matters_discussed = json_encode($request->matters_discussed, JSON_UNESCAPED_UNICODE);
             $lawsuit->save();
 
             foreach ($request->side_ids as $side) {

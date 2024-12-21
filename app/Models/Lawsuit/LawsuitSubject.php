@@ -5,6 +5,9 @@ namespace App\Models\Lawsuit;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Document\DocumentTypeTemplate;
 
+/**
+ * @property mixed $matters_discussed
+ */
 class LawsuitSubject extends Model
 {
 
@@ -15,15 +18,8 @@ class LawsuitSubject extends Model
         return $this->hasMany(DocumentTypeTemplate::class);
     }
 
-    public static function getMattersDiscussed(Lawsuit $lawsuit)
+    public function getMattersDiscussedToArrayAttribute()
     {
-        $matters_discussed = [];
-        if ($lawsuit->lawsuit_subject_id) {
-            $lawsuit_subject = LawsuitSubject::find($lawsuit->lawsuit_subject_id);
-            if ($lawsuit_subject->matters_discussed) {
-                $matters_discussed = json_decode($lawsuit_subject->matters_discussed, true);
-            }
-        }
-        return $matters_discussed;
+        return json_decode($this->matters_discussed, true);
     }
 }

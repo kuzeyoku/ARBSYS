@@ -18,12 +18,10 @@
                         5 => 'Bitir',
                     ],
                 ])
-
                 <div class="kt-portlet">
                     <div class="kt-portlet__body kt-portlet__body--fit">
                         <div class="kt-grid">
                             <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v4__wrapper">
-
                                 {{ Form::open(['url' => route('invitation_letter.store', $lawsuit), 'method' => 'POST', 'class' => 'kt-form', 'id' => 'kt_form']) }}
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
                                      data-ktwizard-state="current">
@@ -37,30 +35,28 @@
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v4__form">
                                             <div class="form-group">
-                                                {{ Form::label('Toplantı Tarihi') }}
-                                                {{ Form::date('meeting_date', $lawsuit->meeting_date, ['class' => 'form-control datepicker']) }}
+                                                {{ Form::label("meeting_date",'Toplantı Tarihi') }}
+                                                {{ Form::date('meeting_date', $lawsuit->meeting_date, ['class' => 'form-control']) }}
                                             </div>
                                             <div class="form-group">
-                                                {{ Form::label('Toplantı Saati') }}
-                                                {{ Form::time('meeting_start_hour', $lawsuit->meeting_start_hour, ['class' => 'form-control timepicker']) }}
+                                                {{ Form::label("meeting_start_hour",'Toplantı Saati') }}
+                                                {{ Form::time('meeting_start_hour', $lawsuit->meeting_start_hour, ['class' => 'form-control']) }}
                                             </div>
                                             <div class="form-group">
-                                                {{ Form::label('Toplantı Yeri') }}
-                                                {{ Form::select('mediation_center', App\Models\MediationCenter::selectToArray(), $lawsuit->mediation_center ?? auth()->user()->mediator->meeting_address_proposal ? auth()->user()->mediator->mediation_center_id : null, ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+                                                {{ Form::label("mediation_center",'Toplantı Yeri') }}
+                                                {{ Form::select('mediation_center', App\Models\MediationCenter::selectToArray(), $lawsuit->mediation_center_id ?? auth()->user()->mediator->default_mediation_center, ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::checkbox('meeting_address_check', true, false, ['id' => 'meeting_address_check']) }}
-                                                {{ Form::label('Adresi Elle Gir') }}
+                                                {{ Form::label("meeting_address_check",'Adresi Elle Gir') }}
                                             </div>
                                             <div class="form-group" style="display: none" id="meeting_address">
-                                                {{ Form::label('Toplantı Adresi') }}
+                                                {{ Form::label("meeting_address",'Toplantı Adresi') }}
                                                 {{ Form::text('meeting_address', null, ['class' => 'form-control', 'placeholder' => 'Açık Adres Giriniz']) }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
                                     <div class="kt-heading kt-heading--md">Uyuşmazlık Özeti</div>
                                     <div class="kt-form__section kt-form__section--first">
@@ -69,12 +65,12 @@
                                                 <label>Uyuşmazlık özeti yazmak ister misiniz?</label>
                                                 <div class="kt-checkbox-list">
                                                     <label class="kt-checkbox">
-                                                        <input type="radio" name="want_write" value="1"> Evet
-                                                        <span></span>
+                                                        {{Form::radio('want_write', 1)}}
+                                                        Evet <span></span>
                                                     </label>
                                                     <label class="kt-checkbox">
-                                                        <input type="radio" name="want_write" value="0"> Hayır
-                                                        <span></span>
+                                                        {{Form::radio('want_write', 0)}}
+                                                        Hayır <span></span>
                                                     </label>
                                                 </div>
                                             </div>

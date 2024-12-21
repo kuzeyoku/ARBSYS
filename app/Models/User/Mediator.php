@@ -17,6 +17,7 @@ class Mediator extends Model
     protected $appends = [
         'logo'
     ];
+
     public function getPathAttribute()
     {
         $path = public_path('files/mediators/');
@@ -32,6 +33,11 @@ class Mediator extends Model
         }
 
         return $path . "/";
+    }
+
+    public function getDefaultMediationCenterAttribute()
+    {
+        return $this->meeting_address_proposal ? $this->mediation_center_id : null;
     }
 
     public function getPathLogoAttribute()

@@ -28,7 +28,7 @@
 
                                 {{ Form::open(['url' => route('arbiter_process_info_protocol.store', $lawsuit), 'method' => 'POST', 'class' => 'kt-form', 'id' => 'kt_form']) }}
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
-                                    data-ktwizard-state="current">
+                                     data-ktwizard-state="current">
                                     <div class="kt-heading kt-heading--md">Hangi taraf(lar) toplantıya katıldı?</div>
                                     @include('mediator.document.layout.side_select', $lawsuit)
                                 </div>
@@ -38,16 +38,12 @@
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v4__form">
                                             <div class="form-group">
-                                                <label for="meeting_date">Toplantı Tarihi</label>
-                                                <input type="text" id="meeting_date" name="meeting_date"
-                                                    class="form-control datepicker datedotmask"
-                                                    value="{{ $lawsuit->meeting_date }}" autocomplete="off" required>
+                                                {{ Form::label("meeting_date", "Toplantı Tarihi") }}
+                                                {{Form::date("meeting_date", $lawsuit->meeting_date, ['class' => 'form-control', 'required'])}}
                                             </div>
                                             <div class="form-group">
-                                                <label for="meeting_hour">Toplantı Saati</label>
-                                                <input type="text" id="meeting_hour" name="meeting_start_hour"
-                                                    class="form-control timepicker"
-                                                    value="{{ $lawsuit->meeting_start_hour }}" required>
+                                                {{ Form::label("meeting_hour", "Toplantı Saati") }}
+                                                {{Form::time("meeting_hour", $lawsuit->meeting_start_hour, ['class' => 'form-control', 'required'])}}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::label('Toplantı Yeri') }}
@@ -58,10 +54,8 @@
                                                 {{ Form::checkbox('meeting_address_check', true, false, ['id' => 'meeting_address_check']) }}
                                             </div>
                                             <div class="form-group" style="display:none" id="meeting_address">
-                                                <label>Toplantı Adresi</label>
-                                                <input type="text" class="form-control" name="meeting_address"
-                                                    placeholder="Toplantı Adresi Yazınız" autocomplete="off"
-                                                    id="meeting_address">
+                                                {{ Form::label('meeting_address', 'Toplantı Adresi') }}
+                                                {{ Form::text('meeting_address', $lawsuit->meeting_address, ['class' => 'form-control', 'placeholder' => 'Toplantı Adresi Yazınız']) }}
                                             </div>
                                         </div>
                                     </div>
@@ -76,7 +70,7 @@
                                                 kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri ile
                                                 değiştirilecektir.</p>
                                             <textarea class="preview_area" name="preview" id="preview_area"
-                                                data-url="{{ route('arbiter_process_info_protocol.preview', $lawsuit) }}">
+                                                      data-url="{{ route('arbiter_process_info_protocol.preview', $lawsuit) }}">
                                                 </textarea>
                                         </div>
                                     </div>
@@ -103,11 +97,11 @@
                                                     <h1 class="kt-heading kt-heading--lg">Sürece Devam Etmek istiyor
                                                         musunuz?</h1>
                                                     <a class="btn btn-success btn-lg" href="#next_level"
-                                                        data-toggle="modal">Evet</a>
+                                                       data-toggle="modal">Evet</a>
                                                     <a class="btn btn-danger btn-lg"
-                                                        href="{{ route('lawsuit.index') }}">Çık</a>
+                                                       href="{{ route('lawsuit.index') }}">Çık</a>
                                                     <a href="javascript:;" class="btn btn-success float-right"
-                                                        id="cikti_btn">
+                                                       id="cikti_btn">
                                                         <i class="fas fa-print"></i> Çıktı Al
                                                     </a>
                                                     <div class="print_side" id=""></div>

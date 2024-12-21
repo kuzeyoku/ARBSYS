@@ -95,6 +95,18 @@ class Lawsuit extends Model
         return $this->belongsTo(LawsuitSubject::class);
     }
 
+    public function getMattersDiscussedToArrayAttribute()
+    {
+        return json_decode($this->attributes['matters_discussed']);
+    }
+
+    public function getMattersDiscussedToStringAttribute()
+    {
+        $result = array_intersect_key($this->lawsuit_subject->matters_discussed_to_array, array_flip($this->matters_discussed_to_array));
+        $implode = implode(", ", $result);
+        return Str::lower($implode);
+    }
+
     public function lawsuit_subject_type(): BelongsTo
     {
         return $this->belongsTo(LawsuitSubjectType::class);

@@ -10,13 +10,12 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @foreach (json_decode($lawsuit->lawsuit_subject->matters_discussed, true) ?? [] as $key => $value)
+                        @foreach ($lawsuit->lawsuit_subject->matters_discussed_to_array as $key => $value)
                             <div class="col-lg-4">
                                 <div class="kt-checkbox-list">
                                     <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">
-                                        <input type="checkbox" name="matters_discussed[]" value="{{ $key }}">
-                                        {{ $value }}
-                                        <span></span>
+                                        {{Form::checkbox('matters_discussed[]', $key,  in_array($key, $lawsuit->matters_discussed_to_array), ['id' => 'matters-discussed-checkbox'])}}
+                                        {{ $value }}<span></span>
                                     </label>
                                 </div>
                             </div>
@@ -24,8 +23,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="matters_discussed">Müzakere Edilen Hususlar</label>
-                    <textarea name="matters_discussed" id="matters-discussed-textarea" class="form-control" rows="5">{{ $lawsuit->matters_discussed }}</textarea>
+                    {{Form::label("Müzakere Edilen Hususlar")}}
+                    {{Form::textarea("", $lawsuit->matters_discussed_to_string, ["class" => "form-control", "id" => "matters-discussed-textarea", "rows" => 5])}}
                 </div>
             </div>
             <div class="modal-footer">
