@@ -91,10 +91,10 @@ var KTWizard4 = function () {
             if (wizard.getStep() === 3 && preview == 0)
             {
                 formEl.ajaxSubmit({
-                    url:$("#preview_area").data('url'),
+                    url:$("#preview-area").data('url'),
                     success: function(data) {
-                        $("#preview_area").val(data.preview);
-                        createEditor("#preview_area");
+                        $("#preview-area").val(data.preview);
+                        createEditor("#preview-area");
                         preview = 1;
                     }
                 });

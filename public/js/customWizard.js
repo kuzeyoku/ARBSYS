@@ -1,63 +1,81 @@
 "use strict";
 
-// Class definition
 var KTWizard4 = (function () {
-  // Base elements
   var wizardEl;
   var formEl;
   var validator;
   var wizard;
   var preview = 0;
+  var isSingleDocument;
 
-  // Private functions
+  var getPageName = function () {
+    return $('[page-name]').attr('page-name') || null;
+  }
+  
+  var getLastStep = function () {
+    return parseInt(
+      $(".kt-wizard-v4__nav-item[data-ktwizard-type='step']").last().find("div.kt-wizard-v4__nav-number").text()
+    );
+  }
+
+   // Belge türüne göre kuralları çekmek için:
+   var getDynamicRule = function(documentType) {
+    return dynamicRulesConfig[documentType] || {};
+  }
+
   var initWizard = function () {
-    // Initialize form wizard
     wizard = new KTWizard("kt_wizard_v4", {
-      startStep: 1, // initial active step number
-      clickableSteps: false, // allow step clicking
+      startStep: 1,
+      clickableSteps: false
     });
 
     // Validation before going to next page
     wizard.on("beforeNext", function (wizardObj) {
       if (validator.form() !== true) {
-        wizardObj.stop(); // don't go to the next step
+        wizardObj.stop();
       }
     });
 
-    wizard.on("beforePrev", function (wizardObj) {
-      // if (validator.form() !== true) {
-      //    wizardObj.stop();  // don't go to the next step
-      // }
-    });
+    // Validation before going to before page
+    wizard.on("beforePrev", function (wizardObj) {});
 
     // Change event
     wizard.on("change", function (wizard) {
       KTUtil.scrollTop();
-      if (wizard.getStep() == 4 && preview == 0) {
+      if (wizard.getStep() == (getLastStep() -1) && preview == 0) {
         formEl.ajaxSubmit({
           url: $("#preview-area").data("url"),
           success: function (data) {
+            console.log(typeof(data))
             var preview_content = $("#preview-area");
-
-            $.each(data, function (k, v) {
-              var textarea = $("<textarea>").attr({
-                id: "preview-" + v.id,
-                name: "preview-" + v.id,
+            if (typeof(data) == "string") {
+              preview_content.val(data)
+              createEditor("#preview-area");
+              $(".print_side").html(data);
+              preview = 1;
+              isSingleDocument = true;
+            } else{
+              $.each(data, function (k, v) {
+                var textarea = $("<textarea>").attr({
+                  id: "preview-" + v.id,
+                  name: "preview-" + v.id,
+                });
+                preview_content.append(
+                  "</br><p><strong>" +
+                    v.label +
+                    "</strong> için davet mektubu</p>"
+                );
+                preview_content.append(textarea);
+                textarea.html(v.view);
+                $("#preview-" + v.id).summernote();
               });
-              preview_content.append(
-                "</br><p><strong>" +
-                  v.label +
-                  "</strong> için davet mektubu</p>"
-              );
-              preview_content.append(textarea);
-              textarea.html(v.view);
-              $("#preview-" + v.id).summernote();
-            });
+              isSingleDocument = false;
+            } 
           },
         });
       }
 
-      if (wizard.getStep() == 5) {
+      if (wizard.getStep() == getLastStep()) {
         $("#side_email_control").hide();
         formEl.ajaxSubmit({
           url: $("#side_email_control").data("url"),
@@ -92,39 +110,21 @@ var KTWizard4 = (function () {
   };
 
   var initValidation = function () {
+    
+    const pageName = getPageName();
+    const dynamicRules = getDynamicRule(pageName);
+
     validator = formEl.validate({
       // Validate only visible fields
       ignore: ":hidden",
 
       // Validation rules
-      rules: {
-        //= Step 1
-        "side_ids[]": {
-          required: true,
-        },
-        //= Step 2
-        meeting_date: {
-          required: true,
-        },
-        meeting_start_hour: {
-          required: true,
-        },
-        mediation_center: {
-          required: false,
-        },
-        meeting_address: {
-          required: true,
-        },
-        //= Step 3
-        want_write: {
-          required: true,
-        },
-      },
+      rules: dynamicRules,
 
       // Display error
+      // Text'ler localization dosyası içine alınacak
       invalidHandler: function (event, validator) {
         KTUtil.scrollTop();
-
         swal.fire({
           title: "",
           text: "Lütfen gerekli alanları boş geçmeyiniz",
@@ -151,6 +151,7 @@ var KTWizard4 = (function () {
         //KTApp.block(formEl);
 
         // See: http://malsup.com/jquery/form/#ajaxSubmit
+        // burası da dinamik değişebilmeli
         formEl.ajaxSubmit({
           success: function (data) {
             $.each($("input[name='side_ids[]']:checked"), function () {
@@ -174,7 +175,9 @@ var KTWizard4 = (function () {
             });
 
             KTApp.unprogress(btn);
-
+            if (isSingleDocument){
+              $(".print_side").html(data);
+            }
             $("#saved").show();
             $("#before_saved").hide();
             btn.hide();
@@ -182,7 +185,7 @@ var KTWizard4 = (function () {
 
             swal.fire({
               title: "",
-              text: "Davet mektubu başarıyla kaydedildi.",
+              text: "Evrak başarıyla kaydedildi.", //"Davet mektubu başarıyla kaydedildi.",
               type: "success",
               confirmButtonText: "Tamam",
               confirmButtonClass: "btn btn-secondary",
@@ -209,3 +212,26 @@ var KTWizard4 = (function () {
 jQuery(document).ready(function () {
   KTWizard4.init();
 });
+
+function createEditor(selector) {
+  $(selector).summernote("destroy");
+  $(selector).summernote({
+    callbacks: {
+      onChange: function (contents) {
+        $(selector).html(contents);
+      },
+      onPaste: function (e) {
+        var bufferText = (
+          (e.originalEvent || e).clipboardData || window.clipboardData
+        ).getData("Text");
+
+        e.preventDefault();
+
+        // Firefox fix
+        setTimeout(function () {
+          document.execCommand("insertText", false, bufferText);
+        }, 10);
+      },
+    },
+  });
+}

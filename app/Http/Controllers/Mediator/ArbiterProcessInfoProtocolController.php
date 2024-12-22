@@ -62,10 +62,29 @@ class ArbiterProcessInfoProtocolController extends Controller
         ]);
     }
 
+    // public function preview(Request $request, Lawsuit $lawsuit)
+    // {
+    //     $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
+    //     $sides = $request->side_ids;
+    //     return view("mediator.document.preview", compact('document_content', "lawsuit", 'sides'));
+    // }
+
     public function preview(Request $request, Lawsuit $lawsuit)
     {
         $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
-        $sides = $request->side_ids;
-        return view("mediator.document.preview", compact('document_content', "lawsuit", 'sides'));
+        // $sides = $request->side_ids;
+        $sides = $lawsuit->sides()->whereIn("id", $request->side_ids)->get();
+        $response = [];
+        foreach ($sides as $side_id) {
+            $side = $lawsuit->sides()->find($side_id);
+
+            if ($side) {
+                $response[] = [
+                    "id" => $side->id,
+                    "view" => view("mediator.document.preview", compact('document_content', 'lawsuit', 'side'))->render(),
+                ];
+            }
+        }
+        return response()->json($response);
     }
 }

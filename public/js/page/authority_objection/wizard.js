@@ -50,11 +50,11 @@ var KTWizard4 = (function () {
       KTUtil.scrollTop();
       if (wizard.getStep() === 3 && preview == 0) {
         formEl.ajaxSubmit({
-          url: $("#preview_area").data("url"),
+          url: $("#preview-area").data("url"),
           success: function (data) {
             if (saved !== 1) {
-              $("#preview_area").val(data);
-              $("#preview_area").summernote({});
+              $("#preview-area").val(data);
+              $("#preview-area").summernote({});
             }
             preview = 1;
           },

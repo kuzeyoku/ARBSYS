@@ -63,7 +63,7 @@ var KTWizard4 = (function () {
       if (wizard.getStep() == 3 && preview == 0) {
         formEl.ajaxSubmit({
           data: { sides: sides },
-          url: $("#preview_area").data("url"),
+          url: $("#preview-area").data("url"),
           success: function (data) {
             if (
               data.lawsuit_subject_id == 1 &&
@@ -74,8 +74,8 @@ var KTWizard4 = (function () {
             }
 
             if (saved != 1) {
-              $("#preview_area").val(data);
-              $("#preview_area").summernote();
+              $("#preview-area").val(data);
+              $("#preview-area").summernote();
             }
 
             preview = 1;

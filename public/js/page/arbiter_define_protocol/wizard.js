@@ -36,10 +36,10 @@ var KTWizard4 = (function () {
 
       if (wizard.getStep() == 2 && preview == 0) {
         formEl.ajaxSubmit({
-          url: $("#preview_area").data("url"),
+          url: $("#preview-area").data("url"),
           success: function (data) {
-            $("#preview_area").val(data);
-            $("#preview_area").summernote();
+            $("#preview-area").val(data);
+            $("#preview-area").summernote();
             preview = 1;
           },
         });

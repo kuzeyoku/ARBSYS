@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="arbiter_process_info_protocol">
 
         @include('layout.breadcrumb', [
             'url' => [
@@ -69,8 +69,8 @@
                                                 değişkenler
                                                 kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri ile
                                                 değiştirilecektir.</p>
-                                            <textarea class="preview_area" name="preview" id="preview_area"
-                                                      data-url="{{ route('arbiter_process_info_protocol.preview', $lawsuit) }}">
+                                            <textarea class="preview-area" name="preview" id="preview-area"
+                                                data-url="{{ route('arbiter_process_info_protocol.preview', $lawsuit) }}">
                                                 </textarea>
                                         </div>
                                     </div>
@@ -143,7 +143,8 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/addSubSide.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/page/arbiter_process_info_protocol/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
 @endsection
