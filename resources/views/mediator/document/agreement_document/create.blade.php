@@ -169,7 +169,7 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/addSubSide.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/page/agreement_document/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
 @endsection

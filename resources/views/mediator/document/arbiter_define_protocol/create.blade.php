@@ -125,7 +125,8 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('js/page/arbiter_define_protocol/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script>
         $("input[name='arbiter_define_protocol_answer']").on('change', function() {

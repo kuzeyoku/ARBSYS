@@ -204,7 +204,8 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('js/page/invitation_letter/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
     <script>

@@ -305,7 +305,8 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('js/page/wage_agreement/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/plugins/mask-money.js') }}?v={{ time() }}"></script>
     <script>

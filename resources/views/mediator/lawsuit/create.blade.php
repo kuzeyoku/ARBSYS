@@ -391,6 +391,7 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/page/lawsuit/lawsuit.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/page/lawsuit/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
 @endsection
