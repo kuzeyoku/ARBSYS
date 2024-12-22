@@ -47,7 +47,7 @@
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::label('Toplantı Yeri') }}
-                                                {{ Form::select('mediation_center', \App\Models\MediationCenter::selectToArray(), $lawsuit->mediation_center ?? auth()->user()->mediator->meeting_address_proposal ? auth()->user()->mediator->mediation_center_id : null, ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+                                                {{ Form::select('mediation_center', \App\Models\MediationCenter::selectToArray(), auth()->user()->mediator->default_mediation_center ?? $lawsuit->mediation_center_id, ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::label('Adresi Elle Gir') }}

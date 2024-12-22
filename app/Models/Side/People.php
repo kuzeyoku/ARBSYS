@@ -5,6 +5,7 @@ namespace App\Models\Side;
 use App\Models\PersonType;
 use App\Models\User\User;
 
+use App\Services\HelperService;
 use Illuminate\Database\Eloquent\Model;
 
 class People extends Model
@@ -33,7 +34,12 @@ class People extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getDisplayNameAttribute()
+    public function getFullNameAttribute(): string
+    {
+        return HelperService::nameFormat($this->name) . " " . HelperService::nameFormat($this->surname);
+    }
+
+    public function getDisplayNameAttribute(): string
     {
         return $this->identification . " - " . $this->name;
     }

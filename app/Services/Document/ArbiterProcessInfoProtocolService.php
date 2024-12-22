@@ -14,7 +14,7 @@ class ArbiterProcessInfoProtocolService
 {
     public static function replaceKeywords(Request $request, Lawsuit $lawsuit)
     {
-
+        $documentService = new DocumentService($lawsuit, 2);
         if ($request->meeting_adress_check == 1 && $request->meeting_address) {
             $meeting_address = ucwords($request->meeting_address);
         } else {
@@ -29,23 +29,16 @@ class ArbiterProcessInfoProtocolService
         }
 
         $list = array(
-            "@ArabuluculukBurosu" => $lawsuit->mediation_office->name . " Arabuluculuk Bürosu",
+            "@ArabuluculukBurosu" => $lawsuit->mediation_office->name,
             "@ToplantiTarih" => Carbon::parse($request->meeting_date)->format('d/m/Y'),
             "@ToplantiSaat" => $request->meeting_start_hour,
-            "@ToplantiAdres" => HelperService::addressFormat($meeting_address),
+            "@ToplantiAdres" => $meeting_address,
             "@ArabuluculukMerkezi" => $mediation_center_title,
             "@ArabulucuAdSoyad" => auth()->user()->name,
             "@ArabulucuSicilNo" => auth()->user()->mediator->registration_no,
             "@NushaAdet" => HelperService::numberToText(count($request->side_ids) + 1),
         );
 
-        $find = array_keys($list);
-        $replace = array_values($list);
-
-        $document = DocumentTypeTemplate::where("lawsuit_subject_type_id", $lawsuit->lawsuit_subject_type_id)
-            ->where("document_type_id", 2)->first();
-
-        $string = str_ireplace($find, $replace, $document->html);
-        return $string;
+        return $documentService->replace($list);
     }
 }

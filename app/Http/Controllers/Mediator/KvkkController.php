@@ -6,7 +6,6 @@ use App\Models\Log;
 use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
 use App\Models\Document\Document;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Document\KvkkService;
 
@@ -21,24 +20,28 @@ class KvkkController extends Controller
     public function store(Request $request, Lawsuit $lawsuit)
     {
         try {
+            $document_content = $request->preview;
             Document::create([
                 "document_type_id" => 3,
                 "lawsuit_id" => $lawsuit->id,
-                "html" => $request->preview,
+                "html" => $document_content,
                 "created_user_id" => auth()->user()->id,
             ]);
-            $lawsuit->lawsuit_process_type()->associate(2);
-            $lawsuit->save();
-            Log::create([
-                "user_id" => auth()->user()->id,
-                "lawsuit_id" => $lawsuit->id,
-                "event" => "Kvkk Belgesi oluşturuldu.",
-            ]);
+            $this->storeLog($request, $lawsuit);
         } catch (\Exception $e) {
             throw $e;
         }
-        $response = view("mediator.document.print", ["document_content" => $request->preview])->render();
+        $response = view("mediator.document.print", compact("document_content"))->render();
         return response()->json($response);
+    }
+
+    private function storeLog($request, Lawsuit $lawsuit)
+    {
+        Log::create([
+            "user_id" => auth()->user()->id,
+            "lawsuit_id" => $lawsuit->id,
+            "event" => "Kvkk Belgesi oluşturuldu",
+        ]);
     }
 
     public function preview(Request $request, Lawsuit $lawsuit)

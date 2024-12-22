@@ -38,73 +38,96 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::get('/{notification}/okundu-olarak-isaretle', 'NotificationController@update')->name("notification.read");
 
     Route::prefix("dosya")->group(function () {
-        Route::get('/yeni', 'LawsuitController@create')->name('lawsuit.create');
-        Route::post('/kaydet', 'LawsuitController@store')->name('lawsuit.store');
-        Route::get('/{lawsuit}/duzenle', 'LawsuitController@edit')->name('lawsuit.edit');
-        Route::put('/{lawsuit}/guncelle', 'LawsuitController@update')->name('lawsuit.update');
-        Route::delete("/{lawsuit}/sil", 'LawsuitController@destroy')->name("lawsuit.destroy");
-        Route::match(["get", "post"], '/raporlama', 'LawsuitController@report')->name('lawsuit.report');
-        Route::get('/{lawsuit}/evraklar', 'DocumentController@index')->name('lawsuit.document');
-        Route::get('/{lawsuit}/notlar', 'LawsuitController@noteView')->name('lawsuit.note_view');
-        Route::post('/{lawsuit}/not-kaydet', 'LawsuitController@noteSave')->name('lawsuit.note.save');
-        Route::post('/udf-oku', 'LawsuitController@saveWithFile')->name('lawsuit.save_with_file');
-        Route::post('/confirm_udf', 'LawsuitController@confirm_udf')->name('lawsuit.confirm_udf');
-        Route::get('/dosya-tipleri', 'LawsuitController@getTypes');
-        Route::get('/{lawsuit}/loglar', 'Logs@index')->name('lawsuit.logs');
-        Route::get('/{lawsuit}/taraflar', 'SideController@index')->name('lawsuit.sides');
+        Route::name("lawsuit.")->group(function () {
+            Route::get("yeni", [App\Http\Controllers\Mediator\LawsuitController::class, "create"])->name("create");
+            Route::post("kaydet", [App\Http\Controllers\Mediator\LawsuitController::class, "store"])->name("store");
+            Route::get("{lawsuit}/duzenle", [App\Http\Controllers\Mediator\LawsuitController::class, "edit"])->name("edit");
+            Route::put("{lawsuit}/guncelle", [App\Http\Controllers\Mediator\LawsuitController::class, "update"])->name("update");
+            Route::delete("{lawsuit}/sil", [App\Http\Controllers\Mediator\LawsuitController::class, "destroy"])->name("destroy");
+            Route::match(["get", "post"], "raporlama", [App\Http\Controllers\Mediator\LawsuitController::class, "report"])->name("report");
+            Route::get("{lawsuit}/evraklar", [App\Http\Controllers\Mediator\DocumentController::class, "index"])->name("document");
+            Route::get("{lawsuit}/notlar", [App\Http\Controllers\Mediator\LawsuitController::class, "noteView"])->name("note_view");
+            Route::post("{lawsuit}/not-kaydet", [App\Http\Controllers\Mediator\LawsuitController::class, "noteSave"])->name("note.save");
+            Route::post("udf-oku", [App\Http\Controllers\Mediator\LawsuitController::class, "saveWithFile"])->name("save_with_file");
+            Route::post("confirm_udf", [App\Http\Controllers\Mediator\LawsuitController::class, "confirm_udf"])->name("confirm_udf");
+            Route::get("dosya-tipleri", [App\Http\Controllers\Mediator\LawsuitController::class, "getTypes"])->name("get_types");
+            Route::get("{lawsuit}/loglar", [App\Http\Controllers\Mediator\Logs::class, "index"])->name("logs");
+            Route::get("{lawsuit}/taraflar", [App\Http\Controllers\Mediator\SideController::class, "index"])->name("sides");
+        });
 
         //TUTANAKLAR
         //Davet Mektubu
-        Route::get('/{lawsuit}/davet-mektubu-olustur', [App\Http\Controllers\Mediator\InvitationLetterController::class, "create"])->name('invitation_letter.create');
-        Route::post('/{lawsuit}/davet-mektubu-kaydet', [App\Http\Controllers\Mediator\InvitationLetterController::class, "store"])->name('invitation_letter.store');
-        Route::post('/{lawsuit}/davet-mektubu-onizle', [App\Http\Controllers\Mediator\InvitationLetterController::class, "preview"])->name('invitation_letter.preview');
+        Route::name("invitation_letter.")->group(function () {
+            Route::get('/{lawsuit}/davet-mektubu-olustur', [App\Http\Controllers\Mediator\InvitationLetterController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/davet-mektubu-kaydet', [App\Http\Controllers\Mediator\InvitationLetterController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/davet-mektubu-onizle', [App\Http\Controllers\Mediator\InvitationLetterController::class, "preview"])->name('preview');
+
+        });
 
         //KVKK Belgesi
-        Route::get('/{lawsuit}/kvkk-belgesi-olustur', 'KvkkController@create')->name('kvkk.create');
-        Route::post('/{lawsuit}/kvkk-belgesi-kaydet', 'KvkkController@store')->name('kvkk.store');
-        Route::post('/{lawsuit}/kvkk-onizle', 'KvkkController@preview')->name('kvkk.preview');
+        Route::name("kvkk.")->group(function () {
+            Route::get('/{lawsuit}/kvkk-belgesi-olustur', [App\Http\Controllers\Mediator\KvkkController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/kvkk-belgesi-kaydet', [App\Http\Controllers\Mediator\KvkkController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/kvkk-belgesi-onizle', [App\Http\Controllers\Mediator\KvkkController::class, "preview"])->name('preview');
+        });
 
         //Bilgilendirme Tutanağı
-        Route::get('/{lawsuit}/bilgilendirme-tutanagi-olustur', 'ArbiterProcessInfoProtocolController@create')->name('arbiter_process_info_protocol.create');
-        Route::post('/{lawsuit}/bilgilendirme-tutanagi-kaydet', 'ArbiterProcessInfoProtocolController@store')->name('arbiter_process_info_protocol.store');
-        Route::post('/{lawsuit}/bilgilendirme-tutanagi-onizle', 'ArbiterProcessInfoProtocolController@preview')->name('arbiter_process_info_protocol.preview');
+        Route::name("arbiter_process_info_protocol.")->group(function () {
+            Route::get('/{lawsuit}/bilgilendirme-tutanagi-olustur', [App\Http\Controllers\Mediator\ArbiterProcessInfoProtocolController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/bilgilendirme-tutanagi-kaydet', [App\Http\Controllers\Mediator\ArbiterProcessInfoProtocolController::class, "store", "store"])->name('store');
+            Route::post('/{lawsuit}/bilgilendirme-tutanagi-onizle', [App\Http\Controllers\Mediator\ArbiterProcessInfoProtocolController::class, "preview", "preview"])->name('preview');
+        });
 
         //Arabulucu Belirleme Tutanağı
-        Route::get('/{lawsuit}/arabulucu-belirleme-tutanagi-olustur', 'ArbiterDefineProtocolController@create')->name('arbiter_define_protocol.create');
-        Route::post('/{lawsuit}/arabulucu-belirleme-tutanagi-kaydet', 'ArbiterDefineProtocolController@store')->name('arbiter_define_protocol.store');
-        Route::post('/{lawsuit}/arabulucu-belirleme-tutanagi-onizle', 'ArbiterDefineProtocolController@preview')->name('arbiter_define_protocol.preview');
+        Route::name("arbiter_define_protocol.")->group(function () {
+            Route::get('/{lawsuit}/arabulucu-belirleme-tutanagi-olustur', [App\Http\Controllers\Mediator\ArbiterDefineProtocolController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/arabulucu-belirleme-tutanagi-kaydet', [App\Http\Controllers\Mediator\ArbiterDefineProtocolController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/arabulucu-belirleme-tutanagi-onizle', [App\Http\Controllers\Mediator\ArbiterDefineProtocolController::class, "preview"])->name('preview');
+        });
 
         //İlk Toplantı Tutanağı
-        Route::get('/{lawsuit}/toplanti-tutanagi-olustur', 'MeetingProtocolController@create')->name("meeting_protocol.create");
-        Route::post('/{lawsuit}/toplanti-tutanagi-kaydet', 'MeetingProtocolController@store')->name('meeting_protocol.store');
-        Route::post('/{lawsuit}/toplanti-tutanagi-onizle', 'MeetingProtocolController@preview')->name('meeting_protocol.preview');
+        Route::name("meeting_protocol.")->group(function () {
+            Route::get('/{lawsuit}/ilk-toplanti-tutanagi-olustur', [App\Http\Controllers\Mediator\MeetingProtocolController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/ilk-toplanti-tutanagi-kaydet', [App\Http\Controllers\Mediator\MeetingProtocolController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/ilk-toplanti-tutanagi-onizle', [App\Http\Controllers\Mediator\MeetingProtocolController::class, "preview"])->name('preview');
+        });
 
         //Anlaşma Belgesi
-        Route::get('/{lawsuit}/anlasma-belgesi-olustur', 'AgreementDocumentController@create')->name("agreement_document.create");
-        Route::post('/{lawsuit}/anlasma-belgesi-kaydet', 'AgreementDocumentController@store')->name('agreement_document.store');
-        Route::post('/{lawsuit}/anlasma-belgesi-onizle', 'AgreementDocumentController@preview')->name('agreement_document.preview');
+        Route::name("agreement_document.")->group(function () {
+            Route::get('/{lawsuit}/anlasma-belgesi-olustur', [App\Http\Controllers\Mediator\AgreementDocumentController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/anlasma-belgesi-kaydet', [App\Http\Controllers\Mediator\AgreementDocumentController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/anlasma-belgesi-onizle', [App\Http\Controllers\Mediator\AgreementDocumentController::class, "preview"])->name('preview');
+        });
 
         //Ücret Sözlesmesi
-        Route::get('/{lawsuit}/ucret-sozlesmesi-olustur', 'WageAgreementController@create')->name("wage_agreement.create");
-        Route::post('/{lawsuit}/ucret-sozlesmesi-kaydet', 'WageAgreementController@store')->name('wage_agreement.store');
-        Route::post('/{lawsuit}/ucret-sozlesmesi-onizle', 'WageAgreementController@preview')->name('wage_agreement.preview');
-        Route::post('/wage_agreement_aaut_first', 'WageAgreementController@aautFirst')->name('wage_agreement.aaut_first');
-        Route::post('/wage_agreement_aaut_second', 'WageAgreementController@aautSecond')->name('wage_agreement.aaut_second');
+        Route::name("wage_agreement.")->group(function () {
+            Route::get('/{lawsuit}/ucret-sozlesmesi-olustur', [App\Http\Controllers\Mediator\WageAgreementController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/ucret-sozlesmesi-kaydet', [App\Http\Controllers\Mediator\WageAgreementController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/ucret-sozlesmesi-onizle', [App\Http\Controllers\Mediator\WageAgreementController::class, "preview"])->name('preview');
+            Route::post("/wage_agreement_aaut_first", [App\Http\Controllers\Mediator\WageAgreementController::class, "aautFirst"])->name('aaut_first');
+            Route::post("/wage_agreement_aaut_second", [App\Http\Controllers\Mediator\WageAgreementController::class, "aautSecond"])->name('aaut_second');
+        });
 
         //Son Tutanak
-        Route::get('/{lawsuit}/son-tutanak-olustur', 'FinalProtocolController@create')->name("final_protocol.create");
-        Route::post('/{lawsuit}/son-tutanak-kaydet', 'FinalProtocolController@store')->name('final_protocol.store');
-        Route::post('/{lawsuit}/son-tutanak-onizle', 'FinalProtocolController@preview')->name('final_protocol.preview');
+        Route::name("final_protocol.")->group(function () {
+            Route::get('/{lawsuit}/son-tutanak-olustur', [App\Http\Controllers\Mediator\FinalProtocolController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/son-tutanak-kaydet', [App\Http\Controllers\Mediator\FinalProtocolController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/son-tutanak-onizle', [App\Http\Controllers\Mediator\FinalProtocolController::class, "preview"])->name('preview');
+        });
 
         //Yetki İtirazı Üst Yazı'
-        Route::get('/{lawsuit}/yetki-itirazi-ust-yazi-olustur', 'AuthorityObjectionController@create')->name('authority_objection.create');
-        Route::post('/{lawsuit}/yetki-itirazi-ust-yazi-kaydet', 'AuthorityObjectionController@store')->name('authority_objection.store');
-        Route::post('/{lawsuit}/yetki-itirazi-ust-yazi-onizle', 'AuthorityObjectionController@preview')->name('authority_objection.preview');
+        Route::name("authority_objection.")->group(function () {
+            Route::get('/{lawsuit}/yetki-itirazi-ust-yazi-olustur', [App\Http\Controllers\Mediator\AuthorityObjectionController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/yetki-itirazi-ust-yazi-kaydet', [App\Http\Controllers\Mediator\AuthorityObjectionController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/yetki-itirazi-ust-yazi-onizle', [App\Http\Controllers\Mediator\AuthorityObjectionController::class, "preview"])->name('preview');
+        });
 
         //Yetki Belgesi
-        Route::get('/{lawsuit}/yetki-belgesi-olustur', 'AuthorityDocumentController@create')->name('authority_document.create');
-        Route::post('/{lawsuit}/yetki-belgesi-kaydet', 'AuthorityDocumentController@store')->name('authority_document.store');
-        Route::post('/{lawsuit}/yetki-belgesi-onizle', 'AuthorityDocumentController@preview')->name('authority_document.preview');
+        Route::name("authority_document.")->group(function () {
+            Route::get('/{lawsuit}/yetki-belgesi-olustur', [App\Http\Controllers\Mediator\AuthorityDocumentController::class, "create"])->name('create');
+            Route::post('/{lawsuit}/yetki-belgesi-kaydet', [App\Http\Controllers\Mediator\AuthorityDocumentController::class, "store"])->name('store');
+            Route::post('/{lawsuit}/yetki-belgesi-onizle', [App\Http\Controllers\Mediator\AuthorityDocumentController::class, "preview"])->name('preview');
+        });
     });
 
     Route::get("/dosya/{lawsuit}/davet-mektubu", 'InvitationLetterController@show')->name('invitation_letter.show');

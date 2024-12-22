@@ -17,9 +17,6 @@
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
-                            @if (session('data'))
-                                <a href={{ session('data') }} class="btn btn-success mr-2" download>UDF Dosya indir</a>
-                            @endif
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
                                 UDF Dönüştürücü
                             </button>
@@ -35,7 +32,7 @@
                 </div>
                 <div class="kt-portlet__body">
                     <div class="udf-spinner"></div>
-                    <table class="table table-striped- table-bordered table-hover table-checkable none-display"
+                    <table class="table table-striped table-bordered"
                         id="dataTable">
                         <thead>
                             <tr>
@@ -277,19 +274,8 @@
         });
     </script>
     <script>
-        $(function() {
-            $(".custom-spinner").hide();
-        });
-
-        $("#udf-format-file").submit(function() {
-            $(this).hide();
-            $(".custom-spinner").show();
-        });
 
         //docx belge indirme script kodları
-
-
-
 
         $("#next_level_modal_open").on('click', function(e) {
             e.preventDefault();
@@ -312,40 +298,6 @@
                         type: 'error',
                         confirmButtonText: 'Tamam'
                     });
-            });
-        });
-
-        $("body").delegate(".udf_btn", "click", async function() {
-            $(".udf-spinner").append(`<div class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>`);
-
-            $(".none-display").css("display", "none");
-
-            var id = $(this).data('id');
-            let response = await fetch('/evrak/' + id + '/pdf-indir/');
-            let data = await response.blob();
-            let d = new Date();
-            let file = new File([data], d.getTime() + ".pdf", {
-                type: data.type
-            });
-            var form = new FormData();
-            form.append("file", file);
-            $.ajax({
-                "url": "https://udf-converter.herokuapp.com/v1/convert/upload",
-                "method": "POST",
-                "timeout": 0,
-                "processData": false,
-                "mimeType": "multipart/form-data",
-                "contentType": false,
-                "data": form
-            }).done(function(response) {
-
-                window.location.replace(response);
-                $(".udf-spinner div").remove();
-                $(".none-display").css("display", "block");
             });
         });
 

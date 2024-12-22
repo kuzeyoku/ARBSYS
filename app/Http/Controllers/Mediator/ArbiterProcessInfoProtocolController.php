@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mediator;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
 use App\Models\Document\Document;
@@ -18,16 +19,10 @@ class ArbiterProcessInfoProtocolController extends Controller
         return view('mediator.document.arbiter_process_info_protocol.create', compact('lawsuit'));
     }
 
-    public function store(Request $request, Lawsuit $lawsuit)
+    public function store(Request $request, Lawsuit $lawsuit): JsonResponse
     {
-
         DB::beginTransaction();
         try {
-            Log::create([
-                "user_id" => auth()->user()->id,
-                "lawsuit_id" => $lawsuit->id,
-                "event" => "Arabuluculuk Sürecine İlişkin Bilgilendirme Tutanağı Oluşturuldu"
-            ]);
             $document_content = $request->preview;
             Document::create([
                 "document_type_id" => 2,
@@ -35,23 +30,37 @@ class ArbiterProcessInfoProtocolController extends Controller
                 "html" => $document_content,
                 "created_user_id" => auth()->id(),
             ]);
-
-            $lawsuit->meeting()->update([
-                "date" => $request->meeting_date,
-                "start_hour" => $request->meeting_start_hour
-            ]);
-
+            $this->meetingCreate($request, $lawsuit);
+            $this->storeLog($lawsuit);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
-
         $response = view("mediator.document.print", compact("document_content"))->render();
-
         return response()->json($response);
     }
 
+    private function meetingCreate($request, Lawsuit $lawsuit): void
+    {
+        $check = $lawsuit->meeting()->where("date", $request->meeting_date)->where("start_hour", $request->meeting_start_hour)->exists();
+        if (!$check) {
+            $lawsuit->meeting()->create([
+                "user_id" => auth()->user()->id,
+                "date" => $request->meeting_date,
+                "start_hour" => $request->meeting_start_hour
+            ]);
+        }
+    }
+
+    private function storeLog(Lawsuit $lawsuit): void
+    {
+        Log::create([
+            "user_id" => auth()->user()->id,
+            "lawsuit_id" => $lawsuit->id,
+            "event" => "Arabuluculuk Sürecine İlişkin Bilgilendirme Tutanağı Oluşturuldu."
+        ]);
+    }
 
     public function preview(Request $request, Lawsuit $lawsuit)
     {

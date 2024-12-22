@@ -5,6 +5,7 @@ namespace App\Models\Document;
 use App\Models\Lawsuit\LawsuitSubject;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Lawsuit\LawsuitSubjectType;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DocumentTypeTemplate extends Model
 {
@@ -14,17 +15,17 @@ class DocumentTypeTemplate extends Model
 
     public $timestamps = false;
 
-    public function documentType()
+    public function documentType(): BelongsTo
     {
         return $this->belongsTo(DocumentType::class);
     }
 
-    public function lawsuitSubjectType()
+    public function lawsuitSubjectType(): BelongsTo
     {
         return $this->belongsTo(LawsuitSubjectType::class);
     }
 
-    public function lawsuitSubject()
+    public function lawsuitSubject(): BelongsTo
     {
         return $this->belongsTo(LawsuitSubject::class);
     }

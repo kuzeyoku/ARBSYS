@@ -108,7 +108,7 @@ if ($("#dataTable").length > 0) {
         responsive: true,
         order: [[0, "desc"]],
         language: {
-            url: "./js/Turkish.json",
+            url: "/js/Turkish.json",
         },
         searching: true,
         lengthChange: true,

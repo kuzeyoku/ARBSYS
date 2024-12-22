@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Mediator;
 
 use App\Models\Log;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
 use App\Models\Document\Document;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Meeting;
 use App\Services\Document\InvitationLetterService;
 
 class InvitationLetterController extends Controller
@@ -18,20 +18,12 @@ class InvitationLetterController extends Controller
         return view('mediator.document.invitation_letter.create', compact('lawsuit'));
     }
 
-    public function store(Request $request, Lawsuit $lawsuit)
+    public function store(Request $request, Lawsuit $lawsuit): JsonResponse
     {
         DB::beginTransaction();
         try {
-            Log::create([
-                "user_id" => auth()->user()->id,
-                "lawsuit_id" => $lawsuit->id,
-                "event" => "Davet mektubu oluşturuldu.",
-            ]);
-
-            $lawsuit->lawsuit_process_type_id = 2;
-            $lawsuit->matters_discussed = json_encode($request->matters_discussed, JSON_UNESCAPED_UNICODE);
-            $lawsuit->save();
-
+            $this->updateProcessType($lawsuit);
+            $this->lawsuitMattersDiscussedUpdate($request, $lawsuit);
             foreach ($request->side_ids as $side) {
                 $document_content = $request->{"preview-" . $side};
                 $documents[] = [
@@ -44,12 +36,8 @@ class InvitationLetterController extends Controller
                 $response[$side] = view("mediator.document.print", compact("document_content"))->render();
             }
             Document::insert($documents);
-            Meeting::create([
-                "lawsuit_id" => $lawsuit->id,
-                "user_id" => auth()->user()->id,
-                "date" => $request->meeting_date,
-                "start_hour" => $request->meeting_start_hour,
-            ]);
+            $this->meetingCreate($request, $lawsuit);
+            $this->storeLog($lawsuit);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -59,7 +47,41 @@ class InvitationLetterController extends Controller
         return response()->json($response);
     }
 
-    public function preview(Request $request, Lawsuit $lawsuit)
+    private function updateProcessType(Lawsuit $lawsuit): void
+    {
+        $lawsuit->lawsuit_process_type()->associate(2);
+        $lawsuit->save();
+    }
+
+    private function lawsuitMattersDiscussedUpdate($request, Lawsuit $lawsuit): void
+    {
+        $lawsuit->update([
+            "matters_discussed" => json_encode($request->matters_discussed, JSON_UNESCAPED_UNICODE),
+        ]);
+    }
+
+    private function meetingCreate($request, Lawsuit $lawsuit): void
+    {
+        $check = $lawsuit->meeting()->where("date", $request->meeting_date)->where("start_hour", $request->meeting_start_hour)->exists();
+        if (!$check) {
+            $lawsuit->meeting()->create([
+                "user_id" => auth()->user()->id,
+                "date" => $request->meeting_date,
+                "start_hour" => $request->meeting_start_hour
+            ]);
+        }
+    }
+
+    private function storeLog($lawsuit): void
+    {
+        Log::create([
+            "user_id" => auth()->user()->id,
+            "lawsuit_id" => $lawsuit->id,
+            "event" => "Davet Mektubu Oluşturuldu",
+        ]);
+    }
+
+    public function preview(Request $request, Lawsuit $lawsuit): JsonResponse
     {
         $sides = $lawsuit->sides()->whereIn("id", $request->side_ids)->get();
         $response = [];
