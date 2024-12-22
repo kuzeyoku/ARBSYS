@@ -69,6 +69,13 @@ class ArbiterProcessInfoProtocolController extends Controller
     //     return view("mediator.document.preview", compact('document_content', "lawsuit", 'sides'));
     // }
 
+    // public function preview(Request $request, Lawsuit $lawsuit)
+    // {
+    //     $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
+    //     $sides = $request->side_ids;
+    //     return view("mediator.document.preview", compact('document_content', "lawsuit", 'sides'));
+    // }
+
     public function preview(Request $request, Lawsuit $lawsuit)
     {
         $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
