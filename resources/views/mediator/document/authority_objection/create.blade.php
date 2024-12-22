@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="authority_objection">
 
         @include('layout.breadcrumb', [
             'url' => [
@@ -105,7 +105,7 @@
                                                 <p class="red-text"><strong>Not:</strong> @ İşareti ile başlayan
                                                     değişkenler kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri ile
                                                     değiştirilecektir.</p>
-                                                <textarea class="preview_area" name="preview" id="preview_area"
+                                                <textarea class="preview-area" name="preview" id="preview-area"
                                                     data-url="{{ route('authority_objection.preview', $lawsuit) }}">
                                                 </textarea>
                                             </div>

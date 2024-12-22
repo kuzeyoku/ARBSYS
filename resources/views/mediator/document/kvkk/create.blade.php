@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kvkk" id="kt_content">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kvkk" id="kt_content" page-name="kvkk">
 
         @include('layout.breadcrumb', [
             'url' => [route('lawsuit.index') => 'Dosyalar', null => 'KVKK Belgesi Oluştur'],
@@ -38,7 +38,7 @@
                                                 <p class="red-text"><strong>Not:</strong> @ İşareti ile başlayan
                                                     değişkenler kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri
                                                     ile değiştirilecektir.</p>
-                                                <textarea class="preview_area" name="preview" id="preview_area" data-url="{{ route('kvkk.preview', $lawsuit) }}">
+                                                <textarea class="preview-area" name="preview" id="preview-area" data-url="{{ route('kvkk.preview', $lawsuit) }}">
                                                 </textarea>
                                             </div>
                                         </div>
@@ -110,7 +110,7 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/addSubSide.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/page/kvkk_document/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
 @endsection

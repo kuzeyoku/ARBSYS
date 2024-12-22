@@ -57,10 +57,10 @@ var KTWizard4 = (function () {
       KTUtil.scrollTop();
       if (wizard.getStep() == 2 && preview == 0) {
         formEl.ajaxSubmit({
-          url: $("#preview_area").data("url"),
+          url: $("#preview-area").data("url"),
           success: function (data) {
-            $("#preview_area").val(data);
-            createEditor("#preview_area");
+            $("#preview-area").val(data);
+            createEditor("#preview-area");
             preview = 1;
           },
         });

@@ -36,7 +36,7 @@ var KTWizard4 = (function () {
       KTUtil.scrollTop();
       if (wizard.getStep() === 4 && preview == 0) {
         formEl.ajaxSubmit({
-          url: $("#preview_area").data("url"),
+          url: $("#preview-area").data("url"),
           success: function (data) {
             if (saved !== 1) {
               $("#select_signature_method_modal").modal("show");
@@ -47,7 +47,7 @@ var KTWizard4 = (function () {
                 ).val();
                 $("#signature_method").html(signature_method);
                 var content = $(".note-editable").html();
-                $(".preview_area").summernote("code", content);
+                $(".preview-area").summernote("code", content);
               });
             }
             if (
@@ -72,8 +72,8 @@ var KTWizard4 = (function () {
               $("#select_subject_modal").modal("show");
             }
             if (saved !== 1) {
-              $("#preview_area").val(data);
-              $("#preview_area").summernote({});
+              $("#preview-area").val(data);
+              $("#preview-area").summernote({});
             }
             preview = 1;
           },

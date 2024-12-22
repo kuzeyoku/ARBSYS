@@ -495,3 +495,24 @@ function generateUniqueId() {
         Math.random().toString(36).substr(2, 9)
     );
 }
+
+function notification(title = null, message, template) {
+    title ? toastr[template](message, title) : toastr[template](message);
+    toastr.options = {
+        closeButton: true,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut",
+    };
+}

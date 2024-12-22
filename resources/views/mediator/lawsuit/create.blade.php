@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="lawsuit">
         @include('layout.breadcrumb', ['url' => [null => 'Dosya Aç']])
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="kt-wizard-v4" id="kt_wizard_lawsuit_v4" data-ktwizard-state="step-first">

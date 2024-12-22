@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor invitation_letter" id="kt_content">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor invitation_letter" id="kt_content" page-name="invitation_letter">
 
         @include('layout.breadcrumb', [
             'url' => [route('lawsuit.index') => 'Dosyalar', null => 'Davet Mektubu Oluştur'],
@@ -103,7 +103,7 @@
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
                                     <div class="kt-heading kt-heading--md">Detaylarınızı İnceleyin ve Gönderin</div>
                                     <div class="kt-form__section kt-form__section--first">
-                                        <div class="kt-wizard-v4__form" id="preview-content"
+                                        <div class="kt-wizard-v4__form" id="preview-area"
                                              data-url="{{ route('invitation_letter.preview', $lawsuit) }}">
                                         </div>
                                     </div>

@@ -19,18 +19,18 @@ var KTWizard4 = (function () {
 
     // Validation before going to next page
     wizard.on("beforeNext", function (wizardObj) {
-      if (wizard.getStep() == 1) {
-        var checkbox = $("#kt_form input[type='checkbox']:checked");
-        if (checkbox.length == 0) {
-          swal.fire({
-            title: "",
-            text: "Lütfen en az bir katılımcı seçiniz!",
-            type: "error",
-            confirmButtonClass: "btn btn-secondary",
-          });
-          wizardObj.stop(); // don't go to the next step
-        }
-      }
+      // if (wizard.getStep() == 1) {
+      //   var checkbox = $("#kt_form input[type='checkbox']:checked");
+      //   if (checkbox.length == 0) {
+      //     swal.fire({
+      //       title: "",
+      //       text: "Lütfen en az bir katılımcı seçiniz!",
+      //       type: "error",
+      //       confirmButtonClass: "btn btn-secondary",
+      //     });
+      //     wizardObj.stop(); // don't go to the next step
+      //   }
+      // }
       if (validator.form() !== true) {
         wizardObj.stop(); // don't go to the next step
       }
@@ -57,10 +57,10 @@ var KTWizard4 = (function () {
       KTUtil.scrollTop();
       if (wizard.getStep() == 3 && preview == 0) {
         formEl.ajaxSubmit({
-          url: $("#preview_area").data("url"),
+          url: $("#preview-area").data("url"),
           success: function (data) {
-            $("#preview_area").val(data);
-            createEditor("#preview_area");
+            $("#preview-area").val(data);
+            createEditor("#preview-area");
             preview = 1;
           },
         });
@@ -81,6 +81,7 @@ var KTWizard4 = (function () {
       rules: {
         //= Step 1
         //= Step 2
+        "side_ids[]": { required: true },
         meeting_date: {
           required: true,
         },

@@ -29,6 +29,7 @@ function getModalContent(url, type) {
 }
 
 $(document).ready(function () {
+    console.log('lawsuit.js');
     //Görev Kabul Tarihi Kontrol İşlemi
     $(".custom-next-button-date-logic").on("click", function () {
         var applicationDate = new Date($('input[name="application_date"]').val());
@@ -411,28 +412,6 @@ function getStep() {
     return parseInt(
         $("[data-ktwizard-type='step'][data-ktwizard-state='current'] div div.kt-wizard-v4__nav-number").text()
     );
-}
-
-function notification(message, template) {
-    toastr[template](message);
-
-    toastr.options = {
-        closeButton: true,
-        debug: false,
-        newestOnTop: false,
-        progressBar: false,
-        positionClass: "toast-top-right",
-        preventDuplicates: false,
-        onclick: null,
-        showDuration: "300",
-        hideDuration: "1000",
-        timeOut: "5000",
-        extendedTimeOut: "1000",
-        showEasing: "swing",
-        hideEasing: "linear",
-        showMethod: "fadeIn",
-        hideMethod: "fadeOut",
-    };
 }
 
 // Lawyer Operations

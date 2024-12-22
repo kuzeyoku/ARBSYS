@@ -5,30 +5,6 @@ var side_applicant_type_id = "";
 var if_udf = 0;
 var index = 0;
 
-function notification(title, message, template) {
-
-    toastr[template](message, title)
-
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
-
-    //alert(message)
-}
 
 function tcValidate(input)
 {
