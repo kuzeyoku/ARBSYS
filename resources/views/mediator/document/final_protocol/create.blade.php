@@ -262,7 +262,8 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/addSubSide.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/page/final_protocol/wizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
     <script>
