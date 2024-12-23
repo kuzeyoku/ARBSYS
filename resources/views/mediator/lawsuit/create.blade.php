@@ -1,6 +1,7 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="lawsuit">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content"
+         page-name="lawsuit">
         @include('layout.breadcrumb', ['url' => [null => 'Dosya Aç']])
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="kt-wizard-v4" id="kt_wizard_lawsuit_v4" data-ktwizard-state="step-first">
@@ -135,24 +136,17 @@
                                         <div class="kt-heading kt-heading--md">Dosya Bilgileri</div>
                                         <div class="kt-form__section kt-form__section--first">
                                             <div class="kt-wizard-v4__form">
-                                                <div class="form-group">
-                                                    <input type="hidden" name="delivery_by">
-                                                    <label for="delivery_by">Arabuluculuk Görevini Nasıl Üstlendiniz
-                                                        ?</label>
-                                                    {{ Form::select('lawsuit_type', App\Models\Lawsuit\LawsuitType::selectToArray(), 'default', ['class' => 'form-control', 'id' => 'delivery_by', 'placeholder' => '--Seçiniz--']) }}
+                                                <div class="form-group" id="lawsuit-types">
+                                                    {{ Form::label("lawsuit_type_id", "Dosya Türü") }}
+                                                    {{ Form::select('lawsuit_type_id', App\Models\Lawsuit\LawsuitType::selectToArray(), 'default', ['class' => 'form-control', 'placeholder' => '--Seçiniz--']) }}
                                                 </div>
-                                                <div class="form-group" style="display:none;"
-                                                     id="lawsuit_subject_types_select">
-                                                    <label for="lawsuit_subject_types">Uyuşmazlık Türü</label>
-                                                    {{ Form::select('lawsuit_subject_type', App\Models\Lawsuit\LawsuitSubjectType::selectToArray(), 'default', ['class' => 'form-control', 'id' => 'lawsuit_subject_types', 'placeholder' => '--Seçiniz--']) }}
-
+                                                <div class="form-group d-none" id="lawsuit-subject-types">
+                                                    {{ Form::label("lawsuit_subject_type_id", "Uyuşmazlık Türü") }}
+                                                    {{ Form::select('lawsuit_subject_type_id', App\Models\Lawsuit\LawsuitSubjectType::selectToArray(), 'default', ['class' => 'form-control','placeholder' => '--Seçiniz--', "data-url"=>route("get_lawsuit_subjects")]) }}
                                                 </div>
-                                                <div class="form-group" style="display:none;"
-                                                     id="lawsuit_subjects_select">
-                                                    <label for="lawsuit_subjects">Uyuşmazlık Konusu</label>
-                                                    <select class="form-control" id="lawsuit_subjects"
-                                                            name="lawsuit_subject">
-                                                    </select>
+                                                <div class="form-group d-none" id="lawsuit-subjects">
+                                                    {{Form::label("lawsuit_subject_id", "Uyuşmazlık Konusu")}}
+                                                    {{Form::select("lawsuit_subject_id", [], "default", ["class" => "form-control", "placeholder" => "--Seçiniz--"])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -167,69 +161,59 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label>Arabuluculuk Bürosu</label>
-                                                            {{ Form::select('mediation_office', App\Models\MediationOffice::selectToArray(), 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+                                                            {{Form::label('mediation_office_id', 'Arabuluculuk Bürosu')}}
+                                                            {{ Form::select('mediation_office_id', App\Models\MediationOffice::selectToArray(), 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label>Arabuluculuk Merkezi</label>
-                                                            {{ Form::select('mediation_center', App\Models\MediationCenter::selectToArray(), 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+                                                            {{Form::label('mediation_center_id', 'Arabuluculuk Merkezi')}}
+                                                            {{ Form::select('mediation_center_id', App\Models\MediationCenter::selectToArray(), 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group" id="application_document_no">
-                                                    <label>Başvuru Dosya No :</label>
-                                                    <input type="text" class="form-control"
-                                                           name="application_document_no" autocomplete="off"
-                                                           placeholder="{{ date('Y') }}/"/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Arabuluculuk Dosya No :</label>
-                                                    <input type="text" class="form-control"
-                                                           name="mediation_document_no" autocomplete="off"
-                                                           placeholder="{{ date('Y') }}/"/>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group" id="application_document_no">
+                                                            {{Form::label('application_document_no', 'Başvuru Dosya No')}}
+                                                            {{Form::text('application_document_no', null, ['class' => 'form-control', 'placeholder' => date('Y').'/'])}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            {{Form::label("mediation_document_no", "Arabuluculuk Dosya No")}}
+                                                            {{Form::text("mediation_document_no", null, ["class" => "form-control", "placeholder" => date('Y')."/"])}}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6" id="application_date">
                                                         <div class="form-group">
-                                                            <label>Başvuru Tarihi :</label>
-                                                            <input type="date" class="form-control application_date"
-                                                                   name="application_date" autocomplete="off">
+                                                            {{Form::label('application_date', 'Başvuru Tarihi')}}
+                                                            {{Form::date('application_date', null, ['class' => 'form-control'])}}
                                                         </div>
                                                     </div>
                                                     <div class="col-6" id="job_date">
                                                         <div class="form-group">
-                                                            <label>Görevi Kabul Tarihi :</label>
-                                                            <input type="date" class="form-control job_date "
-                                                                   name="job_date" autocomplete="off">
+                                                            {{Form::label('job_date', 'Görevi Kabul Tarihi')}}
+                                                            {{Form::date('job_date', null, ['class' => 'form-control'])}}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group" id="process_start_date"
-                                                             style="display: none;">
-                                                            <label>Sürecin Başlangıç Tarihi :</label>
-                                                            <input type="text"
-                                                                   class="form-control datepicker datedotmask"
-                                                                   name="process_start_date" autocomplete="off">
-                                                        </div>
-                                                        <div class="form-group" style="display: none">
-                                                            <label for="process_type_id">Süreç Bilgisi: </label>
-                                                            {{ Form::select('process_type', App\Models\Lawsuit\LawsuitProcessType::selectToArray(), ['class' => 'form-control', 'placeholder' => '--Seçiniz--']) }}
-                                                        </div>
-                                                        <div class="form-group" id="result_type" style="display:none;">
-                                                            <label>Sonuç Türü: </label>
-                                                            {{ Form::select('result_type', App\Models\Lawsuit\LawsuitResultType::selectToArray(), ['class' => 'form-control', 'placeholder' => '--Seçiniz--']) }}
-                                                        </div>
-                                                        <div class="form-group" id="result_date" style="display:none;">
-                                                            <label>Sonuçlandırma Tarihi :</label>
-                                                            <input type="text"
-                                                                   class="form-control datepicker datedotmask"
-                                                                   name="result_date" autocomplete="off">
-                                                        </div>
-                                                    </div>
+                                                <div class="form-group" id="process_start_date"
+                                                     style="display: none;">
+                                                    {{Form::label('process_start_date', 'Sürecin Başlangıç Tarihi')}}
+                                                    {{Form::date('process_start_date', null, ['class' => 'form-control'])}}
+                                                </div>
+                                                <div class="form-group" style="display: none">
+                                                    {{Form::label("process_type", "Süreç Bilgisi")}}
+                                                    {{ Form::select('process_type', App\Models\Lawsuit\LawsuitProcessType::selectToArray(), ['class' => 'form-control', 'placeholder' => '--Seçiniz--']) }}
+                                                </div>
+                                                <div class="form-group" id="result_type" style="display:none;">
+                                                    {{Form::label("result_type", "Sonuçlandırma Türü")}}}
+                                                    {{ Form::select('result_type', App\Models\Lawsuit\LawsuitResultType::selectToArray(), ['class' => 'form-control', 'placeholder' => '--Seçiniz--']) }}
+                                                </div>
+                                                <div class="form-group" id="result_date" style="display:none;">
+                                                    {{Form::label('result_date', 'Sonuçlandırma Tarihi')}}
+                                                    {{Form::date('result_date', null, ['class' => 'form-control'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -391,7 +375,8 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/page/lawsuit/lawsuit.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{asset("js/page/lawsuit/wizard.js")}}"></script>
+    {{--    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+        <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>--}}
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
 @endsection

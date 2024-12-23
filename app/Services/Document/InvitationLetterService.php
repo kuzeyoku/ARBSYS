@@ -40,8 +40,8 @@ class InvitationLetterService
             $meeting_address = ucwords($request->meeting_address);
             $mediation_center_title = null;
         } else {
-            if ($request->mediation_center) {
-                $mediation_center = MediationCenter::find($request->mediation_center);
+            if ($request->mediation_center_id) {
+                $mediation_center = MediationCenter::find($request->mediation_center_id);
                 $mediation_center_title = $mediation_center->title;
                 $meeting_address = $mediation_center->address;
             } else {

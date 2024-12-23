@@ -45,21 +45,21 @@ class LawsuitController extends Controller
         }));
     }
 
-/*    public function getModalContent(Request $request): array
-    {
-        $personType = $request->type;
-        if ($request->type == "person"):
-            $type = PersonType::where("key", "taxpayer")->first();
-        elseif ($request->type == "company"):
-            $type = PersonType::where("key", "public")->first();
-        else:
-            $type = PersonType::where("key", $request->type)->first();
-            $personType = $type->key;
-        endif;
-        $file = $type->group == 3 ? "company_" : "person_";
-        $data = view('mediator.person.modals.' . $file . $type->key, compact('type'))->render();
-        return compact('data', "type", "personType");
-    }*/
+    /*    public function getModalContent(Request $request): array
+        {
+            $personType = $request->type;
+            if ($request->type == "person"):
+                $type = PersonType::where("key", "taxpayer")->first();
+            elseif ($request->type == "company"):
+                $type = PersonType::where("key", "public")->first();
+            else:
+                $type = PersonType::where("key", $request->type)->first();
+                $personType = $type->key;
+            endif;
+            $file = $type->group == 3 ? "company_" : "person_";
+            $data = view('mediator.person.modals.' . $file . $type->key, compact('type'))->render();
+            return compact('data', "type", "personType");
+        }*/
 
     public function index()
     {
@@ -84,18 +84,18 @@ class LawsuitController extends Controller
         try {
             $lawsuit = Lawsuit::create([
                 "delivery_by" => $request->delivery_by,
-                "lawsuit_type_id" => $request->lawsuit_type,
-                "lawsuit_subject_type_id" => $request->lawsuit_subject_type,
-                "lawsuit_subject_id" => $request->lawsuit_subject,
-                "mediation_office_id" => $request->mediation_office,
-                "mediation_center_id" => $request->mediation_center,
+                "lawsuit_type_id" => $request->lawsuit_type_id,
+                "lawsuit_subject_type_id" => $request->lawsuit_subject_type_id,
+                "lawsuit_subject_id" => $request->lawsuit_subject_id,
+                "mediation_office_id" => $request->mediation_office_id,
+                "mediation_center_id" => $request->mediation_center_id,
                 "application_document_no" => $request->application_document_no,
                 "mediation_document_no" => $request->mediation_document_no,
                 "process_start_date" => Carbon::parse($request->process_start_date)->format('Y-m-d'),
                 "application_date" => Carbon::parse($request->application_date)->format('Y-m-d'),
                 "job_date" => Carbon::parse($request->job_date)->format('Y-m-d'),
-                "lawsuit_process_type_id" => $request->process_type,
-                "lawsuit_result_type_id" => $request->result_type,
+                "lawsuit_process_type_id" => $request->lawsuit_process_type_id,
+                "lawsuit_result_type_id" => $request->lawsuit_result_type_id,
                 "result_date" => Carbon::parse($request->result_date)->format('Y-m-d'),
                 "user_id" => auth()->user()->id,
             ]); //Dosya Oluşturuldu
@@ -965,11 +965,16 @@ class LawsuitController extends Controller
         return response()->json($subject_types);
     }
 
-    public function getSubjects($lawsuit_subject_type_id)
+    public function getSubjects(Request $request)
     {
-        $subjects = LawsuitSubject::where('lawsuit_subject_type_id', $lawsuit_subject_type_id)->get();
-
-        return response()->json($subjects);
+        $subjects = LawsuitSubject::where('lawsuit_subject_type_id', $request->lawsuit_subject_type_id)->get();
+        $response = $subjects->map(function ($subject) {
+            return [
+                'id' => $subject->id,
+                'name' => $subject->name,
+            ];
+        });
+        return response()->json($response);
     }
 
     public function getApplicants(Request $request)

@@ -37,8 +37,8 @@
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v4__form">
                                             <div class="form-group">
-                                                {{ Form::label('Toplantı Yeri') }}
-                                                {{ Form::select('mediation_center', App\Models\MediationCenter::selectToArray(), $lawsuit->mediation_center ?? auth()->user()->mediator->meeting_address_proposal ? auth()->user()->mediator->mediation_center_id : null, ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+                                                {{ Form::label("mediation_center_id",'Toplantı Yeri') }}
+                                                {{ Form::select('mediation_center_id', App\Models\MediationCenter::selectToArray(), $lawsuit->mediation_center ?? auth()->user()->mediator->meeting_address_proposal ? auth()->user()->mediator->mediation_center_id : null, ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::checkbox('meeting_address_chec', true, false, ['id' => 'meeting_address_check']) }}
@@ -169,6 +169,7 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/addSubSide.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>

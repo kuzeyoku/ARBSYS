@@ -84,7 +84,7 @@ class MediatorController extends Controller
             $mediator->identification = $request->identification;
             $mediator->registration_no = $request->registration_no;
             $mediator->iban = $request->iban;
-            $mediator->mediation_center_id = $request->mediation_center;
+            $mediator->mediation_center_id = $request->mediation_center_id;
             $mediator->meeting_address = ucwords($request->meeting_address);
             $mediator->meeting_address_proposal = $request->meeting_address_proposal ?? false;
             $mediator->save();

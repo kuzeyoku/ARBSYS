@@ -43,8 +43,8 @@
                                                 {{ Form::time('meeting_start_hour', $lawsuit->meeting_start_hour, ['class' => 'form-control']) }}
                                             </div>
                                             <div class="form-group">
-                                                {{ Form::label("mediation_center",'Toplantı Yeri') }}
-                                                {{ Form::select('mediation_center', App\Models\MediationCenter::selectToArray(), auth()->user()->mediator->default_mediation_center ?? $lawsuit->mediation_center_id , ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+                                                {{ Form::label("mediation_center_id",'Toplantı Yeri') }}
+                                                {{ Form::select('mediation_center_id', App\Models\MediationCenter::selectToArray(), auth()->user()->mediator->default_mediation_center ?? $lawsuit->mediation_center_id , ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::checkbox('meeting_address_check', true, false, ['id' => 'meeting_address_check']) }}

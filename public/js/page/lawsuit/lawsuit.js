@@ -29,7 +29,6 @@ function getModalContent(url, type) {
 }
 
 $(document).ready(function () {
-    console.log('lawsuit.js');
     //Görev Kabul Tarihi Kontrol İşlemi
     $(".custom-next-button-date-logic").on("click", function () {
         var applicationDate = new Date($('input[name="application_date"]').val());
@@ -247,77 +246,101 @@ $(document).ready(function () {
 
         console.log(sides);
     });
+    $("select[name='lawsuit_type_id']").on("change", function () {
+        $("#lawsuit-subject-types").removeClass("d-none");
+        $("select[name='lawsuit_subject_type_id']").on("change", function () {
+            const url = $(this).data("url");
+            const lawsuit_subject_type_id = $(this).val();
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    _token: $("meta[name='csrf-token']").attr("content"),
+                    lawsuit_subject_type_id: lawsuit_subject_type_id,
+                },
+            }).done(function (response) {
+                let options = "";
+                response.forEach(function (item) {
+                    options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                });
+                $("select[name='lawsuit_subject_id']").html(options);
+                $("#lawsuit-subjects").removeClass("d-none");
+            });
+        });
 
-    $("#delivery_by").on("change", function () {
-        var delivery_by = $("#delivery_by")
-            .children("option:selected")
-            .data("delivery");
-        var lawsuit_type_id = $("#delivery_by").children("option:selected").val();
-        var firm_text = $(".firm_text");
+    });
+    /*
+        $("#delivery_by").on("change", function () {
+            var delivery_by = $("#delivery_by")
+                .children("option:selected")
+                .data("delivery");
+            var lawsuit_type_id = $("#delivery_by").children("option:selected").val();
+            var firm_text = $(".firm_text");
 
-        $("input[name='delivery_by']").val(delivery_by);
+            $("input[name='delivery_by']").val(delivery_by);
 
-        $("#lawsuit_subjects_select").hide();
-        $("#lawsuit_subject_types_select").hide();
-        $("#lawsuit_subject_types").html("");
-        $("#lawsuit_subjects").html("");
+            $("#lawsuit_subjects_select").hide();
+            $("#lawsuit_subject_types_select").hide();
+            $("#lawsuit_subject_types").html("");
+            $("#lawsuit_subjects").html("");
 
-        $("#firm").show();
-        $("#firm_document_no").show();
-
-        if (delivery_by == "Sistem Üzerinden") {
             $("#firm").show();
             $("#firm_document_no").show();
-        } else {
-            $("#firm").hide();
-            $("#firm_document_no").hide();
-        }
 
-        if (lawsuit_type_id == 1 || lawsuit_type_id == 3) {
-            firm_text.html("&nbsp;Bürosu");
-        } else if (
-            lawsuit_type_id == 4 ||
-            lawsuit_type_id == 5 ||
-            lawsuit_type_id == 6
-        ) {
-            firm_text.html("&nbsp;Merkezi");
-        }
+            if (delivery_by == "Sistem Üzerinden") {
+                $("#firm").show();
+                $("#firm_document_no").show();
+            } else {
+                $("#firm").hide();
+                $("#firm_document_no").hide();
+            }
 
-        if (lawsuit_type_id == 2) {
-            $("#process_start_date").show();
-        } else {
-            $("#process_start_date").hide();
-        }
+            if (lawsuit_type_id == 1 || lawsuit_type_id == 3) {
+                firm_text.html("&nbsp;Bürosu");
+            } else if (
+                lawsuit_type_id == 4 ||
+                lawsuit_type_id == 5 ||
+                lawsuit_type_id == 6
+            ) {
+                firm_text.html("&nbsp;Merkezi");
+            }
 
-        if (lawsuit_type_id == 2) {
-            $("#job_date").hide();
-            $("#application_date").hide();
-        } else if (lawsuit_type_id == 6) {
-            $("#job_date").show();
-            $("#application_date").hide();
-        } else {
-            $("#job_date").show();
-            $("#application_date").show();
-        }
+            if (lawsuit_type_id == 2) {
+                $("#process_start_date").show();
+            } else {
+                $("#process_start_date").hide();
+            }
 
-        $("#lawsuit_subject_types_select").show();
-        $.ajax({
-            url: "/lawsuit_subject_types/1",
-            type: "GET",
-            data: "",
-            success: function (data) {
-                $("#lawsuit_subject_types").html("");
-                $("#lawsuit_subject_types").append(
-                    '<option value="" disabled selected>Seçin</option>'
-                );
-                $.each(data, function (index, value) {
+            if (lawsuit_type_id == 2) {
+                $("#job_date").hide();
+                $("#application_date").hide();
+            } else if (lawsuit_type_id == 6) {
+                $("#job_date").show();
+                $("#application_date").hide();
+            } else {
+                $("#job_date").show();
+                $("#application_date").show();
+            }
+
+            $("#lawsuit_subject_types_select").show();
+            $.ajax({
+                url: "/lawsuit_subject_types/1",
+                type: "GET",
+                data: "",
+                success: function (data) {
+                    $("#lawsuit_subject_types").html("");
                     $("#lawsuit_subject_types").append(
-                        '<option value="' + value.id + '">' + value.name + "</option>"
+                        '<option value="" disabled selected>Seçin</option>'
                     );
-                });
-            },
+                    $.each(data, function (index, value) {
+                        $("#lawsuit_subject_types").append(
+                            '<option value="' + value.id + '">' + value.name + "</option>"
+                        );
+                    });
+                },
+            });
         });
-    });
+    */
 
     $("input[name='arbiter_define_protocol_answer']").on("change", function () {
         if ($(this).val() == 0) {

@@ -136,7 +136,7 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::get('/update_meeting_adress/{name?}', 'InvitationLetterController@updateMeeting');
 
     Route::get('/lawsuit_subject_types/{lawsuit_type_id}', 'LawsuitController@getSubjectTypes');
-    Route::get('/lawsuit_subjects/{lawsuit_subject_type_id}', 'LawsuitController@getSubjects');
+    Route::post('/get_lawsuit_subjects', 'LawsuitController@getSubjects')->name("get_lawsuit_subjects");
     Route::get('/lawsuit_subject_all_types', 'LawsuitController@allSubjectTypes');
     Route::post('/lawsuit_process_type_update', 'LawsuitController@processTypeUpdate');
     Route::post('/lawsuit_agreement_type_update', 'LawsuitController@agreementTypeUpdate');
