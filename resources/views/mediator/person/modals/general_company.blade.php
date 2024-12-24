@@ -37,7 +37,7 @@
         {{ Form::label('Vergi Dairesi', null, ['class' => 'font-weight-bold']) }}
     </div>
     <div class="col-sm-8">
-        {{ Form::select('tax_office', App\Models\TaxOffice::selectToArray(), 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+        {{ Form::select('tax_office_id', App\Models\TaxOffice::selectToArray(), 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
     </div>
 </div>
 <div class="form-group row">

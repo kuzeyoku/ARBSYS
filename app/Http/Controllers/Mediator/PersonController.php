@@ -16,13 +16,13 @@ use App\Http\Controllers\Controller;
 class PersonController extends Controller
 {
 
-    private function getPerson($id, $type)
+    private function getPerson($id, $group)
     {
-        if ($type === 1) {
+        if ($group === 1) {
             return People::findOrFail($id);
-        } elseif ($type === 2) {
+        } elseif ($group === 2) {
             return Lawyer::findOrFail($id);
-        } elseif ($type === 3) {
+        } elseif ($group === 3) {
             return Company::findOrFail($id);
         }
     }
@@ -40,45 +40,44 @@ class PersonController extends Controller
         return view('mediator.person.index', compact('items'));
     }
 
-    public function edit(Request $request)
+    public function edit($group, $id)
     {
-        $personType = PersonType::find($request->type);
-        $item = $this->getPerson($request->id, $personType->group);
-        $data = view("mediator.person.modals." . $personType->key, compact("item"))->render();
-        $type = $personType->name;
+        $item = $this->getPerson($id, $group);
+        $data = view("mediator.person.modals." . $item->personType->key, compact("item"))->render();
+        $type = $item->personType->name;
         return compact("data", "type");
     }
 
-/*    public function getModalContent(Request $request)
-    {
-        $type = PersonType::find($request->type);
-        $data = view('mediator.person.modals.' . $type->key, compact('type'))->render();
-        return compact('data', "type");
-    }*/
+    /*    public function getModalContent(Request $request)
+        {
+            $type = PersonType::find($request->type);
+            $data = view('mediator.person.modals.' . $type->key, compact('type'))->render();
+            return compact('data', "type");
+        }*/
 
-    public function getEditModalContent(Request $request)
-    {
-        $currentType = PersonType::findOrFail($request->current_type);
-        $item = $this->getPerson($request->id, $currentType->group);
-        $personType = PersonType::findOrFail($request->type);
-        $data = view("mediator.person.modals." . $personType->key, compact("item"))->render();
-        $type = $personType->name;
-        return compact("data", "type");
-    }
+    /*    public function getEditModalContent(Request $request)
+        {
+            $currentType = PersonType::findOrFail($request->current_type);
+            $item = $this->getPerson($request->id, $currentType->group);
+            $personType = PersonType::findOrFail($request->type);
+            $data = view("mediator.person.modals." . $personType->key, compact("item"))->render();
+            $type = $personType->name;
+            return compact("data", "type");
+        }*/
 
     public function store(Request $request) // TODO: Request Düzenle
     {
         try {
-            $personType = PersonType::find($request->type);
+            $personType = PersonType::where("key", $request->type)->first();
             switch ($personType->group) {
                 case 1:
-                    PeopleService::create($request);
+                    PeopleService::create($request, $personType->id);
                     break;
                 case 2:
-                    LawyerService::create($request);
+                    LawyerService::create($request, $personType->id);
                     break;
                 case 3:
-                    CompanyService::create($request);
+                    CompanyService::create($request, $personType->id);
                     break;
             }
             return redirect()->back()->withSuccess('Kişi Başarıyla Eklendi.');

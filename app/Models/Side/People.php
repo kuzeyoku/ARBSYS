@@ -7,6 +7,7 @@ use App\Models\User\User;
 
 use App\Services\HelperService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class People extends Model
 {
@@ -21,15 +22,13 @@ class People extends Model
         'email',
         'user_id',
         'check',
-        'type_id',
+        'person_type_id',
         "kep_address",
     ];
 
     protected $appends = ['display_name'];
 
-    public $with = ["type"];
-
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -44,17 +43,17 @@ class People extends Model
         return $this->identification . " - " . $this->name;
     }
 
-    public function type()
+    public function personType(): BelongsTo
     {
-        return $this->belongsTo(PersonType::class, "type_id", "id");
+        return $this->belongsTo(PersonType::class);
     }
 
-    public function side()
+    public function side(): BelongsTo
     {
         return $this->belongsTo(Side::class, "id", "person_id");
     }
 
-    public static function selectToArray()
+    public static function selectToArray(): array
     {
         $peoples = People::whereUserId(auth()->id())->get();
 

@@ -170,11 +170,9 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::prefix("kisi")->group(function () {
         Route::post('/ekle', 'PersonController@store')->name('person.store');
         Route::post('/{person}/goruntule', 'PersonController@show')->name('person.show');
-        Route::post("/duzenle", 'PersonController@edit')->name('person.edit');
+        Route::post("/{group}/{id}/duzenle", 'PersonController@edit')->name('person.edit');
         Route::post("/guncelle", 'PersonController@update')->name('person.update');
         Route::delete('/sil', 'PersonController@destroy')->name('person.destroy');
-        Route::post("/getModalContent", 'PersonController@getModalContent')->name("person.getModalContent");
-        Route::post("/{person}/getEditModalContent", 'PersonController@getEditModalContent')->name("person.getEditModalContent");
     });
 
     //Hesaplama Araçları

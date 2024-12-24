@@ -172,8 +172,8 @@ $(".delete-btn").on("click", function () {
         });
 });
 
-//Kişilerim Sayfası Kişi Ekle Butonu Aksiyonları
-$(".new-person-button").on("click", function () {
+//Kişilerim Sayfası Kişi Ekle Butonu Aksiyonu
+$("#new-person-button").on("click", function () {
     var data = $(this).closest("form").serialize();
     let url = $(this).closest("form").attr("action");
     $.ajax({
@@ -183,16 +183,15 @@ $(".new-person-button").on("click", function () {
         success: function (response) {
             $("#newSideModal").modal("hide");
             $("#personModal").modal("show");
-            $("#personModal #formContent").html(response.data);
-            $("#personModal .modal-title").html(response.type.name);
-            $(".selectSearch").select2({
-                theme: "bootstrap4",
-            });
+            $("#personModal #formContent").html(response.formContent);
+            $("#personModal .modal-title").html(response.personType.name);
+            initSelect2();
         },
     });
 });
 
-$(document).on("change", "#personModal #person_type", function () {
+//Açık modal içerisinde kişi tipi değiştirilirse
+$(document).on("change", "#personModal select[name='type']", function () {
     var url = $(this).data("url");
     var type = $(this).val();
     $.ajax({
@@ -203,11 +202,9 @@ $(document).on("change", "#personModal #person_type", function () {
             type: type,
         },
         success: function (response) {
-            $("#personModal #formContent").html(response.formData);
+            $("#personModal #formContent").html(response.formContent);
             $("#personModal .modal-title").html(response.personType.name);
-            $(".selectSearch").select2({
-                theme: "bootstrap4",
-            });
+            initSelect2();
         },
     });
 });
@@ -230,15 +227,23 @@ $(document).on("change", "#personModalEdit #person_type", function () {
             $("#personModalEdit #formContent").html(response.data);
             $("#personModalEdit .modal-title").html(response.type);
             $("#personModalEdit #person_type").val(type);
-            $(".selectSearch").select2({
-                theme: "bootstrap4",
-            });
+            initSelect2();
         },
     });
 });
 
 $(document).on("click", ".edit-person-btn", function () {
     $.ajax({
+        url: $(this).data("url"),
+        type: "POST",
+        data: {
+            _token: $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            alert("success");
+        },
+    });
+    /*$.ajax({
         url: $(this).data("url"),
         type: "POST",
         data: {
@@ -252,7 +257,7 @@ $(document).on("click", ".edit-person-btn", function () {
             $("#personModalEdit #formContent").html(response.data);
             $(".selectSearch").select2();
         },
-    });
+    });*/
 });
 
 //Dosya Aç İşlemi Modal Aksiyonları
@@ -339,7 +344,7 @@ $(document).on("click", "#matters-discussed-save", function () {
                 $('#preview-' + $(this).val()).summernote('code', replaceContent);
             }
         });
-        if($("#preview-area").length > 0) {
+        if ($("#preview-area").length > 0) {
             const previewContent = $("#preview-area").summernote("code");
             const replaceContent = previewContent.replace(`<span class="matters-discussed"></span>`, `<span class="matters-discussed">${inputValue}</span>`);
             $("#preview-area").summernote("code", replaceContent);
@@ -515,4 +520,10 @@ function notification(title = null, message, template) {
         showMethod: "fadeIn",
         hideMethod: "fadeOut",
     };
+}
+
+function initSelect2() {
+    $(".select2,.selectSearch").select2({
+        theme: "bootstrap4",
+    });
 }

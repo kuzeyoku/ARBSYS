@@ -8,9 +8,9 @@
     </div>
     <div class="col-sm-8">
         @if (isset($item))
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'id' => 'person_type', 'data-url' => route('person.getEditModalContent', $item)]) }}
+            {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('person.getEditModalContent', $item)]) }}
         @else
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $personType->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'id' => 'person_type', 'data-url' => route('person.getModalContent')]) }}
+            {{ Form::select('type', App\Models\PersonType::selectToArray(), $personType->key, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('api.get_person_modal_content')]) }}
         @endif
     </div>
 </div>
@@ -22,7 +22,6 @@
         {{ Form::text('name', $item->name ?? null, ['class' => 'form-control', 'placeholder' => 'Ad Soyad Yazınız', 'required' => '']) }}
     </div>
 </div>
-
 <div class="form-group row">
     <div class="col-sm-4">
         {{ Form::label('T.C. Kimlik No', null, ['class' => 'font-weight-bold']) }}
@@ -45,10 +44,11 @@
     </div>
     <div class="col-sm-8">
         {{ Form::text('phone', $item->phone ?? null, ['class' => 'form-control phonemask', 'placeholder' => 'Telefon Yazınız']) }}
-        {{ Form::checkbox('check[phone]', true, isset($item) ? GlobalFunction::checkControl('phone', $item->check) : false) }}
-        Tutanakta Yazsın
+        <label class="kt-checkbox">
+            {{ Form::checkbox('check[phone]', true, isset($item) ? GlobalFunction::checkControl('phone', $item->check) : null) }}
+            Tutanakta Yazsın<span></span>
+        </label>
     </div>
-
 </div>
 <div class="form-group row">
     <div class="col-sm-4">
@@ -56,8 +56,10 @@
     </div>
     <div class="col-sm-8">
         {{ Form::text('fixed_phone', $item->fixed_phone ?? null, ['class' => 'form-control phonemask', 'placeholder' => 'Telefon Yazınız']) }}
-        {{ Form::checkbox('check[fixed_phone]', true, isset($item) ? GlobalFunction::checkControl('fixed_phone', $item->check) : false) }}
-        Tutanakta Yazsın
+        <label class="kt-checkbox">
+            {{ Form::checkbox('check[fixed_phone]', true, isset($item) ? GlobalFunction::checkControl('fixed_phone', $item->check) : null) }}
+            Tutanakta Yazsın<span></span>
+        </label>
     </div>
 </div>
 <div class="form-group row">
@@ -66,8 +68,10 @@
     </div>
     <div class="col-sm-8">
         {{ Form::text('email', $item->email ?? null, ['class' => 'form-control emailmask', 'placeholder' => 'E-posta Adresi Yazınız']) }}
-        {{ Form::checkbox('check[email]', true, isset($item) ? GlobalFunction::checkControl('email', $item->check) : false) }}
-        Tutanakta Yazsın
+        <label class="kt-checkbox">
+            {{ Form::checkbox('check[email]', true, isset($item) ? GlobalFunction::checkControl('email', $item->check) : null) }}
+            Tutanakta Yazsın<span></span>
+        </label>
     </div>
 </div>
 <div class="form-group row">
@@ -76,7 +80,9 @@
     </div>
     <div class="col-sm-8">
         {{ Form::text('kep_address', $item->kep_address ?? null, ['class' => 'form-control kepmask', 'placeholder' => 'KEP Adresi Yazınız']) }}
-        {{ Form::checkbox('check[kep_address]', true, isset($item) ? GlobalFunction::checkControl('kep_address', $item->check) : false) }}
-        Tutanakta Yazsın
+        <label class="kt-checkbox">
+            {{ Form::checkbox('check[kep_address]', true, isset($item) ? GlobalFunction::checkControl('kep_address', $item->check) : null) }}
+            Tutanakta Yazsın<span></span>
+        </label>
     </div>
 </div>

@@ -7,6 +7,7 @@ use App\Models\User\User;
 
 use App\Models\PersonType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Lawyer extends Model
 {
@@ -22,24 +23,22 @@ class Lawyer extends Model
         'type_id',
         'baro_id',
         'registration_no',
-        "type_id",
+        "person_type_id",
     ];
 
     protected $appends = ['display_name', 'baro_name'];
-
-    public $with = ["type"];
 
     public function getDisplayNameAttribute()
     {
         return $this->identification . " - " . $this->name;
     }
 
-    public function type()
+    public function personType(): BelongsTo
     {
-        return $this->belongsTo(PersonType::class, "type_id", "id");
+        return $this->belongsTo(PersonType::class);
     }
 
-    public function getNameAttribute()
+    public function getNameAttribute(): string
     {
         $name = $this->getAttributes()['name'];
         if (strtolower(mb_substr($name, 0, 2, "UTF-8")) == "av")

@@ -8,9 +8,9 @@
     </div>
     <div class="col-sm-8">
         @if (isset($item))
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'id' => 'person_type', 'data-url' => route('person.getEditModalContent', $item)]) }}
+            {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('person.getEditModalContent', $item)]) }}
         @else
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $personType->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'id' => 'person_type', 'data-url' => route('person.getModalContent')]) }}
+            {{ Form::select('type', App\Models\PersonType::selectToArray(), $personType->key, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('api.get_person_modal_content')]) }}
         @endif
     </div>
 </div>
@@ -61,7 +61,7 @@
     <div class="col-sm-8">
         {{ Form::text('phone', $item->phone ?? null, ['class' => 'form-control phonemask', 'placeholder' => 'GSM Numarası Yazınız']) }}
         <label class="kt-checkbox">
-            {{ Form::checkbox('check[phone]', true, isset($item) ? GlobalFunction::checkControl('phone', $item->check) : false) }}
+            {{ Form::checkbox('check[phone]', true, isset($item) ? GlobalFunction::checkControl('phone', $item->check) : null) }}
             Tutanakta Yazsın
             <span></span>
         </label>
@@ -74,7 +74,7 @@
     <div class="col-sm-8">
         {{ Form::text('fixed_phone', $item->fixed_phone ?? null, ['class' => 'form-control phonemask', 'placeholder' => 'Sabit Telefon Numarası Yazınız']) }}
         <label class="kt-checkbox">
-            {{ Form::checkbox('check[fixed_phone]', true, isset($item) ? GlobalFunction::checkControl('fixed_phone', $item->check) : false) }}
+            {{ Form::checkbox('check[fixed_phone]', true, isset($item) ? GlobalFunction::checkControl('fixed_phone', $item->check) : null) }}
             Tutanakta Yazsın
             <span></span>
         </label>
@@ -87,7 +87,7 @@
     <div class="col-sm-8">
         {{ Form::text('email', $item->email ?? null, ['class' => 'form-control emailmask', 'placeholder' => 'E-posta Adresi Yazınız']) }}
         <label class="kt-checkbox">
-            {{ Form::checkbox('check[email]', true, isset($item) ? GlobalFunction::checkControl('email', $item->check) : false) }}
+            {{ Form::checkbox('check[email]', true, isset($item) ? GlobalFunction::checkControl('email', $item->check) : null) }}
             Tutanakta Yazsın
             <span></span>
         </label>
@@ -100,7 +100,7 @@
     <div class="col-sm-8">
         {{ Form::text('kep_address', $item->kep_address ?? null, ['class' => 'form-control kepmask', 'placeholder' => 'KEP Adresi Yazınız']) }}
         <label class="kt-checkbox">
-            {{ Form::checkbox('check[kep_address]', true, isset($item) ? GlobalFunction::checkControl('fixed_phone', $item->check) : false) }}
+            {{ Form::checkbox('check[kep_address]', true, isset($item) ? GlobalFunction::checkControl('fixed_phone', $item->check) : null) }}
             Tutanakta Yazsın
             <span></span>
         </label>
@@ -113,7 +113,7 @@
     <div class="col-sm-8">
         {{ Form::select('trade_registry', App\Models\TradeRegistry::selectToArray(), $item->trade_registry_id ?? 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--', 'data-live-search' => 'true']) }}
         <label class="kt-checkbox">
-            {{ Form::checkbox('check[trade_registry]', true, isset($item) ? GlobalFunction::checkControl('trade_registry', $item->check) : false) }}
+            {{ Form::checkbox('check[trade_registry]', true, isset($item) ? GlobalFunction::checkControl('trade_registry', $item->check) : null) }}
             Tutanakta Yazsın
             <span></span>
         </label>
@@ -126,7 +126,7 @@
     <div class="col-sm-8">
         {{ Form::text('trade_registry_number', $item->trade_registry_number ?? null, ['class' => 'form-control traderegistrymask', 'placeholder' => 'Ticaret Sicil Numarası Yazınız']) }}
         <label class="kt-checkbox">
-            {{ Form::checkbox('check[trade_registry_number]', true, isset($item) ? GlobalFunction::checkControl('trade_registry_number', $item->check) : false) }}
+            {{ Form::checkbox('check[trade_registry_number]', true, isset($item) ? GlobalFunction::checkControl('trade_registry_number', $item->check) : null) }}
             Tutanakta Yazsın
             <span></span>
         </label>

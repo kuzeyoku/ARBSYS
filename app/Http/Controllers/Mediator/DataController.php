@@ -23,8 +23,6 @@ class DataController extends Controller
     public function getPersonModalContent(Request $request): JsonResponse
     {
         $personType = new \stdClass();
-        $formContent = null;
-        $saveId = null;
         if ($request->type === "person"):
             $persons = People::selectToArray();
             $formContent = view("mediator.person.modals.general_person", compact("persons"))->render();
@@ -37,7 +35,7 @@ class DataController extends Controller
             $saveId = "company";
         else:
             $personType = PersonType::where("key", $request->type)->first();
-            $file = $personType->group == 3 ? "mediator.person.modals.company_" : "mediator.person.modals.person_" . $personType->key;
+            $file = $personType->group == 3 ? "mediator.person.modals.company_" . $personType->key : "mediator.person.modals.person_" . $personType->key;
             $formContent = view($file, compact("personType"))->render();
             $saveId = $personType->key;
         endif;

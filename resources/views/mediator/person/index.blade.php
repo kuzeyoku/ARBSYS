@@ -17,7 +17,7 @@
                         <div class="kt-portlet__head-wrapper">
                             <div class="dropdown dropdown-inline">
                                 <button type="button" class="btn btn-brand btn-icon-sm" data-toggle="modal"
-                                    data-target="#newSideModal">
+                                        data-target="#newSideModal">
                                     <i class="fas fa-sm fa-plus"></i> Yeni
                                 </button>
                             </div>
@@ -36,7 +36,8 @@
                             {{ Form::label('Ad Soyad / Şirket Unvanı:') }}
                             {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Ad Soyad / Şirket Unvanı Giriniz']) }}
                         </div>
-                        <div class="col-lg-3 kt-margin-t-10-tablet-and-mobile" style="margin-top: 24px;text-align: right;">
+                        <div class="col-lg-3 kt-margin-t-10-tablet-and-mobile"
+                             style="margin-top: 24px;text-align: right;">
                             {{ Form::submit('Ara', ['class' => 'btn btn-primary']) }}
                             {{ Form::reset('Sıfırla', ['class' => 'btn btn-secondary']) }}
                         </div>
@@ -45,35 +46,36 @@
                     <div class="kt-separator kt-separator--border-dashed kt-separator--space-sm"></div>
                     <table class="table table-striped- table-bordered table-hover table-checkable" id="dataTable">
                         <thead>
-                            <tr>
-                                <th>Tip</th>
-                                <th>Ad Soyad</th>
-                                <th>Telefon</th>
-                                <th>Email</th>
-                                <th style="width:100px">İşlemler</th>
-                            </tr>
+                        <tr>
+                            <th>Tip</th>
+                            <th>Ad Soyad</th>
+                            <th>Telefon</th>
+                            <th>Email</th>
+                            <th style="width:100px">İşlemler</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach ($items as $item)
-                                <tr>
-                                    <td>{!! $item->type->name !!}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-primary edit-person-btn"
-                                                data-url="{{ route('person.edit') }}" data-id="{{ $item->id }}"
-                                                data-type="{{ $item->type->id }}">Düzenle</button>
-                                            {!! Form::open(['url' => route('person.destroy'), 'method' => 'DELETE']) !!}
-                                            {!! Form::hidden('id', $item->id) !!}
-                                            {!! Form::hidden('type', $item->type->id) !!}
-                                            <button type="button" class="btn btn-sm btn-danger delete-btn">Sil</button>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        @foreach ($items as $item)
+                            <tr>
+                                <td>{{ $item->personType->name }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->phone }}</td>
+                                <td>{{ $item->email }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-primary edit-person-btn"
+                                                data-url="{{ route('person.edit',["group"=>$item->personType->group,"id"=>$item->id]) }}">
+                                            Düzenle
+                                        </button>
+                                        {!! Form::open(['url' => route('person.destroy'), 'method' => 'DELETE']) !!}
+                                        {!! Form::hidden('id', $item->id) !!}
+                                        {!! Form::hidden('person_group', $item->personType->group) !!}
+                                        <button type="button" class="btn btn-sm btn-danger delete-btn">Sil</button>
+                                        {!! Form::close() !!}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -89,7 +91,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                {{ Form::open(['url' => route('person.getModalContent')]) }}
+                {{ Form::open(['url' => route('api.get_person_modal_content')]) }}
                 <div class="modal-body">
                     <div class="form-group">
                         {{ Form::select('type', App\Models\PersonType::selectToArray(), 'default', ['class' => 'form-control', 'required' => '']) }}
@@ -97,8 +99,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" class="btn new-person-button"
-                        style="background: #149FFC; color: white;">Ekle</button>
+                    <button type="button" class="btn btn-primary" id="new-person-button">Ekle</button>
                 </div>
                 {{ Form::close() }}
             </div>
@@ -119,7 +120,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                     <button type="submit" class="btn save-person-btn"
-                        style="background: #149FFC; color: white;">Ekle</button>
+                            style="background: #149FFC; color: white;">Ekle
+                    </button>
                 </div>
                 {{ Form::close() }}
             </div>
@@ -140,7 +142,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                     <button type="submit" class="btn save-person-btn"
-                        style="background: #149FFC; color: white;">Kaydet</button>
+                            style="background: #149FFC; color: white;">Kaydet
+                    </button>
                 </div>
                 {{ Form::close() }}
             </div>

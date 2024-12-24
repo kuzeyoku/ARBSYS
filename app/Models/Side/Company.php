@@ -5,6 +5,7 @@ namespace App\Models\Side;
 use App\Models\User\User;
 use App\Models\PersonType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Company extends Model
 {
@@ -24,14 +25,12 @@ class Company extends Model
         'email',
         'check',
         'user_id',
-        "type_id"
+        "person_type_id"
     ];
 
     protected $appends = ['display_name', 'phone'];
 
-    public $with = ["type"];
-
-    public function getDisplayNameAttribute()
+    public function getDisplayNameAttribute(): string
     {
         return $this->tax_number . " - " . $this->name;
     }
@@ -41,17 +40,17 @@ class Company extends Model
         return self::pluck("name", "id");
     }
 
-    public function type()
+    public function personType(): BelongsTo
     {
-        return $this->belongsTo(PersonType::class, "type_id", "id");
+        return $this->belongsTo(PersonType::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function side()
+    public function side(): BelongsTo
     {
         return $this->belongsTo(Side::class, "id", "company_id");
     }
