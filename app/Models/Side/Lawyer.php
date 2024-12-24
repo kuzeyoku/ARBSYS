@@ -51,17 +51,17 @@ class Lawyer extends Model
         return $this->baro->name ?? "";
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function baro()
+    public function baro(): BelongsTo
     {
         return $this->belongsTo(Baro::class);
     }
 
-    public function side()
+    public function side(): BelongsTo
     {
         return $this->belongsTo(Side::class, "id", "lawyer_id");
     }

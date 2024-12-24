@@ -18,13 +18,14 @@ class PersonController extends Controller
 
     private function getPerson($id, $group)
     {
-        if ($group === 1) {
+        if ($group == 1) {
             return People::findOrFail($id);
-        } elseif ($group === 2) {
+        } elseif ($group == 2) {
             return Lawyer::findOrFail($id);
-        } elseif ($group === 3) {
+        } elseif ($group == 3) {
             return Company::findOrFail($id);
         }
+        return null;
     }
 
     public function index(Request $request)
@@ -43,9 +44,9 @@ class PersonController extends Controller
     public function edit($group, $id)
     {
         $item = $this->getPerson($id, $group);
-        $data = view("mediator.person.modals." . $item->personType->key, compact("item"))->render();
-        $type = $item->personType->name;
-        return compact("data", "type");
+        $file = $item->personType->group == 3 ? "company_" . $item->personType->key : "person_" . $item->personType->key;
+        $data = view("mediator.person.modals." . $file, compact("item"))->render();
+        return compact("data", "item");
     }
 
     /*    public function getModalContent(Request $request)
@@ -86,7 +87,28 @@ class PersonController extends Controller
         }
     }
 
-    public function update(Request $request) // TODO: Request Düzenle
+    public function update(Request $request)
+    {
+        $type = PersonType::findOrFail($request->current_type);
+        try {
+            switch ($type->group) {
+                case 1:
+                    PeopleService::update($request);
+                    break;
+                case 2:
+                    LawyerService::update($request);
+                    break;
+                case 3:
+                    CompanyService::update($request);
+                    break;
+            }
+            return redirect()->back()->withSuccess('Kişi Başarıyla Güncellendi.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withError("Kişi Güncellenirken Hata Oluştu.");
+        }
+    }
+
+    /*public function update(Request $request) // TODO: Request Düzenle
     {
         try {
             $currentType = PersonType::find($request->current_type);
@@ -120,10 +142,12 @@ class PersonController extends Controller
                 }
             }
             return redirect()->back()->withSuccess('Kişi Başarıyla Güncellendi.');
-        } catch (\Exception $e) {
+        } catch
+        (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->withError("Kişi Güncellenirken Hata Oluştu.");
         }
-    }
+    }*/
 
     public function destroy(Request $request)
     {

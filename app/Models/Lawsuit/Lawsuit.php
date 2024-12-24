@@ -272,7 +272,7 @@ class Lawsuit extends Model
             }
         }
         if (!is_null($addDay)) {
-            $result = " < span class='text-success' > " . $addDay->format('d.m.Y') . "</span > ";
+            $result = " <span class='text-success' > " . $addDay->format('d.m.Y') . "</span > ";
             if ($now->gte($addDay)) {
                 $result = "<span class='text-danger' > " . $addDay->format('d.m.Y') . "</span > ";
             }

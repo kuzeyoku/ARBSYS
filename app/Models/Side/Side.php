@@ -106,23 +106,23 @@ class Side extends Model
         return $this->belongsTo(SideApplicantType::class);
     }
 
-    public function company()
+    public function company(): HasMany
     {
-        return $this->belongsTo(Company::class);
+        return $this->hasMany(Company::class);
     }
 
-    public function person()
+    public function person(): HasMany
     {
-        return $this->belongsTo(People::class);
+        return $this->hasMany(People::class);
     }
 
-    public function lawyer()
+    public function lawyer(): HasMany
     {
-        return $this->belongsTo(Lawyer::class);
+        return $this->hasMany(Lawyer::class);
     }
 
-    public function lawsuit()
+    public function lawsuit(): HasMany
     {
-        return $this->belongsTo(Lawsuit::class);
+        return $this->hasMany(Lawsuit::class);
     }
 }

@@ -28,21 +28,35 @@
                 </div>
             </div>
             <div class="kt-portlet__body px-4 py-4">
-                <table class="table table-striped- table-bordered table-hover table-checkable" id="kt_table_archive" data-token="{{ csrf_token() }}">
+                <table class="table table-striped table-bordered" id="dataTable">
                     <thead>
                         <tr>
-                            <th>DOSYA NUMARASI</th>
-                            <th>ARABULUCULUK BÜROSU</th>
+                            <th style="width: 150px;">BAŞVURUCU</th>
+                            <th style="width: 150px;">KARŞI TARAF</th>
+                            <th>YIL</th>
+                            <th>BAŞV. DOSYA NO</th>
+                            <th>ARB. DOSYA NO</th>
+                            <th>UYUŞMAZLIK TÜRÜ</th>
+                            <th>BAŞVURU TARİHİ</th>
+                            <th>GÖREVİN KABUL TARİHİ</th>
                             <th>SON SÜRE</th>
-                            <th style="width:230px">İŞLEMLER</th>
+                            <th>SÜREÇ BİLGİSİ</th>
+                            <th>İŞLEMLER</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($items as $item)
-                        <tr role="row" class="odd">
-                            <td>{{ $item->firm_document_no }}</td>
-                            <td>{{ $item->firm }}</td>
-                            <td>{{ $item->result_date }}</td>
+                        <tr>
+                            <td>{{ $item->claimantName }}</td>
+                            <td>{{ $item->defendantName }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->application_date)->format('Y') }}</td>
+                            <td>{{ $item->application_document_no }}</td>
+                            <td>{{ $item->mediation_document_no }}</td>
+                            <td>{{ $item->lawsuit_subject_type->name ?? null }}</td>
+                            <td>{{ $item->application_date }}</td>
+                            <td>{{ $item->job_date }}</td>
+                            <td>{!! $item->last_time !!}</td>
+                            <td>{!! $item->getProcessStatus() !!}</td>
                             <td><a href="{{ route('lawsuit.unArchive', $item) }}" class="btn btn-primary">Arşivden Kaldır</a>
                                 <form class="d-inline" action="{{ route('lawsuit.destroy', $item) }}" method="post">
                                     <button type="button" class="btn btn-danger delete-btn"></i> Dosyayı Sil</button>

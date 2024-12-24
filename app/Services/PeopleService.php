@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Lawsuit\Lawsuit;
 use App\Models\Side\People;
 use Illuminate\Http\Request;
 
@@ -17,14 +18,14 @@ class PeopleService
             "fixed_phone" => $request["fixed_phone"],
             "email" => $request["email"],
             "kep_address" => $request["kep_address"],
-            "check" => $request["check"] ? json_encode(array_keys($request["check"])) : null,
+            "check" => array_key_exists("check", $request) ? json_encode(array_keys($request["check"])) : null,
             "tax_office_id" => $request["tax_office_id"],
-            "person_type_id" => array_key_exists("tax_office_id", $request) ? 2 : 1,
+            "person_type_id" => $request["person_type_id"],
             "user_id" => auth()->user()->id,
         ]);
     }
 
-    public static function update(Request $request, int $personType)
+    public static function update(Request $request)
     {
         return People::where("id", $request->id)->update([
             "name" => $request->name,
@@ -34,9 +35,17 @@ class PeopleService
             "fixed_phone" => $request->fixed_phone,
             "email" => $request->email,
             "kep_address" => $request->kep_address,
-            "check" => $request->check ? json_encode(array_keys($request->check)) : null,
-            "tax_office_id" => $request->tax_office,
-            "person_type_id" => $personType,
+            "check" => $request->has("check") ? json_encode(array_keys($request->check)) : null,
+            "tax_office_id" => $request->tax_office_id,
+        ]);
+    }
+
+    public static function addSide(People $people, Lawsuit $lawsuit)
+    {
+        return Side::create([
+            "person_id" => $people->id,
+            "lawsuit_id" => $lawsuit->id,
+
         ]);
     }
 

@@ -11014,7 +11014,7 @@ a.text-dark:focus {
 .accordion.accordion-outline .card .card-header .card-title:after {
   position: absolute;
   right: 1.25rem;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -11105,7 +11105,7 @@ a.text-dark:focus {
 .accordion.accordion-toggle-arrow .card .card-header .card-title:after {
   position: absolute;
   font-size: 1rem;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -11135,7 +11135,7 @@ a.text-dark:focus {
 
 .accordion.accordion-toggle-plus .card .card-header .card-title:after {
   position: absolute;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -15297,7 +15297,7 @@ code {
 .modal .modal-content .modal-header .close {
   outline: none !important;
   color: #74788d;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -16887,7 +16887,7 @@ code {
 }
 
 .fc-unthemed .fc-toolbar .fc-button .fc-icon.fc-icon-left-single-arrow {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -16901,7 +16901,7 @@ code {
 }
 
 .fc-unthemed .fc-toolbar .fc-button .fc-icon.fc-icon-right-single-arrow {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -17884,7 +17884,7 @@ code {
 .alert[data-notify] .close {
   right: 10px !important;
   padding: 0.25rem 0 0 2rem;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -18196,7 +18196,7 @@ code {
 .datetimepicker thead th.next > span,
 .datetimepicker thead th.prev > span {
   display: inline-block;
-  font: normal normal normal 16px/1 "LineAwesome";
+  font: normal normal normal 16px/1 "Line Awesome Free";
   font-size: inherit;
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
@@ -18598,7 +18598,7 @@ code {
 }
 
 .bootstrap-select .dropdown-menu.inner > li.selected > a span.check-mark {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -19487,7 +19487,7 @@ code {
 }
 
 .toast .toast-close-button {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -19962,7 +19962,7 @@ code {
   color: #5d78ff;
   border: 0;
   background-color: transparent;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -19973,7 +19973,7 @@ code {
 }
 
 .dataTables_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -36255,7 +36255,7 @@ td > .kt-radio.kt-radio--single {
 }
 
 .kt-switch.kt-switch--icon input:empty ~ span:after {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -36270,7 +36270,7 @@ td > .kt-radio.kt-radio--single {
 }
 
 .kt-switch.kt-switch--icon-check input:checked ~ span:after {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -38196,7 +38196,7 @@ td > .kt-radio.kt-radio--single {
   flex: 0 0 20px;
   font-size: 0.8rem;
   color: #a2a5b9;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -38215,7 +38215,7 @@ td > .kt-radio.kt-radio--single {
 }
 
 .kt-nav .kt-nav__item > .kt-nav__link.collapsed .kt-nav__link-arrow {
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -38695,7 +38695,7 @@ td > .kt-radio.kt-radio--single {
 
 .kt-notification .kt-notification__item:after {
   border: 0;
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;
@@ -38704,7 +38704,7 @@ td > .kt-radio.kt-radio--single {
   font-smoothing: antialiased;
   content: "\F111";
   /*rtl:begin:remove*/
-  font-family: "LineAwesome";
+  font-family: "Line Awesome Free";
   text-decoration: inherit;
   text-rendering: optimizeLegibility;
   text-transform: none;

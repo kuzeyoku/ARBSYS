@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
 use App\Models\MediationCenter;
 use App\Services\HelperService;
-use App\Models\Document\DocumentTypeTemplate;
 
 class ArbiterProcessInfoProtocolService
 

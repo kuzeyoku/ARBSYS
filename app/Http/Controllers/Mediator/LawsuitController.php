@@ -74,10 +74,7 @@ class LawsuitController extends Controller
     public function create()
     {
         $lawsuit_types = $this->lawsuitTypes;
-        $personTypes = collect(Cache::remember('personTypes', 3600 * 24, function () {
-            return PersonType::where("key", "person_taxpayer")->orWhere("key", "company_public")->get();
-        }));
-        return view('mediator.lawsuit.create', compact('lawsuit_types', "personTypes"));
+        return view('mediator.lawsuit.create', compact('lawsuit_types'));
     }
 
     public function store(Request $request)
@@ -102,137 +99,104 @@ class LawsuitController extends Controller
             foreach ($request->sides as $side) {
                 $parent_side_id = null;
                 if ($side["type"] == 1) {
+                    $side["person_type_id"] = array_key_exists("tax_office_id", $side) ? 2 : 1;
                     $person = PeopleService::create($side);
-                    $person->side()->create([
+                    $side = Side::create([
+                        "person_id" => $person->id,
                         "side_applicant_type_id" => 1,
                         "lawsuit_id" => $lawsuit->id,
                         "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                         "user_id" => auth()->user()->id,
                     ]);
-                    $parent_side_id = $person->side()->id;
+                    $parent_side_id = $side->id;
                 } //Kişi Tarafı Oluşturuldu
                 if ($side["type"] == 2) {
+                    $side["person_type_id"] = array_key_exists("detsis_number", $side) ? 10 : 9;
                     $company = CompanyService::create($side);
-                    $company->side()->create([
+                    $side = Side::create([
+                        "company_id" => $company->id,
                         "side_applicant_type_id" => 2,
                         "lawsuit_id" => $lawsuit->id,
                         "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                         "user_id" => auth()->user()->id,
                     ]);
-                    $parent_side_id = $company->side()->id;
-                }
-                /*                if (!empty($side["others"])) {
-                                    foreach ($side["others"] as $side_other) {
-                                        $person = People::updateOrCreate(["identification" => $side["identification"]], [
-                                            "name" => ucwords($side_other["name"]),
-                                            "identification" => $side_other["identification"],
-                                            "address" => ucwords($side_other["address"]),
-                                            "phone" => $side_other["phone"],
-                                            "fixed_phone" => $side_other["fixedPhone"] ?? "",
-                                            "email" => $side_other["email"] ?? "",
-                                            "user_id" => auth()->id(),
-                                            "type_id" => $side,
-                                        ]);
+                    $parent_side_id = $side->id;
+                }//Tüzel Kişi Tarafı Oluşturuldu
 
-                                        Side::create([
-                                            "parent_id" => $parent_side_id,
-                                            "person_id" => $person->id,
-                                            "side_applicant_type_id" => 4,
-                                            "lawsuit_id" => $lawsuit->id,
-                                            "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
-                                            "user_id" => auth()->user()->id,
-                                        ]);
-                                    }
-                                } //TODO: İncele*/
                 if (!empty($side["lawyers"])) {
                     foreach ($side["lawyers"] as $lawyer) {
+                        $lawyer["person_type_id"] = 3;
                         $lawyer = LawyerService::create($lawyer);
-                        $lawyer->side()->create([
+                        $side = Side::create([
                             "parent_id" => $parent_side_id,
+                            "lawyer_id" => $lawyer->id,
                             "side_applicant_type_id" => 3,
                             "lawsuit_id" => $lawsuit->id,
                             "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                             "user_id" => auth()->user()->id,
                         ]);
                     }
-                }
+                }//Avukatlar Oluşturuldu
 
                 if (!empty($side["employees"])) {
                     foreach ($side["employees"] as $employee) {
-
-                        $person = People::create([
-                            "name" => ucwords($employee["name"]),
-                            "identification" => $employee["identification"],
-                            "address" => ucwords($employee["address"]),
-                            "phone" => $employee["phone"],
-                            "fixed_phone" => $employee["fixedPhone"] ?? "",
-                            "email" => $employee["email"] ?? "",
-                            "user_id" => auth()->user()->id,
-                            "type_id" => 1,
-
-                        ]);
-
+                        $employee["person_type_id"] = 5;
+                        $employee = PeopleService::create($employee);
                         Side::create([
                             "parent_id" => $parent_side_id,
-                            "person_id" => $person->id,
+                            "person_id" => $employee->id,
                             "side_applicant_type_id" => 5,
                             "lawsuit_id" => $lawsuit->id,
                             "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                             "user_id" => auth()->user()->id,
                         ]);
                     }
-                }
+                }//Çalışanlar Oluşturuldu
 
-                if (!empty($side["representatives"])) {
-                    foreach ($side["representatives"] as $representative) {
-
-                        $person = People::create([
-                            "name" => ucwords($representative["name"]),
-                            "identification" => $representative["identification"],
-                            "address" => ucwords($representative["address"]),
-                            "phone" => $representative["phone"],
-                            "fixed_phone" => $representative["fixedPhone"] ?? "",
-                            "email" => $representative["email"] ?? "",
-                            "user_id" => auth()->id(),
-                            "person_type_id" => 1,
-
-                        ]);
-
+                if (!empty($side["commissioner"])) {
+                    foreach ($side["commissioner"] as $commissioner) {
+                        $commissioner["person_type_id"] = 7;
+                        $commissioner = PeopleService::create($commissioner);
                         Side::create([
                             "parent_id" => $parent_side_id,
-                            "person_id" => $person->id,
-                            "side_applicant_type_id" => 6,
-                            "lawsuit_id" => $lawsuit->id,
-                            "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
-                            "user_id" => auth()->user()->id,
-                        ]);
-                    }
-                }
-
-                if (!empty($side["experts"])) {
-                    foreach ($side["experts"] as $expert) {
-                        $person = People::create([
-                            "name" => ucwords($expert["name"]),
-                            "identification" => $expert["identification"],
-                            "address" => ucwords($expert["address"]),
-                            "phone" => $expert["phone"],
-                            "fixed_phone" => $expert["fixedPhone"] ?? "",
-                            "email" => $expert["email"] ?? "",
-                            "user_id" => auth()->id(),
-                            "person_type_id" => 1,
-
-                        ]);
-
-                        Side::create([
-                            "parent_id" => $parent_side_id,
-                            "person_id" => $person->id,
+                            "person_id" => $commissioner->id,
                             "side_applicant_type_id" => 7,
                             "lawsuit_id" => $lawsuit->id,
                             "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                             "user_id" => auth()->user()->id,
                         ]);
                     }
-                }
+                }//Komisyon Üyeleri Oluşturuldu
+
+                if (!empty($side["representatives"])) {
+                    foreach ($side["representatives"] as $representative) {
+                        $representative["person_type_id"] = 6;
+                        $representative = PeopleService::create($representative);
+                        Side::create([
+                            "parent_id" => $parent_side_id,
+                            "person_id" => $representative->id,
+                            "side_applicant_type_id" => 6,
+                            "lawsuit_id" => $lawsuit->id,
+                            "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
+                            "user_id" => auth()->user()->id,
+                        ]);
+                    }
+                }//Yetkililer Oluşturuldu
+
+                if (!empty($side["experts"])) {
+                    foreach ($side["experts"] as $expert) {
+                        $expert["person_type_id"] = 8;
+                        $expert = PeopleService::create($expert);
+                        Side::create([
+                            "parent_id" => $parent_side_id,
+                            "person_id" => $expert->id,
+                            "side_applicant_type_id" => 7,
+                            "lawsuit_id" => $lawsuit->id,
+                            "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
+                            "user_id" => auth()->user()->id,
+                        ]);
+                    }
+                }//Uzmanlar Oluşturuldu
             }
             DB::commit();
             return response()->json(compact("lawsuit"));
@@ -740,7 +704,7 @@ class LawsuitController extends Controller
                     $company = Company::create([
                         "name" => ucwords($request->{'claimant_' . $i . '_name'}),
                         "tax_number" => $request->{'claimant_' . $i . '_tax_number'},
-                        "tax_office_id" => $request->{'claimant_' . $i . '_tax_office'},
+                        "tax_office_id" => $request->{'claimant_' . $i . '_tax_office_id'},
                         "mersis_number" => $request->{'claimant_' . $i . '_mersis_number'},
                         "detsis_number" => $request->{'claimant_' . $i . '_detsis_number'},
                         "address" => ucwords($request->{'claimant_' . $i . '_address'}),
@@ -819,7 +783,7 @@ class LawsuitController extends Controller
                     $company = Company::create([
                         "name" => ucwords($request->{'defendant_' . $i . '_name'}),
                         "tax_number" => $request->{'defendant_' . $i . '_tax_number'},
-                        "tax_office_id" => $request->{'defendant_' . $i . '_tax_office'},
+                        "tax_office_id" => $request->{'defendant_' . $i . '_tax_office_id'},
                         "mersis_number" => $request->{'defendant_' . $i . '_mersis_number'},
                         "detsis_number" => $request->{'defendant_' . $i . '_detsis_number'},
                         "tax_mersis_desis" => $request->{'defendant_' . $i . '_mersis_desis_vergi_number'},

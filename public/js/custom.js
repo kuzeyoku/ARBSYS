@@ -240,7 +240,10 @@ $(document).on("click", ".edit-person-btn", function () {
             _token: $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (response) {
-            alert("success");
+            $("#personModalEdit .modal-title").html(response.item.person_type.name);
+            $("#personModalEdit #formContent").html(response.data);
+            initSelect2();
+            $("#personModalEdit").modal("show");
         },
     });
     /*$.ajax({
@@ -527,3 +530,11 @@ function initSelect2() {
         theme: "bootstrap4",
     });
 }
+
+$("#kt_aside_toggler").on("click", function () {
+    if ($("body").hasClass("kt-aside--minimize")) {
+        $("body").removeClass("kt-aside--minimize");
+    } else {
+        $("body").addClass("kt-aside--minimize");
+    }
+});

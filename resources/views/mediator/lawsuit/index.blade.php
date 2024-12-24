@@ -159,9 +159,6 @@
     @endif
 @endsection
 @section('script')
-    <script>
-        $("body").addClass("kt-aside--minimize");
-    </script>
     @if (Request::get('tutanak'))
         <script>
             $('#tutanak').modal('show')
