@@ -15,7 +15,6 @@ class TemplateController extends Controller
 {
     public function index()
     {
-        // $documentTypes = DocumentType::all();
         $subjectTypes = LawsuitSubjectType::all();
         return view('admin.template.index', compact("subjectTypes"));
     }
@@ -55,7 +54,6 @@ class TemplateController extends Controller
             DocumentTypeTemplate::create($data);
             return Redirect::back()->with(['success' => 'Template kaydınız başarılı bir şekilde oluşturuldu']);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return Redirect::back()->with(['error' => 'Template kaydınız oluşturulurken bir hata oluştu']);
         }
     }
@@ -74,8 +72,7 @@ class TemplateController extends Controller
             $template->html = $text;
             $template->save();
             return Redirect::back()->with(['success' => 'Template değişikliğiniz başarılı bir şekilde güncellendi']);
-        } catch (\Throwable $th) {
-            dd($th->getMessage());
+        } catch (\Throwable $e) {
             return Redirect::back()->with(['error' => 'Template değişikliğiniz güncellenirken bir hata oluştu']);
         }
     }

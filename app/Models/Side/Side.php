@@ -4,6 +4,7 @@ namespace App\Models\Side;
 
 use App\Models\Lawsuit\Lawsuit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -121,8 +122,8 @@ class Side extends Model
         return $this->hasMany(Lawyer::class);
     }
 
-    public function lawsuit(): HasMany
+    public function lawsuit(): BelongsTo
     {
-        return $this->hasMany(Lawsuit::class);
+        return $this->belongsTo(Lawsuit::class);
     }
 }

@@ -35,7 +35,7 @@
                                 <select class="form-control kt-input" data-col-index="0">
                                     <option value="">Hepsi</option>
                                     <option value="1">Başvuran</option>
-                                    <option value="2">Diğer Taraf </option>
+                                    <option value="2">Diğer Taraf</option>
                                 </select>
                             </div>
                             <div class="col-lg-4 kt-margin-b-10-tablet-and-mobile">
@@ -52,13 +52,13 @@
                             <div class="col-lg-4 kt-margin-t-10-tablet-and-mobile" style="margin-top: 24px;">
                                 <button class="btn btn-primary btn-brand--icon" id="kt_search">
                                     <span>
-                                        <i class="la la-search"></i>
+                                        <i class="fas fa-search"></i>
                                         <span>Ara</span>
                                     </span>
                                 </button>
                                 <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
                                     <span>
-                                        <i class="la la-close"></i>
+                                        <i class="fas fa-times"></i>
                                         <span>Sıfırla</span>
                                     </span>
                                 </button>
@@ -67,36 +67,43 @@
                     </form>
 
                     <!--begin: Datatable -->
-                    <div class="kt-separator kt-separator--border-dashed kt-separator--space-sm"></div>
-                    <table class="table table-striped- table-bordered table-hover table-checkable" id="dataTable">
+                    <div class="kt-separator"></div>
+                    <table class="table table-striped table-bordered" id="dataTable">
                         <thead>
-                            <tr>
-                                <th>Taraf No</th>
-                                <th>Ad Soyad</th>
-                                <th>Taraf</th>
-                                <th>Tip</th>
-                                <th>İşlemler</th>
-                            </tr>
+                        <tr>
+                            <th style="width: 50px">Taraf No</th>
+                            <th>Başvuru Dosya No:</th>
+                            <th>Arabuluculuk Dosya No:</th>
+                            <th>TC | VKN</th>
+                            <th>Ad Soyad/Ünvan</th>
+                            <th>Taraf</th>
+                            <th>Tip</th>
+                            <th style="width: 100px">İşlemler</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach ($lawsuit->sides as $side)
-                                <tr>
-                                    <td>{{ $side->id }}</td>
-                                    <td>{{ $side->detail->name }}</td>
-                                    <td>{{ $side->side_type->name }}</td>
-                                    <td>{{ $side->side_applicant_type->name }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button"
-                                                class="btn btn-sm btn-primary edit-person-btn">Düzenle</button>
-                                            {!! Form::open(['url' => route('mediator.side.destroy', $side), 'method' => 'DELETE']) !!}
-                                            {!! Form::hidden('id', $side->id) !!}
-                                            <button type="button" class="btn btn-sm btn-danger delete-btn">Sil</button>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        @foreach ($lawsuit->sides as $side)
+                            <tr>
+                                <td>{{ $side->id }}</td>
+                                <td>{{ $side->lawsuit->application_document_no }}</td>
+                                <td>{{ $side->lawsuit->mediation_document_no }}</td>
+                                <td>{{ $side->detail->tax_number ?? $side->detail->identification }}</td>
+                                <td>{{ $side->detail->name }}</td>
+                                <td>{{ $side->side_type->name }}</td>
+                                <td>{{ $side->side_applicant_type->name }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button"
+                                                class="btn btn-sm btn-primary edit-person-btn">Düzenle
+                                        </button>
+                                        {!! Form::open(['url' => route('mediator.side.destroy', $side), 'method' => 'DELETE']) !!}
+                                        {!! Form::hidden('id', $side->id) !!}
+                                        <button type="button" class="btn btn-sm btn-danger delete-btn">Sil</button>
+                                        {!! Form::close() !!}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
 
@@ -138,9 +145,4 @@
             </div>
         </div>
     </div> --}}
-@endsection
-@section('script')
-    <script>
-        $("d")
-    </script>
 @endsection

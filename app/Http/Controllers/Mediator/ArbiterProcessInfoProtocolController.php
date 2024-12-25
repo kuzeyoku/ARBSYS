@@ -62,29 +62,20 @@ class ArbiterProcessInfoProtocolController extends Controller
         ]);
     }
 
-    // public function preview(Request $request, Lawsuit $lawsuit)
-    // {
-    //     $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
-    //     $sides = $request->side_ids;
-    //     return view("mediator.document.preview", compact('document_content', "lawsuit", 'sides'));
-    // }
-
-    // public function preview(Request $request, Lawsuit $lawsuit)
-    // {
-    //     $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
-    //     $sides = $request->side_ids;
-    //     return view("mediator.document.preview", compact('document_content', "lawsuit", 'sides'));
-    // }
-
     public function preview(Request $request, Lawsuit $lawsuit)
     {
         $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
-        // $sides = $request->side_ids;
+        $sides = $request->side_ids;
+        return view("mediator.document.preview", compact('document_content', "lawsuit", 'sides'));
+    }
+
+    /*public function preview(Request $request, Lawsuit $lawsuit)
+    {
+        $document_content = ArbiterProcessInfoProtocolService::replaceKeywords($request, $lawsuit);
         $sides = $lawsuit->sides()->whereIn("id", $request->side_ids)->get();
         $response = [];
         foreach ($sides as $side_id) {
             $side = $lawsuit->sides()->find($side_id);
-
             if ($side) {
                 $response[] = [
                     "id" => $side->id,
@@ -93,5 +84,5 @@ class ArbiterProcessInfoProtocolController extends Controller
             }
         }
         return response()->json($response);
-    }
+    }*/
 }

@@ -288,10 +288,10 @@ class LawsuitController extends Controller
         if ($request->method() == "POST")
             return $this->report_search($request);
 
-        $result_types = LawsuitResultType::all();
-        $agreement_types = AgreementType::all();
-        $data = Lawsuit::whereUserId(auth()->id())->get();
-        return view('mediator.lawsuit.report', compact('result_types', 'agreement_types', "data"));
+        $result_types = LawsuitResultType::pluck("name", "id");
+        $agreement_types = AgreementType::pluck("name", "id");
+        $lawsuits = Lawsuit::whereUserId(auth()->id())->get();
+        return view('mediator.lawsuit.report', compact('result_types', 'agreement_types', "lawsuits"));
     }
 
     public function report_search(Request $request)
@@ -344,13 +344,12 @@ class LawsuitController extends Controller
 
         $query->orderBy('id', 'DESC');
 
-        $data = $query->get();
+        $lawsuits = $query->get();
 
         $result_types = LawsuitResultType::all();
         $agreement_types = AgreementType::all();
 
-
-        return view('mediator.lawsuit.report', compact('result_types', 'agreement_types', "data"));
+        return view('mediator.lawsuit.report', compact('result_types', 'agreement_types', "lawsuits"))->withInput($request->all());
     }
 
     public function processTypeUpdate(Request $request)

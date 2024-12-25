@@ -18,6 +18,8 @@ class Document extends Model
         "name",
     ];
 
+    protected $with = ["sides", "document_type"];
+
     public function sides()
     {
         return $this->belongsTo(Side::class);

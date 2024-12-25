@@ -28,13 +28,6 @@ class Company extends Model
         "person_type_id"
     ];
 
-    protected $appends = ['display_name', 'phone'];
-
-    public function getDisplayNameAttribute(): string
-    {
-        return $this->tax_number . " - " . $this->name;
-    }
-
     public static function selectToArray()
     {
         return self::pluck("name", "id");
@@ -53,10 +46,5 @@ class Company extends Model
     public function side(): BelongsTo
     {
         return $this->belongsTo(Side::class, "id", "company_id");
-    }
-
-    public function getPhoneAttribute()
-    {
-        return $this->fixed_phone;
     }
 }

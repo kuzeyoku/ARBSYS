@@ -97,11 +97,12 @@ class Lawsuit extends Model
 
     public function getMattersDiscussedToArrayAttribute()
     {
-        return json_decode($this->attributes['matters_discussed']);
+        return json_decode($this->matters_discussed, true) ?? [];
     }
 
-    public function getMattersDiscussedToStringAttribute()
+    public function getMattersDiscussedToStringAttribute(): ?string
     {
+        if (count($this->matters_discussed_to_array) == 0) return null;
         $result = array_intersect_key($this->lawsuit_subject->matters_discussed_to_array, array_flip($this->matters_discussed_to_array));
         $implode = implode(", ", $result);
         return Str::lower($implode);

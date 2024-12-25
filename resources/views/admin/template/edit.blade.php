@@ -17,25 +17,25 @@
                 <div class="kt-portlet__body">
                     <div class="card-body">
                         <div class="alert alert-success">{{ $lawsuitSubjectType->name }} için Tutanak Şablonlarını
-                            Düzenliyorsunuz</div>
+                            Düzenliyorsunuz
+                        </div>
                         <div class="row">
                             <div class="col-lg-3">
                                 <ul class="nav nav-pills nav-fill" role="tablist">
-
                                     @if ($lawsuitSubject)
-                                        @foreach ($lawsuitSubject->DocumentTypeTemplates as $template)
+                                        @foreach ($lawsuitSubject->documentTypeTemplate as $template)
                                             <li class="nav-item border mb-2">
                                                 <a class="nav-link {{ $loop->first ? 'active show' : '' }}"
-                                                    data-toggle="tab"
-                                                    href="#tab_{{ $template->id }}">{{ $template->documentType->name }}</a>
+                                                   data-toggle="tab"
+                                                   href="#tab_{{ $template->id }}">{{ $template->documentType->name }}</a>
                                             </li>
                                         @endforeach
                                     @else
-                                        @foreach ($lawsuitSubjectType->templates as $template)
+                                        @foreach ($lawsuitSubjectType->documentTypeTemplate as $template)
                                             <li class="nav-item border mb-2">
                                                 <a class="nav-link {{ $loop->first ? 'active show' : '' }}"
-                                                    data-toggle="tab"
-                                                    href="#tab_{{ $template->id }}">{{ $template->documentType->name }}</a>
+                                                   data-toggle="tab"
+                                                   href="#tab_{{ $template->id }}">{{ $template->documentType->name }}</a>
                                             </li>
                                         @endforeach
                                         {{-- <li class="nav-item">
@@ -48,9 +48,9 @@
                             <div class="col-lg-9">
                                 <div class="tab-content mb-2">
                                     @if ($lawsuitSubject)
-                                        @foreach ($lawsuitSubject->DocumentTypeTemplates as $template)
+                                        @foreach ($lawsuitSubject->DocumentTypeTemplate as $template)
                                             <div class="tab-pane {{ $loop->first ? 'active' : '' }}"
-                                                id="tab_{{ $template->id }}" role="tabpanel">
+                                                 id="tab_{{ $template->id }}" role="tabpanel">
                                                 <div class="card mb-3">
                                                     <div class="card-header bg-secondary">Değişkenler</div>
                                                     <div class="card-body">
@@ -74,9 +74,9 @@
                                             </div>
                                         @endforeach
                                     @else
-                                        @foreach ($lawsuitSubjectType->templates as $template)
+                                        @foreach ($lawsuitSubjectType->documentTypeTemplate as $template)
                                             <div class="tab-pane {{ $loop->first ? 'active' : '' }}"
-                                                id="tab_{{ $template->id }}" role="tabpanel">
+                                                 id="tab_{{ $template->id }}" role="tabpanel">
                                                 <div class="card mb-3">
                                                     <div class="card-header bg-secondary">Değişkenler</div>
                                                     <div class="card-body">

@@ -3,9 +3,13 @@
 namespace App\Models\Document;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DocumentType extends Model
 {
+
+    protected $with = ["documentTypeTemplate"];
+
     public function getKeywords()
     {
         if (is_null($this->keywords)) {
@@ -14,8 +18,8 @@ class DocumentType extends Model
         return explode(",", $this->keywords);
     }
 
-    public function template()
+    public function documentTypeTemplate(): HasMany
     {
-        return $this->hasOne(DocumentTypeTemplate::class);
+        return $this->hasMany(DocumentTypeTemplate::class);
     }
 }
