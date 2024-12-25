@@ -1,6 +1,6 @@
 @extends('layout.main')
 @section('style')
-    <link href="{{ asset('css/typeahead.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/typeahead.css') }}" rel="stylesheet" type="text/css" page-name="edit_lawsuit">
 @endsection
 @section('content')
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="lawsuit">
@@ -207,7 +207,9 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/page/lawsuit/lawsuit.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/page/lawsuit/edit-wizard.js') }}?v={{ time() }}"></script>
+    <!-- <script src="{{ asset('js/page/lawsuit/edit-wizard.js') }}?v={{ time() }}"></script> -->
+    <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script>
         $('#cikti_btn').on("click", function() {

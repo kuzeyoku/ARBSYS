@@ -29,7 +29,6 @@ function getModalContent(url, type) {
 }
 
 $(document).ready(function () {
-    console.log('lawsuit.js');
     //Görev Kabul Tarihi Kontrol İşlemi
     $(".custom-next-button-date-logic").on("click", function () {
         var applicationDate = new Date($('input[name="application_date"]').val());

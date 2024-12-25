@@ -93,5 +93,21 @@ const dynamicRulesConfig = {
         "result_type_id": { required: true },
         "result_date": { required: true },
         "mediation_office": { required: true },
+      },
+
+      // Edit Wizard
+      "edit_lawsuit": {
+        "side_ids[]": { required: true },
+        "delivery_by": { required: true },
+        "lawsuit_type_id": { required: true },
+        "lawsuit_subject_id": { required: true },
+        "firm_document_no": { required: true },
+        "soother_document_no": { required: true },
+        "job_date": { required: true, application_date_required : true},
+        "application_date": { required: true },
+        "process_start_date": { required: true },
+        "result_type_id": { required: true },
+        "result_date": { required: true },
+        "firm": { required: true },
       }
   };
