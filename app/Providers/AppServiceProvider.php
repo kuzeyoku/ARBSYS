@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer(
             [
-                '*'
+                'layout.main'
             ],
             function ($view) {
                 $notifications = Notification::where('user_id', auth()->id())->get();
