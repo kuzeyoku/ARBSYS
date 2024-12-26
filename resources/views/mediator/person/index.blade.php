@@ -67,9 +67,7 @@
                                                 data-url="{{ route('person.edit',["group"=>$item->personType->group,"id"=>$item->id]) }}">
                                             Düzenle
                                         </button>
-                                        {!! Form::open(['url' => route('person.destroy'), 'method' => 'DELETE']) !!}
-                                        {!! Form::hidden('id', $item->id) !!}
-                                        {!! Form::hidden('person_group', $item->personType->group) !!}
+                                        {!! Form::open(['url' => route('person.destroy',["id"=>$item->id, "group" => $item->personType->group]), 'method' => 'DELETE']) !!}
                                         <button type="button" class="btn btn-sm btn-danger delete-btn">Sil</button>
                                         {!! Form::close() !!}
                                     </div>

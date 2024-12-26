@@ -172,7 +172,7 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
         Route::post('/{person}/goruntule', 'PersonController@show')->name('person.show');
         Route::post("/{group}/{id}/duzenle", 'PersonController@edit')->name('person.edit');
         Route::post("/guncelle", 'PersonController@update')->name('person.update');
-        Route::delete('/sil', 'PersonController@destroy')->name('person.destroy');
+        Route::delete('/{group}/{id}/sil', 'PersonController@destroy')->name('person.destroy');
     });
 
     //Hesaplama Araçları
