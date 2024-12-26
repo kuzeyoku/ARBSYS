@@ -1,10 +1,10 @@
-<div class="modal" tabindex="-1" role="dialog" id="matters-discussed-modal" style="z-index:1061;">
+<div class="modal" tabindex="-1" role="dialog" id="matters-discussed-modal" aria-hidden="false">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4>Müzakere Edilen Hususlar</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="false">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -14,7 +14,7 @@
                             <div class="col-lg-4">
                                 <div class="kt-checkbox-list">
                                     <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">
-                                        {{ Form::checkbox('matters_discussed[]', $key,  in_array($key, $lawsuit->matters_discussed_to_array), ['id' => 'matters-discussed-checkbox']) }}
+                                        {{ Form::checkbox('matters_discussed[]', $key,  in_array($key, $lawsuit->matters_discussed_to_array)) }}
                                         {{ $value }}<span></span>
                                     </label>
                                 </div>
