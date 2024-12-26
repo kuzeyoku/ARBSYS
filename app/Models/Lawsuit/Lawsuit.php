@@ -140,6 +140,9 @@ class Lawsuit extends Model
 
     public function hasDocument($document_type_id): bool
     {
+        if (is_array($document_type_id)) {
+            return $this->documents()->whereIn("document_type_id", $document_type_id)->exists();
+        }
         return $this->documents()->where("document_type_id", $document_type_id)->exists();
     }
 

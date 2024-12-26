@@ -36,19 +36,8 @@ class InvitationLetterService
         } else {
             $disagreement = null;
         }
-        if ($request->has("meeting_address_check") && $request->filled("meeting_address")) {
-            $meeting_address = ucwords($request->meeting_address);
-            $mediation_center_title = null;
-        } else {
-            if ($request->mediation_center_id) {
-                $mediation_center = MediationCenter::find($request->mediation_center_id);
-                $mediation_center_title = $mediation_center->title;
-                $meeting_address = $mediation_center->address;
-            } else {
-                $mediation_center_title = $lawsuit->mediation_center->title ?? null;
-                $meeting_address = $lawsuit->mediation_center->address ?? null;
-            }
-        }
+        $meeting_address = $documentService->getMeetingAddress($request);
+        $mediation_center_title = $documentService->getMediationCenterTitle($request);
         $list = array(
             "@DavaOzeti" => $disagreement,
             "@AliciAdSoyad" => $side->detail->full_name, //TODO: Yetkilisi Yada Temsilcisi Eklenebilir.

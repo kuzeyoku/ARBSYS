@@ -93,7 +93,6 @@ class InvitationLetterController extends Controller
                 "view" => view('mediator.document.preview', compact("document_content"))->render(),
             ];
         }
-
         return response()->json($response);
     }
 }

@@ -1,6 +1,7 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="meeting_protocol">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content"
+         page-name="meeting_protocol">
 
         @include('layout.breadcrumb', [
             'url' => [route('lawsuit.index') => 'Dosyalar', null => 'Toplantı Tutanağı Oluştur'],
@@ -26,7 +27,7 @@
                                 {{ Form::open(['url' => route('meeting_protocol.store', $lawsuit), 'method' => 'POST', 'class' => 'kt-form', 'id' => 'kt_form']) }}
 
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
-                                    data-ktwizard-state="current">
+                                     data-ktwizard-state="current">
                                     <div class="kt-heading kt-heading--md">Taraf Seçimi -</div>
                                     @include('mediator.document.layout.side_select', $lawsuit)
                                 </div>
@@ -37,11 +38,11 @@
                                         <div class="kt-wizard-v4__form">
                                             <div class="form-group">
                                                 {{ Form::label('Toplantı Tarihi') }}
-                                                {{ Form::text('meeting_date', $lawsuit->meeting_date, ['class' => 'form-control datepicker datedotmask']) }}
+                                                {{ Form::date('meeting_date', $lawsuit->meeting_date, ['class' => 'form-control']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::label('Toplantı Saati') }}
-                                                {{ Form::text('meeting_start_hour', $lawsuit->meeting_start_hour, ['class' => 'form-control timepicker']) }}
+                                                {{ Form::time('meeting_start_hour', $lawsuit->meeting_start_hour, ['class' => 'form-control']) }}
                                             </div>
                                             <div class="form-group">
                                                 {{ Form::label("mediation_center_id",'Toplantı Yeri') }}
@@ -68,7 +69,7 @@
                                                     değişkenler kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri
                                                     ile değiştirilecektir.</p>
                                                 <textarea class="preview-area" name="preview" id="preview-area"
-                                                    data-url="{{ route('meeting_protocol.preview', $lawsuit) }}">
+                                                          data-url="{{ route('meeting_protocol.preview', $lawsuit) }}">
                                                 </textarea>
                                             </div>
                                         </div>
@@ -96,10 +97,10 @@
                                                     <h1 class="kt-heading kt-heading--lg">Sürece Devam Etmek istiyor
                                                         musunuz?</h1>
                                                     <a href="#next_level" data-toggle="modal"
-                                                        class="btn btn-success btn-lg">Evet</a>
+                                                       class="btn btn-success btn-lg">Evet</a>
                                                     <a href="/dosyalar" class="btn btn-danger btn-lg">Çık</a>
                                                     <a href="javascript:;" class="btn btn-success float-right"
-                                                        id="cikti_btn">
+                                                       id="cikti_btn">
                                                         <i class="fas fa-print"></i> Çıktı Al
                                                     </a>
                                                     <div class="print_side" id=""></div>
@@ -110,9 +111,9 @@
                                 </div>
 
                                 @include('layout.form_actions')
-
+                                @include('mediator.document.layout.result_modal')
+                                @include('mediator.document.layout.matters_discussed_modal')
                                 {{ Form::close() }}
-
                             </div>
                         </div>
                     </div>
@@ -154,7 +155,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary btn-lg"
-                            id="meeting_result_next_button">Evet</button>
+                                id="meeting_result_next_button">Evet
+                        </button>
                         <button type="button" class="btn btn-secondary btn-lg" id="meeting_result_button">Hayır</button>
                     </div>
                 </div>
@@ -173,19 +175,21 @@
                         <div class="form-group">
                             <label for="meeting_date">Toplantı Tarihi</label>
                             <input type="text" id="next_meeting_date" name="meeting_date"
-                                class="form-control datepicker datedotmask"
-                                value="{{ \Carbon\Carbon::parse($lawsuit->meeting_date)->format('d.m.Y') }}"
-                                autocomplete="off">
+                                   class="form-control datepicker datedotmask"
+                                   value="{{ \Carbon\Carbon::parse($lawsuit->meeting_date)->format('d.m.Y') }}"
+                                   autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="meeting_hour">Toplantı Saati</label>
                             <input type="text" id="next_meeting_hour" name="meeting_start_hour"
-                                class="form-control timepicker" value="{{ $lawsuit->meeting_start_hour }}" />
+                                   class="form-control timepicker" value="{{ $lawsuit->meeting_start_hour }}"/>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary btn-lg"
-                            onclick="meetingResultWrite('{{ strtolower(\App\Services\HelperService::numberToOrdinal($lawsuit->meeting_count + 1)) }}', '', '{{ $lawsuit->id }}')">Tamam</button>
+                                onclick="meetingResultWrite('{{ strtolower(\App\Services\HelperService::numberToOrdinal($lawsuit->meeting_count + 1)) }}', '', '{{ $lawsuit->id }}')">
+                            Tamam
+                        </button>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">İptal</button>
                     </div>
                 </div>
@@ -224,7 +228,7 @@
                                     @foreach ($agreement_types->where('back_to_work', true) as $type)
                                         <label class="kt-checkbox">
                                             <input type="radio" name="subject_answer" value="{{ $type->id }}"
-                                                data-template="{{ $type->description }}"> {{ $type->name }}
+                                                   data-template="{{ $type->description }}"> {{ $type->name }}
                                             <span></span>
                                         </label>
                                     @endforeach
@@ -237,7 +241,7 @@
                                     @foreach ($agreement_types->where('back_to_work', false) as $type)
                                         <label class="kt-checkbox">
                                             <input type="radio" name="subject_answer" value="{{ $type->id }}"
-                                                data-template="{{ $type->description }}"> {{ $type->name }}
+                                                   data-template="{{ $type->description }}"> {{ $type->name }}
                                             <span></span>
                                         </label>
                                     @endforeach
@@ -256,8 +260,6 @@
                 </div>
             </div>
         </div>
-        @include('mediator.document.layout.result_modal')
-        @include('mediator.document.layout.matters_discussed_modal')
     </div>
 @endsection
 @section('script')

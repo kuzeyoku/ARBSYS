@@ -12,6 +12,7 @@ class AuthorityObjectionService
 {
     public static function replaceKeywords(Request $request, Lawsuit $lawsuit)
     {
+        $documentService = new DocumentService($lawsuit, 16);
         $list = array(
             "@ArabuluculukBurosu" => $lawsuit->mediation_office->name . " Arabuluculuk Bürosu",
             "@BasvuruDosyaNo" => $lawsuit->application_document_no,
@@ -23,7 +24,7 @@ class AuthorityObjectionService
             "@GorevKabulTarih" => Carbon::parse($lawsuit->job_date)->format('d.m.Y'),
             "@SurecinBaslangicTarih" => Carbon::parse($lawsuit->process_start_date)->format('d.m.Y'),
             "@IlkToplantiTarih" => Carbon::parse($lawsuit->meeting_date)->format('d.m.Y'),
-            "@BasvuranAdSoyad" => HelperService::nameFormat($lawsuit->sides()->first()->claimant->detail->name) ?? "",
+            "@BasvuranAdSoyad" => HelperService::nameFormat($lawsuit->claimants->first()->detail->name) ?? "",
             "@BasvuranAvukat" => isset($lawsuit->sides()->first()->claimant_lawyer->detail->name) && !is_null($lawsuit->sides()->first()->claimant_lawyer->detail->name) ? "vekili " . HelperService::nameFormat($lawsuit->sides()->first()->claimant_lawyer->detail->name) : "",
             "@TicaretOdasi" => $request->chamber_of_commerce ?? "",
             "@BelgeTarih" => $request->date ?? "",
@@ -33,13 +34,6 @@ class AuthorityObjectionService
             "@CalistigiYer" => HelperService::nameFormat($request->work_name) ?? "",
             "@BugunTarih" => Carbon::now()->format('d.m.Y'),
         );
-
-        $find = array_keys($list);
-        $replace = array_values($list);
-
-        $document = DocumentTypeTemplate::where("document_type_id", 16)
-            ->where("lawsuit_subject_type_id", $lawsuit->lawsuit_subject_type_id)
-            ->first();
-        return str_ireplace($find, $replace, $document->html);
+        return $documentService->replace($list);
     }
 }

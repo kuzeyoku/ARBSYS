@@ -36,17 +36,18 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".noteEditor").hide();
             swal.fire({
                 title: 'Dikkat!',
                 text: "Bu sayfada yer alan detayların sadece arabulucu tarafından görüntülenmesi gerekebilir. Devam etmek istediğinize eminmisiniz ?",
                 type: 'warning',
+                icon: "warning",
                 confirmButtonText: 'Evet, devam et!',
                 cancelButtonText: 'Hayır, iptal et!',
                 showCancelButton: true,
                 reverseButtons: true
-            }).then(function(result) {
+            }).then(function (result) {
                 if (result.value) {
                     $(".noteEditor").show();
                 } else if (result.dismiss === "cancel") {
@@ -54,7 +55,7 @@
                         "İptal edildi",
                         "Dosya notları sayfasına giriş işlemi iptal edildi.",
                         "error"
-                    ).then(function() {
+                    ).then(function () {
                         window.location.href = "{{ route('lawsuit.index') }}";
                     });
                 }

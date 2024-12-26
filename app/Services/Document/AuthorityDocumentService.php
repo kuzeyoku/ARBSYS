@@ -17,7 +17,7 @@ class AuthorityDocumentService
             "@ArabuluculukBurosu" => $lawsuit->mediation_office->name . " Arabuluculuk Bürosu",
             "@BasvuruDosyaNo" => $lawsuit->application_document_no,
             "@ARBDosyaNo" => $lawsuit->mediation_document_no,
-            "@BasvuranAdSoyad" => HelperService::nameFormat($lawsuit->sides()->first()->claimant->detail->name) ?? "",
+            "@BasvuranAdSoyad" => $lawsuit->claimants->first()->detail->name ?? "",
             "@BugunTarih" => Carbon::now()->format('d.m.Y'),
             "@ToplantiTarih" => Carbon::parse($request->meeting_date)->format('d/m/Y'),
             "@ToplantiSaat" => $request->meeting_hour,

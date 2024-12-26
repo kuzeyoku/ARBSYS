@@ -14,7 +14,7 @@
                             <div class="col-lg-4">
                                 <div class="kt-checkbox-list">
                                     <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">
-                                        {{Form::checkbox('matters_discussed[]', $key,  in_array($key, $lawsuit->matters_discussed_to_array), ['id' => 'matters-discussed-checkbox'])}}
+                                        {{ Form::checkbox('matters_discussed[]', $key,  in_array($key, $lawsuit->matters_discussed_to_array), ['id' => 'matters-discussed-checkbox']) }}
                                         {{ $value }}<span></span>
                                     </label>
                                 </div>

@@ -47,7 +47,6 @@ var KTWizard4 = (function () {
                 formEl.ajaxSubmit({
                     url: $("#preview-area").data("url"),
                     success: function (data) {
-                        console.log(typeof (data))
                         var preview_content = $("#preview-area");
                         if (typeof (data) == "string") {
                             preview_content.val(data)
@@ -68,7 +67,7 @@ var KTWizard4 = (function () {
                                 );
                                 preview_content.append(textarea);
                                 textarea.html(v.view);
-                                $("#preview-" + v.id).summernote();
+                                createEditor("#preview-" + v.id);
                             });
                             isSingleDocument = false;
                         }
@@ -81,7 +80,6 @@ var KTWizard4 = (function () {
                 formEl.ajaxSubmit({
                     url: $("#side_email_control").data("url"),
                     success: function (data) {
-                        email_count = Object.keys(data.notnull_emails).length;
 
                         $("#send_email").show();
                         $("#side_email_control").html(
@@ -125,7 +123,7 @@ var KTWizard4 = (function () {
 
             errorPlacement: function (error, element) {
                 if (element.attr("type") === "checkbox" || element.attr("type") === "radio") {
-                    notification("", "Lütfen Seçin Yapın", "error");
+                    notification("", "Lütfen Seçim Yapın", "error");
                 } else if (element.attr("type") === "text") {
                     notification("", "Lütfen Gerekli Alanları Doldurun", "error");
                 }
@@ -241,6 +239,7 @@ jQuery(document).ready(function () {
 function createEditor(selector) {
     $(selector).summernote("destroy");
     $(selector).summernote({
+        lang: "tr-TR",
         callbacks: {
             onChange: function (contents) {
                 $(selector).html(contents);

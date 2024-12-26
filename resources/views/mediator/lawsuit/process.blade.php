@@ -55,7 +55,7 @@
             @endif
         </a>
         <a class="dropdown-item" href="{{ route('final_protocol.create', $lawsuit) }}">
-            @if($lawsuit->hasDocument(8))
+            @if($lawsuit->hasDocument([6,7,8,9,10,11,12,13,14]))
                 @svg('fas-check-double',"text-success") Son Tutanak Yeniden Oluştur
             @else
                 @svg('fas-file-medical', "text-danger") Son Tutanak Oluştur
