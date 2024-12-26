@@ -2,6 +2,7 @@
 
 namespace App\Models\Side;
 
+use App\Models\TaxOffice;
 use App\Models\User\User;
 use App\Models\PersonType;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,11 @@ class Company extends Model
     public function personType(): BelongsTo
     {
         return $this->belongsTo(PersonType::class);
+    }
+
+    public function taxOffice(): BelongsTo
+    {
+        return $this->belongsTo(TaxOffice::class);
     }
 
     public function user(): BelongsTo

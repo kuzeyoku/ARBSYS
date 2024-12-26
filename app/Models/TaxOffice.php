@@ -13,13 +13,13 @@ class TaxOffice extends Model
         'province',
         'district',
         'informantCode',
-        'taxOfficeName'
+        'name'
     ];
 
     public static function selectToArray()
     {
         return Cache::remember('taxOfficeSelect', 3600, function () {
-            return TaxOffice::orderBy("taxOfficeName", "ASC")->pluck('taxOfficeName', 'id')->toArray();
+            return TaxOffice::orderBy("name", "ASC")->pluck('name', 'id')->toArray();
         });
     }
 }
