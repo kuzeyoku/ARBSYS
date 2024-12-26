@@ -8,19 +8,19 @@ use Illuminate\Http\Request;
 
 class PeopleService
 {
-    public static function create(array $request)
+    public static function create(Request $request)
     {
         return People::create([
-            "name" => $request["name"],
-            "identification" => $request["identification"],
-            "address" => $request["address"],
-            "phone" => $request["phone"],
-            "fixed_phone" => $request["fixed_phone"],
-            "email" => $request["email"],
-            "kep_address" => $request["kep_address"],
-            "check" => array_key_exists("check", $request) ? json_encode(array_keys($request["check"])) : null,
-            "tax_office_id" => $request["tax_office_id"],
-            "person_type_id" => $request["person_type_id"],
+            "name" => $request->name,
+            "identification" => $request->identification,
+            "address" => $request->address,
+            "phone" => $request->phone,
+            "fixed_phone" => $request->fixed_phone,
+            "email" => $request->email,
+            "kep_address" => $request->kep_address,
+            "check" => $request->has("check") ? json_encode(array_keys($request->check)) : null,
+            "tax_office_id" => $request->tax_office_id,
+            "person_type_id" => $request->person_type_id,
             "user_id" => auth()->user()->id,
         ]);
     }
