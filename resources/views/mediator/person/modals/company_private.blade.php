@@ -1,6 +1,8 @@
 @if (isset($item))
     {{ Form::hidden('id', $item->id, ['id' => 'person_id']) }}
     {{ Form::hidden('current_type', $item->type->id) }}
+@else
+    {{ Form::hidden('person_type_id', $personType->id) }}
 @endif
 <div class="form-group row">
     <div class="col-sm-4">
@@ -111,7 +113,7 @@
         {{ Form::label('Ticaret Sicil Müdürlüğü', null, ['class' => 'font-weight-bold']) }}
     </div>
     <div class="col-sm-8">
-        {{ Form::select('trade_registry', App\Models\TradeRegistry::selectToArray(), $item->trade_registry_id ?? 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--', 'data-live-search' => 'true']) }}
+        {{ Form::select('trade_registry_id', App\Models\TradeRegistry::selectToArray(), $item->trade_registry_id ?? 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--', 'data-live-search' => 'true']) }}
         <label class="kt-checkbox">
             {{ Form::checkbox('check[trade_registry]', true, isset($item) ? GlobalFunction::checkControl('trade_registry', $item->check) : null) }}
             Tutanakta Yazsın

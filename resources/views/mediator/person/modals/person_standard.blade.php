@@ -1,6 +1,8 @@
 @if (isset($item))
     {{ Form::hidden('id', $item->id, ['id' => 'person_id']) }}
     {{ Form::hidden('current_type', $item->type->id) }}
+@else
+    {{ Form::hidden('person_type_id', $personType->id) }}
 @endif
 <div class="form-group row">
     <div class="col-sm-4">

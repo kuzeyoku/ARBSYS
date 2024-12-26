@@ -1,6 +1,8 @@
 @if (isset($item))
     {{ Form::hidden('id', $item->id, ['id' => 'person_id']) }}
     {{ Form::hidden('current_type', $item->type->id) }}
+@else
+    {{ Form::hidden('person_type_id', $personType->id) }}
 @endif
 <div class="form-group row">
     <div class="col-sm-4">
@@ -81,7 +83,7 @@
         {{ Form::label('Kayıtlı Olduğu Baro', null, ['class' => 'font-weight-bold']) }}
     </div>
     <div class="col-sm-8">
-        {{ Form::select('baro', App\Models\Baro::selectToArray(), $item->baro_id ?? 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
+        {{ Form::select('baro_id', App\Models\Baro::selectToArray(), $item->baro_id ?? 'default', ['class' => 'form-control selectSearch', 'placeholder' => '--Seçiniz--']) }}
         <label class="kt-checkbox">
             {{ Form::checkbox('check[baro]', true, isset($item) ? GlobalFunction::checkControl('baro', $item->check) : null) }}
             Tutanakta Yazsın
