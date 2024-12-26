@@ -347,11 +347,11 @@ $(document).on("click", "#matters-discussed-save", function () {
                 $('#preview-' + $(this).val()).summernote('code', replaceContent);
             }
         });
-        if ($("#preview-area").length > 0) {
+/*        if ($("#preview-area").length > 0) {
             const previewContent = $("#preview-area").summernote("code");
             const replaceContent = previewContent.replace(`<span class="matters-discussed"></span>`, `<span class="matters-discussed">${inputValue}</span>`);
             $("#preview-area").summernote("code", replaceContent);
-        }
+        }*/
         $("#matters-discussed-modal").modal("hide");
     }
 });
