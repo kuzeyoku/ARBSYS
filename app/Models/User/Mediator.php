@@ -21,21 +21,6 @@ class Mediator extends Model
         'logo'
     ];
 
-    public function people(): HasMany
-    {
-        return $this->hasMany(People::class);
-    }
-
-    public function lawyers(): HasMany
-    {
-        return $this->hasMany(Lawyer::class);
-    }
-
-    public function companies(): HasMany
-    {
-        return $this->hasMany(Company::class);
-    }
-
     public function getPathAttribute()
     {
         $path = public_path('files/mediators/');

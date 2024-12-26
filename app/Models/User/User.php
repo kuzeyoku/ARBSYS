@@ -2,6 +2,10 @@
 
 namespace App\Models\User;
 
+use App\Models\Side\Company;
+use App\Models\Side\Lawyer;
+use App\Models\Side\People;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -55,6 +59,21 @@ class User extends Authenticatable
     public function mediator()
     {
         return $this->hasOne(Mediator::class);
+    }
+
+    public function people(): HasMany
+    {
+        return $this->hasMany(People::class);
+    }
+
+    public function lawyers(): HasMany
+    {
+        return $this->hasMany(Lawyer::class);
+    }
+
+    public function companies(): HasMany
+    {
+        return $this->hasMany(Company::class);
     }
 
     public function getRemainingDayAttribute()

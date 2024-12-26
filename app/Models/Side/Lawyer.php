@@ -28,6 +28,8 @@ class Lawyer extends Model
 
     protected $appends = ['display_name', 'baro_name'];
 
+    protected $with = ['personType'];
+
     public function getDisplayNameAttribute()
     {
         return $this->identification . " - " . $this->name;

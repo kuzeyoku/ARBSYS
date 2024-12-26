@@ -28,6 +28,8 @@ class People extends Model
 
     protected $appends = ['display_name'];
 
+    protected $with = ['personType'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
