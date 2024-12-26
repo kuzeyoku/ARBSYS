@@ -2,7 +2,10 @@
 
 namespace App\Models\User;
 
+use App\Models\Side\Lawyer;
+use App\Models\Side\People;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Mediator extends Model
 {
@@ -17,6 +20,21 @@ class Mediator extends Model
     protected $appends = [
         'logo'
     ];
+
+    public function people(): HasMany
+    {
+        return $this->hasMany(People::class);
+    }
+
+    public function lawyers(): HasMany
+    {
+        return $this->hasMany(Lawyer::class);
+    }
+
+    public function companies(): HasMany
+    {
+        return $this->hasMany(Company::class);
+    }
 
     public function getPathAttribute()
     {

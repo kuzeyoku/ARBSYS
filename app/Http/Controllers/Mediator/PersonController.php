@@ -15,27 +15,14 @@ use App\Http\Controllers\Controller;
 
 class PersonController extends Controller
 {
-
-    private function getPerson($id, $group)
-    {
-        if ($group == 1) {
-            return People::findOrFail($id);
-        } elseif ($group == 2) {
-            return Lawyer::findOrFail($id);
-        } elseif ($group == 3) {
-            return Company::findOrFail($id);
-        }
-        return null;
-    }
-
     public function index(Request $request)
     {
         if ($request->isMethod("post")) {
             $items = $this->search($request);
         } else {
-            $peoples = People::where("user_id", auth()->user()->id)->get();
-            $lawyers = Lawyer::where("user_id", auth()->user()->id)->get();
-            $companies = Company::where("user_id", auth()->user()->id)->get();
+            $peoples = auth()->user()->people;
+            $lawyers = auth()->user()->lawyers;
+            $companies = auth()->user()->companies;
             $items = collect([$peoples, $lawyers, $companies])->collapse();
         }
         return view('mediator.person.index', compact('items'));
@@ -49,40 +36,24 @@ class PersonController extends Controller
         return compact("data", "item");
     }
 
-    /*    public function getModalContent(Request $request)
-        {
-            $type = PersonType::find($request->type);
-            $data = view('mediator.person.modals.' . $type->key, compact('type'))->render();
-            return compact('data', "type");
-        }*/
-
-    /*    public function getEditModalContent(Request $request)
-        {
-            $currentType = PersonType::findOrFail($request->current_type);
-            $item = $this->getPerson($request->id, $currentType->group);
-            $personType = PersonType::findOrFail($request->type);
-            $data = view("mediator.person.modals." . $personType->key, compact("item"))->render();
-            $type = $personType->name;
-            return compact("data", "type");
-        }*/
-
     public function store(Request $request) // TODO: Request Düzenle
     {
         try {
             $personType = PersonType::where("key", $request->type)->first();
             switch ($personType->group) {
                 case 1:
-                    PeopleService::create($request, $personType->id);
+                    PeopleService::create($request);
                     break;
                 case 2:
-                    LawyerService::create($request, $personType->id);
+                    LawyerService::create($request);
                     break;
                 case 3:
-                    CompanyService::create($request, $personType->id);
+                    CompanyService::create($request);
                     break;
             }
             return redirect()->back()->withSuccess('Kişi Başarıyla Eklendi.');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->withError("Kişi Eklenirken Hata Oluştu.");
         }
     }
@@ -149,16 +120,16 @@ class PersonController extends Controller
         }
     }*/
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $group, $id)
     {
         try {
-            $personType = PersonType::findOrFail($request->type);
-            $item = $this->getPerson($request->id, $personType->group);
-            if ($item->side)
-                $item->side->delete();
-            $item->delete();
+            $person = $this->getPerson($id, $group);
+            if ($person->side)
+                $person->side->delete();
+            $person->delete();
             return redirect()->back()->withSuccess('Kişi Başarıyla Silindi.');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->withError('Kişi Silinirken Hata Oluştu.');
         }
     }
@@ -175,5 +146,17 @@ class PersonController extends Controller
             });
         }
         return $items;
+    }
+
+    private function getPerson($id, $group)
+    {
+        if ($group == 1) {
+            return People::findOrFail($id);
+        } elseif ($group == 2) {
+            return Lawyer::findOrFail($id);
+        } elseif ($group == 3) {
+            return Company::findOrFail($id);
+        }
+        return null;
     }
 }
