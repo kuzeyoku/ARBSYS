@@ -42,19 +42,18 @@ class PersonController extends Controller
             $personType = PersonType::where("key", $request->type)->first();
             switch ($personType->group) {
                 case 1:
-                    PeopleService::create($request);
+                    PeopleService::create($request->all());
                     break;
                 case 2:
-                    LawyerService::create($request);
+                    LawyerService::create($request->all());
                     break;
                 case 3:
-                    CompanyService::create($request);
+                    CompanyService::create($request->all());
                     break;
             }
-            return redirect()->back()->withSuccess('Kişi Başarıyla Eklendi.');
+            return redirect()->back()->with("success", 'Kişi Başarıyla Eklendi.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            return redirect()->back()->withError("Kişi Eklenirken Hata Oluştu.");
+            return redirect()->back()->with("error", "Kişi Eklenirken Hata Oluştu.");
         }
     }
 
@@ -64,13 +63,13 @@ class PersonController extends Controller
         try {
             switch ($type->group) {
                 case 1:
-                    PeopleService::update($request);
+                    PeopleService::update($request->all());
                     break;
                 case 2:
-                    LawyerService::update($request);
+                    LawyerService::update($request->all());
                     break;
                 case 3:
-                    CompanyService::update($request);
+                    CompanyService::update($request->all());
                     break;
             }
             return redirect()->back()->withSuccess('Kişi Başarıyla Güncellendi.');
@@ -129,7 +128,6 @@ class PersonController extends Controller
             $person->delete();
             return redirect()->back()->withSuccess('Kişi Başarıyla Silindi.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return redirect()->back()->withError('Kişi Silinirken Hata Oluştu.');
         }
     }
