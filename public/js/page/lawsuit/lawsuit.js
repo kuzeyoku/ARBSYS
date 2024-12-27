@@ -243,8 +243,6 @@ $(document).ready(function () {
         });
 
         $(`#sideCard-${deleteSideDataIndex}`).remove();
-
-        console.log(sides);
     });
     $("select[name='lawsuit_type_id']").on("change", function () {
         $("#lawsuit-subject-types").removeClass("d-none");
@@ -258,16 +256,16 @@ $(document).ready(function () {
                     _token: $("meta[name='csrf-token']").attr("content"),
                     lawsuit_subject_type_id: lawsuit_subject_type_id,
                 },
-            }).done(function (response) {
-                let options = "";
-                response.forEach(function (item) {
-                    options += `<option value="` + item.id + `">` + item.name + `</option>`;
-                });
-                $("select[name='lawsuit_subject_id']").html(options);
-                $("#lawsuit-subjects").removeClass("d-none");
+                success: function (response) {
+                    let options = "";
+                    $.each(response, function (index, value) {
+                        options += `<option value="${index}">${value}</option>`;
+                    });
+                    $("select[name='lawsuit_subject_id']").html(options);
+                    $("#lawsuit-subjects").removeClass("d-none");
+                }
             });
         });
-
     });
     /*
         $("#delivery_by").on("change", function () {
@@ -354,31 +352,6 @@ $(document).ready(function () {
         //
     });
 
-    $("#lawsuit_subject_types").on("change", function () {
-        if (parseInt($(this).val()) > 0) {
-            $("#lawsuit_subjects_select").show();
-            $.ajax({
-                url: "/lawsuit_subjects/" + $(this).val(),
-                type: "GET",
-                data: "",
-                success: function (data) {
-                    $("#lawsuit_subjects").html("");
-                    $("#lawsuit_subjects").append(
-                        '<option value="" disabled selected>Seçin</option>'
-                    );
-                    $.each(data, function (index, value) {
-                        $("#lawsuit_subjects").append(
-                            '<option value="' + value.id + '">' + value.name + "</option>"
-                        );
-                    });
-                },
-            });
-        } else {
-            $("#lawsuit_subjects").html("");
-            $("#lawsuit_subjects_select").hide();
-        }
-    });
-
     $("#process_type_id").on("change", function () {
         if ($(this).val() == 4 || $(this).val() == 5) {
             $("#result_type").show();
@@ -399,7 +372,8 @@ $(document).ready(function () {
         );
         $("#employeeBeforeModal").modal("show");
     });
-});
+})
+;
 
 /* Fonksiyonlar */
 
