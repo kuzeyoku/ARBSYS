@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers\Mediator;
 
+use App\Http\Controllers\Controller;
+use App\Models\AgreementType;
+use App\Models\Lawsuit\Lawsuit;
+use App\Models\Lawsuit\LawsuitProcessType;
+use App\Models\Lawsuit\LawsuitResultType;
+use App\Models\Lawsuit\LawsuitSubject;
+use App\Models\Lawsuit\LawsuitSubjectType;
+use App\Models\Lawsuit\LawsuitType;
+use App\Models\Side\Company;
+use App\Models\Side\Lawyer;
+use App\Models\Side\People;
+use App\Models\Side\Side;
 use App\Services\CompanyService;
+use App\Services\HelperService;
+use App\Services\LawsuitService;
 use App\Services\LawyerService;
 use App\Services\PeopleService;
 use Carbon\Carbon;
-use App\Models\Side\Side;
-use App\Models\PersonType;
-use App\Models\Side\Lawyer;
-use App\Models\Side\People;
-use App\Models\Side\Company;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Lawsuit\Lawsuit;
-use App\Services\HelperService;
-use App\Services\LawsuitService;
-use Illuminate\Support\Facades\DB;
-use App\Models\Lawsuit\LawsuitType;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
-use App\Models\Lawsuit\LawsuitSubject;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\Lawsuit\LawsuitResultType;
-use App\Models\Lawsuit\LawsuitProcessType;
-use App\Models\Lawsuit\LawsuitSubjectType;
-use App\Models\AgreementType\AgreementType;
 use ZipArchive;
 
 class LawsuitController extends Controller
@@ -66,9 +65,8 @@ class LawsuitController extends Controller
 
     public function index()
     {
-        $agreement_types = AgreementType::all();
         $lawsuits = Lawsuit::active()->get();
-        return view('mediator.lawsuit.index', compact('agreement_types', "lawsuits"));
+        return view('mediator.lawsuit.index', compact("lawsuits"));
     }
 
     public function create()
@@ -278,9 +276,14 @@ class LawsuitController extends Controller
 
     public function destroy(Lawsuit $lawsuit)
     {
-        $lawsuit->documents()->delete();
-        $lawsuit->delete();
-        return Redirect::back()->with("success", "Dosya silindi");
+        try {
+            $lawsuit->documents()->delete();
+            $lawsuit->sides()->delete();
+            $lawsuit->delete();
+            return Redirect::back()->with("success", "Arabuluculuk Dosyası ve İlgili İçerikler Başarıyla Silindi.");
+        } catch (\Exception $e) {
+            return Redirect::back()->with("error", "Dosya silinirken bir hata oluştu");
+        }
     }
 
     public function report(Request $request)
@@ -867,92 +870,6 @@ class LawsuitController extends Controller
         return redirect()->route('lawsuit.index')->withSuccess('Dava Dosyası Başarıyla Oluşturuldu.');
     }
 
-    public function getTypes()
-    {
-        $types = LawsuitType::all();
-
-        return response()->json($types);
-    }
-
-    public function allSubjectTypes()
-    {
-        $subject_types = LawsuitSubjectType::all();
-
-        return response()->json($subject_types);
-    }
-
-    public function getSubjectTypes($lawsuit_type_id)
-    {
-        $subject_types = LawsuitSubjectType::where('lawsuit_type_id', $lawsuit_type_id)->get();
-
-        return response()->json($subject_types);
-    }
-
-    public function getSubjects(Request $request)
-    {
-        $subjects = LawsuitSubject::where('lawsuit_subject_type_id', $request->lawsuit_subject_type_id)->get();
-        $response = $subjects->map(function ($subject) {
-            return [
-                'id' => $subject->id,
-                'name' => $subject->name,
-            ];
-        });
-        return response()->json($response);
-    }
-
-    public function getApplicants(Request $request)
-    {
-        $applicants = LawsuitService::getSidesByParams($request->lawsuit_id);
-
-        return response()->json($applicants);
-    }
-
-    public function getReelByName(Request $request)
-    {
-        $users = DB::table('people')
-            ->where('name', 'like', $request->name . '%')
-            ->get();
-
-        return response()->json($users);
-    }
-
-    public function getTaxNumber(Request $request)
-    {
-        $taxNumber = DB::table("companies")
-            ->where('mersis_number', 'like', $request->mersis_number . '%')
-            ->get();
-
-        return response()->json($taxNumber);
-    }
-
-    public function getTaxOfficesName(Request $request)
-    {
-        $taxOfficeName = DB::table("taxoffices")->where("taxOfficeName", "like", $request->vergi_daire_adi . "%")->get();
-        return response()->json($taxOfficeName);
-    }
-
-    public function getCompanyByTaxNumber(Request $request)
-    {
-        $tax_number = trim(str_replace('_', '', $request->tax_number));
-
-        $data = Company::where('user_id', auth()->id())
-            ->where(DB::raw('CONCAT(tax_number," ",LOWER(name))'), 'LIKE', "%" . strtolower($tax_number) . "%")
-            ->get();
-
-        return response()->json($data);
-    }
-
-    public function getLawyerByTc(Request $request)
-    {
-        $tc = str_replace('_', '', $request->tc);
-
-        $data = Lawyer::where('user_id', auth()->id())
-            ->where(DB::raw('CONCAT(identification," ",name)'), 'LIKE', $tc . "%")
-            ->get();
-
-        return response()->json($data);
-    }
-
     function deleteDirectory($dir)
     {
         if (!file_exists($dir)) {
@@ -997,7 +914,6 @@ class LawsuitController extends Controller
             }
             return redirect()->back()->withSuccess('Notlar başarıyla güncellendi.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return redirect()->back()->withError("Bir Hata Oluştu");
         }
     }
