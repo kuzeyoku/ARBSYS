@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>ARBSYS</title>
     <meta name="description" content="Updates and statistics">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -371,5 +371,30 @@
 <script src="{{ asset('js/custom.js') }}?v={{ time() }}"></script>
 <script src="{{ asset('js/localization.js') }}?v={{ time() }}"></script>
 <script src="{{ asset('js/enums.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-ktmenu-submenu-toggle="hover"]').on('click', function (e) {
+            const $submenu = $(this).find('.kt-menu__submenu');
+            if ($submenu.is(':visible')) {
+                $submenu.hide();
+            } else {
+                $('.kt-menu__submenu').hide(); // Hide all other submenus
+                $submenu.show();
+            }
+        });
+
+        // Hide submenu when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('[data-ktmenu-submenu-toggle="hover"]').length) {
+                $('.kt-menu__submenu').hide();
+            }
+        });
+
+        // Allow default action for submenu items and hide submenu when a submenu item is clicked
+        $('.kt-menu__submenu a').on('click', function () {
+            $(this).closest('.kt-menu__submenu').hide();
+        });
+    });
+</script>
 </body>
 </html>
