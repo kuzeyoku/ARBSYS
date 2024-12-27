@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Mediator;
 
 use App\Http\Controllers\Controller;
-use App\Models\AgreementType\AgreementType;
+use App\Models\AgreementType;
 use App\Models\Document\Document;
 use App\Models\Lawsuit\Lawsuit;
 use App\Services\Document\MeetingProtocolService;

@@ -135,9 +135,6 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::post('/dosya/davet-mektubu/mail-gonder', 'InvitationLetterController@sendEmail')->name('invitation_letter.send_email');
     Route::get('/update_meeting_adress/{name?}', 'InvitationLetterController@updateMeeting');
 
-    Route::get('/lawsuit_subject_types/{lawsuit_type_id}', 'LawsuitController@getSubjectTypes');
-    Route::post('/get_lawsuit_subjects', 'LawsuitController@getSubjects')->name("get_lawsuit_subjects");
-    Route::get('/lawsuit_subject_all_types', 'LawsuitController@allSubjectTypes');
     Route::post('/lawsuit_process_type_update', 'LawsuitController@processTypeUpdate');
     Route::post('/lawsuit_agreement_type_update', 'LawsuitController@agreementTypeUpdate');
     Route::post('/lawsuit_filter_by_params', 'LawsuitController@filterByParams');
@@ -202,4 +199,5 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::post("/api/get_lawywer_data", "DataController@getLawyerData")->name("api.get_lawywer_data");
     Route::post("/api/get_company_data", "DataController@getCompanyData")->name("api.get_company_data");
     Route::post("/api/get_person_modal_content", "DataController@getPersonModalContent")->name("api.get_person_modal_content");
+    Route::post("/api/get_lawsuit_subjects", "DataController@getLawsuitSubjects")->name("api.get_lawsuit_subjects");
 });
