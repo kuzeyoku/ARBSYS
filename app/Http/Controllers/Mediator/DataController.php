@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mediator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Lawsuit\LawsuitSubjectType;
 use App\Models\MediationCenter;
 use App\Models\PersonType;
 use App\Models\Side\Company;
@@ -12,6 +13,12 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
+    public function getLawsuitSubjects(Request $request): JsonResponse
+    {
+        $lawsuit_subject_type = LawsuitSubjectType::findOrFail($request->lawsuit_subject_type_id);
+        return response()->json($lawsuit_subject_type->lawsuitSubjects->pluck("name", "id"));
+    }
+
     public function getMediationCenterAddress(Request $request): JsonResponse
     {
         $mediation_center = MediationCenter::findOrFail($request->id);
