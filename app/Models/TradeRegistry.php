@@ -9,7 +9,7 @@ class TradeRegistry extends Model
 {
     public static function selectToArray()
     {
-        return Cache::remember('tradeRegistrySelect', 3600, function () {
+        return Cache::rememberForever('trade_registries', function () {
             return TradeRegistry::pluck('name', 'id')->toArray();
         });
     }

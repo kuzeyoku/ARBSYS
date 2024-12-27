@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Template\Template;
+use App\Models\Template;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

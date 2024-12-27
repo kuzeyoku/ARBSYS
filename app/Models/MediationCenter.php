@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class MediationCenter extends Model
 {
@@ -13,8 +14,10 @@ class MediationCenter extends Model
 
     public $timestamps = false;
 
-    public static function selectToArray()
+    public static function selectToArray(): array
     {
-        return MediationCenter::pluck('title', 'id')->toArray();
+        return Cache::rememberForever('mediation_centers', function () {
+            return MediationCenter::pluck('title', 'id')->toArray();
+        });
     }
 }

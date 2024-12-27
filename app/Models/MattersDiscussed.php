@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Lawsuit\LawsuitSubject;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Lawsuit\LawsuitSubjectType;
+use Illuminate\Support\Facades\Cache;
 
 class MattersDiscussed extends Model
 {
@@ -16,20 +15,11 @@ class MattersDiscussed extends Model
 
     public $timestamps = false;
 
-    // protected $with = ["lawsuitSubjectType","lawsuitSubject"];
-
-    public function toArray()
+    public function toArray(): array
     {
-        return self::pluck("title", "id")->all();
+        return Cache::remember('matters_discussed', 60, function () {
+            return self::pluck("title", "id")->toArray();
+        });
     }
 
-    public function lawsuit_subject_type()
-    {
-        return $this->belongsTo(LawsuitSubjectType::class);
-    }
-
-    public function lawsuit_subject()
-    {
-        return  $this->belongsTo(LawsuitSubject::class);
-    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use SideTypeOptions;
 
 /**
  * @property mixed $person_id
@@ -23,37 +24,60 @@ class Side extends Model
         "lawyer_id",
         "side_type_id",
         "parent_id",
-        "user_id"
+        "user_id",
+        "detail"
     ];
 
     public function detail()
     {
-        if (!is_null($this->person_id))
-            return $this->belongsTo(People::class, 'person_id');
-        elseif (!is_null($this->company_id))
-            return $this->belongsTo(Company::class, 'company_id');
-        elseif (!is_null($this->lawyer_id))
-            return $this->belongsTo(Lawyer::class, 'lawyer_id');
+        if ($this->person_id) {
+            return $this->person();
+        } else if ($this->company_id) {
+            return $this->company();
+        } else if ($this->lawyer_id) {
+            return $this->lawyer();
+        }
+        return null;
     }
 
-    public function main_side(): HasOne
+    public function person(): BelongsTo
     {
-        return $this->hasOne(Side::class, 'id', 'parent_id');
+        return $this->belongsTo(People::class, 'person_id');
     }
 
-    public function sub_sides(): HasMany
+    public function company(): BelongsTo
     {
-        return $this->hasMany(Side::class, 'parent_id');
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
-    public function getLawyerAttribute()
+    public function lawyer(): BelongsTo
     {
-        return Side::where("lawsuit_id", $this->lawsuit_id)->where("parent_id", $this->id)->first();
+        return $this->belongsTo(Lawyer::class, 'lawyer_id');
     }
 
-    public function getDefendantsAttribute()
+    public function scopeClaimant($query)
     {
-        return Side::where('lawsuit_id', $this->lawsuit_id)->where('side_type_id', \SideTypeOptions::DEFENDANT)->whereIn('side_applicant_type_id', [1, 2])->get();
+        return $query->where('side_type_id', SideTypeOptions::CLAIMANT);
+    }
+
+    public function scopeDefendant($query)
+    {
+        return $query->where('side_type_id', SideTypeOptions::DEFENDANT);
+    }
+
+    public function side_type(): BelongsTo
+    {
+        return $this->belongsTo(SideType::class);
+    }
+
+    public function side_applicant_type(): BelongsTo
+    {
+        return $this->belongsTo(SideApplicantType::class);
+    }
+
+    public function lawsuit(): BelongsTo
+    {
+        return $this->belongsTo(Lawsuit::class);
     }
 
     public function getApplicantTitleAttribute()
@@ -97,33 +121,5 @@ class Side extends Model
         }
     }
 
-    public function side_type()
-    {
-        return $this->belongsTo(SideType::class);
-    }
 
-    public function side_applicant_type()
-    {
-        return $this->belongsTo(SideApplicantType::class);
-    }
-
-    public function company(): HasMany
-    {
-        return $this->hasMany(Company::class);
-    }
-
-    public function person(): HasMany
-    {
-        return $this->hasMany(People::class);
-    }
-
-    public function lawyer(): HasMany
-    {
-        return $this->hasMany(Lawyer::class);
-    }
-
-    public function lawsuit(): BelongsTo
-    {
-        return $this->belongsTo(Lawsuit::class);
-    }
 }

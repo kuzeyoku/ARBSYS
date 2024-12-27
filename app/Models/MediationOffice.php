@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class MediationOffice extends Model
 {
@@ -11,6 +12,8 @@ class MediationOffice extends Model
 
     public static function selectToArray()
     {
-        return self::pluck('name', 'id')->toArray();
+        return Cache::rememberForever('mediation_offices', function () {
+            return self::all()->pluck('name', 'id')->toArray();
+        });
     }
 }

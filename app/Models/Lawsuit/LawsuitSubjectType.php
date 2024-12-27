@@ -16,7 +16,7 @@ class LawsuitSubjectType extends Model
 
     public static function selectToArray()
     {
-        return Cache::remember("lawsuit_subject_types", 3600, function () {
+        return Cache::rememberForever("lawsuit_subject_types", function () {
             return LawsuitSubjectType::pluck("name", "id")->toArray();
         });
     }

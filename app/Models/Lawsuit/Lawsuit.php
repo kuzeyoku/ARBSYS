@@ -3,15 +3,12 @@
 namespace App\Models\Lawsuit;
 
 use App\Models\Document\Document;
-use App\Models\Document\DocumentType;
-use App\Models\Document\DocumentTypeTemplate;
 use App\Models\Log;
 use App\Models\MediationOffice;
 use App\Models\Side\Side;
+use App\Models\User\User;
 use App\Services\Document\InvitationLetterService;
-use ApplicantTypeOptions;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\MediationCenter;
@@ -49,15 +46,22 @@ class Lawsuit extends Model
         "user_id",
     ];
 
-    public function getDocumentTemplate(DocumentType $documentType)
+    protected $with = [
+        "lawsuit_process_type",
+        "lawsuit_result_type",
+        "lawsuit_subject_type",
+        "lawsuit_subject",
+        "lawsuit_type",
+        "notes",
+        "sides",
+        "documents",
+        "logs",
+        "user",
+    ];
+
+    public function user(): BelongsTo
     {
-        $singleTemplates = [1, 2, 3, 6, 7, 8, 9, 10];
-        return DocumentTypeTemplate::where('document_type_id', $documentType->id)
-            ->where('lawsuit_subject_type_id', $this->lawsuit_subject_type_id)
-            ->when(!in_array($documentType->id, $singleTemplates), function ($query) {
-                return $query->where('lawsuit_subject_id', $this->lawsuit_subject_id);
-            })
-            ->first();
+        return $this->belongsTo(User::class);
     }
 
     public function scopeArchive($query)
@@ -125,7 +129,7 @@ class Lawsuit extends Model
 
     public function sides(): HasMany
     {
-        return $this->hasMany(Side::class)->where("parent_id", null);
+        return $this->hasMany(Side::class)->whereNull("parent_id");
     }
 
     public function documents(): HasMany
@@ -141,39 +145,9 @@ class Lawsuit extends Model
     public function hasDocument($document_type_id): bool
     {
         if (is_array($document_type_id)) {
-            return $this->documents()->whereIn("document_type_id", $document_type_id)->exists();
+            return $this->documents->where('document_type_id', $document_type_id)->isNotEmpty();
         }
-        return $this->documents()->where("document_type_id", $document_type_id)->exists();
-    }
-
-    public function getHasMeetingProtocolAttribute(): bool
-    {
-        return $this->documents()->where('document_type_id', 5)->exists();
-    }
-
-    public function getHasFinalProtocolAttribute(): bool
-    {
-        return $this->documents()->where('document_type_id', 7)->exists();
-    }
-
-    public function getSubjectTypeAttribute()
-    {
-        return $this->lawsuit_subject_type->name ?? "";
-    }
-
-    public function getSubjectAttribute()
-    {
-        return $this->lawsuit_subject->name ?? "";
-    }
-
-    public function getClaimantsAttribute(): Collection
-    {
-        return $this->sides()->where('side_type_id', SideTypeOptions::CLAIMANT)->whereNull("parent_id")->get();
-    }
-
-    public function getDefendantsAttribute(): Collection
-    {
-        return $this->sides()->where('side_type_id', SideTypeOptions::DEFENDANT)->whereNull("parent_id")->get();
+        return $this->documents->where('document_type_id', $document_type_id)->isNotEmpty();
     }
 
     public function getDisagreementTemplateAttribute(): string
@@ -186,28 +160,18 @@ class Lawsuit extends Model
         return $this->hasOne(Meeting::class);
     }
 
-    public function getMeetingDateAttribute()
-    {
-        return $this->meeting->date ?? null;
-    }
 
-    public function getMeetingStartHourAttribute()
+    function getClaimantNameAttribute(): ?string
     {
-        return $this->meeting->start_hour ?? null;
-    }
-
-
-    function getClaimantNameAttribute()
-    {
-        $sides = Side::where('lawsuit_id', $this->id)->where('side_type_id', SideTypeOptions::CLAIMANT)->whereIn('side_applicant_type_id', [ApplicantTypeOptions::INDIVIDUAL, ApplicantTypeOptions::COMPANY])->get();
+        $claimants = $this->sides->where('side_type_id', SideTypeOptions::CLAIMANT);
         $names = "";
-        if (!is_null($sides)) {
-            if ($sides->count() > 1) {
-                foreach ($sides as $index => $side) {
-                    $names .= (isset($side->detail) ? $side->detail->name : "") . ($index != $sides->count() ? ", " : "");
+        if ($claimants->isNotEmpty()) {
+            if ($claimants->count() > 1) {
+                foreach ($claimants as $index => $side) {
+                    $names .= (isset($side->detail) ? $side->detail->name : "") . ($index != $claimants->count() ? ", " : "");
                 }
             } else {
-                return $names = isset($sides[0]->detail) ? $sides[0]->detail->name : "";
+                $names = $claimants[0]->detail->name ?? null;
             }
         }
         return $names;
@@ -215,19 +179,16 @@ class Lawsuit extends Model
 
     public function getDefendantNameAttribute(): string
     {
+        $defendants = $this->sides->where('side_type_id', SideTypeOptions::DEFENDANT);
         $names = "";
-        if ($this->defendants->isNotEmpty())
-            foreach ($this->defendants as $index => $side) {
+        if ($defendants->isNotEmpty()) {
+            foreach ($defendants as $index => $side) {
                 $names .= isset($side->detail) ? Str::limit($side->detail->name, 20) : "";
-                $names .= $index < $this->defendants->count() - 1 ? ", " : "";
+                $names .= $index < $defendants->count() - 1 ? ", " : "";
             }
+        }
         return $names;
     }
-
-    // public function getSubjectAttribute()
-    // {
-    //     return (($this->lawsuit_subject_type->name ?? "") . " (" . ($this->lawsuit_subject->name ?? "") . ")") ?? ($this->udf_subject ?? "");
-    // }
 
     public function getMeetingCountAttribute()
     {
@@ -240,25 +201,6 @@ class Lawsuit extends Model
             $builder->where('user_id', auth()->user()->id);
         });
     }
-
-    public function getMediationDocumentNumberAttribute()
-    {
-        $data = explode('/', $this->mediation_document_no);
-
-        return $data[1] ?? $this->mediation_document_no;
-    }
-
-    public function getFirmDocumentNumberAttribute()
-    {
-        $data = explode('/', $this->firm_document_no);
-
-        return $data[1] ?? $this->firm_document_no;
-    }
-
-    // public function getMeetingTemplateAttribute()
-    // {
-    //     return LawsuitService::getTemplate($this, 5, 'meeting');
-    // }
 
     public function getLastTimeAttribute(): string
     {
@@ -298,8 +240,8 @@ class Lawsuit extends Model
 
         $type = $this->lawsuit_process_type_id;
 
-        return '<div class="d - flex flex - column"><strong class="pb - 2">' . $statuses[$type]["title"] . '</strong><div class="progress">
-                <div class="progress - bar progress - bar - striped" role="progressbar" style="width: ' . $statuses[$type]["progress"] . ' % " aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+        return '<div class="d-flex flex-column"><strong class="pb-2">' . $statuses[$type]["title"] . '</strong><div class="progress">
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: ' . $statuses[$type]["progress"] . ' % " aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
               </div></div>';
     }
 

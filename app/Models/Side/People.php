@@ -28,8 +28,6 @@ class People extends Model
 
     protected $appends = ['display_name'];
 
-    protected $with = ['personType'];
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -48,11 +46,6 @@ class People extends Model
     public function personType(): BelongsTo
     {
         return $this->belongsTo(PersonType::class);
-    }
-
-    public function side(): BelongsTo
-    {
-        return $this->belongsTo(Side::class, "id", "person_id");
     }
 
     public static function selectToArray(): array

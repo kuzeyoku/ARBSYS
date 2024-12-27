@@ -18,7 +18,7 @@ class TaxOffice extends Model
 
     public static function selectToArray()
     {
-        return Cache::remember('taxOfficeSelect', 3600, function () {
+        return Cache::rememberForever('tax_offices', function () {
             return TaxOffice::orderBy("name", "ASC")->pluck('name', 'id')->toArray();
         });
     }
