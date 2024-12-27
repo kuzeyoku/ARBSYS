@@ -14,9 +14,4 @@ class LawsuitResultType extends Model
             return self::pluck("name", "id");
         });
     }
-
-    public function document_type()
-    {
-        return $this->belongsTo(DocumentType::class);
-    }
 }

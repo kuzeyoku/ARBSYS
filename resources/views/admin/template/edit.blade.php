@@ -31,7 +31,7 @@
                                             </li>
                                         @endforeach
                                     @else
-                                        @foreach ($lawsuitSubjectType->documentTypeTemplate as $template)
+                                        @foreach ($lawsuitSubjectType->documentTypeTemplate->whereNull("lawsuit_subject_id") as $template)
                                             <li class="nav-item border mb-2">
                                                 <a class="nav-link {{ $loop->first ? 'active show' : '' }}"
                                                    data-toggle="tab"

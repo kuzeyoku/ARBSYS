@@ -5,7 +5,7 @@ namespace App\Models\Document;
 use App\Models\Lawsuit\LawsuitSubject;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Lawsuit\LawsuitSubjectType;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DocumentTypeTemplate extends Model
 {
@@ -14,19 +14,20 @@ class DocumentTypeTemplate extends Model
     ];
 
     public $timestamps = false;
+    protected $with = ['documentType'];
 
-    public function documentType(): BelongsTo
+    public function documentType(): HasOne
     {
-        return $this->belongsTo(DocumentType::class);
+        return $this->hasOne(DocumentType::class, 'id', 'document_type_id');
     }
 
-    public function lawsuitSubjectType(): BelongsTo
+    public function lawsuitSubjectType(): HasOne
     {
-        return $this->belongsTo(LawsuitSubjectType::class);
+        return $this->hasOne(LawsuitSubjectType::class, 'id', 'lawsuit_subject_type_id');
     }
 
-    public function lawsuitSubject(): BelongsTo
+    public function lawsuitSubject(): HasOne
     {
-        return $this->belongsTo(LawsuitSubject::class);
+        return $this->hasOne(LawsuitSubject::class, 'lawsuit_subject_id', 'id');
     }
 }

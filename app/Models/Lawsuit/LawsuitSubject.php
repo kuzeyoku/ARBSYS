@@ -14,8 +14,15 @@ class LawsuitSubject extends Model
 
     public $fillable = ["lawsuit_subject_type_id", "name"];
 
+    protected $with = ["documentTypeTemplate"];
+
     public function getMattersDiscussedToArrayAttribute()
     {
         return json_decode($this->matters_discussed, true);
     }
+    public function documentTypeTemplate(): HasMany
+    {
+        return $this->hasMany(DocumentTypeTemplate::class);
+    }
+
 }

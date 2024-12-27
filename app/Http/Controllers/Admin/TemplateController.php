@@ -15,8 +15,8 @@ class TemplateController extends Controller
 {
     public function index()
     {
-        $subjectTypes = LawsuitSubjectType::all();
-        return view('admin.template.index', compact("subjectTypes"));
+        $lawsuitSubjectTypes = LawsuitSubjectType::all();
+        return view('admin.template.index', compact("lawsuitSubjectTypes"));
     }
 
     public function subjects(LawsuitSubjectType $lawsuitSubjectType)

@@ -20,57 +20,57 @@
                 <div class="kt-portlet__body">
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
-                            <tr>
-                                @if (isset($subjectTypes))
-                                    <th>Uyuşmazlık Türleri</th>
-                                @endif
-                                @if (isset($lawsuitSubjectType))
-                                    <th>Uyuşmazlık Konuları</th>
-                                @endif
-                                <th>İşlemler</th>
-                            </tr>
+                        <tr>
+                            @if (isset($lawsuitSubjectTypes))
+                                <th colspan="2">Uyuşmazlık Türleri</th>
+                            @elseif (isset($lawsuitSubjects))
+                                <th colspan="2">Uyuşmazlık Konuları</th>
+                            @else
+                                <th colspan="2">İşlemler</th>
+                            @endif
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (isset($lawsuitSubjectType))
+                        @if (isset($lawsuitSubjectType))
+                            <tr>
+                                <td>
+                                    Genel Şablonlar
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.template.edit', $lawsuitSubjectType) }}"
+                                       class="btn btn-primary btn-sm">Düzenle</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th col="2">
+                                    Uyuşmazlık Konuları
+                                </th>
+                            </tr>
+                            @foreach ($lawsuitSubjectType->lawsuitSubjects as $item)
                                 <tr>
                                     <td>
-                                        Genel Şablonlar
+                                        {{ $item->name }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.template.edit', $lawsuitSubjectType) }}"
-                                            class="btn btn-primary btn-sm">Düzenle</a>
+                                        <a href="{{ route('admin.template.edit', [$lawsuitSubjectType, $item]) }}"
+                                           class="btn btn-primary btn-sm">Düzenle</a>
                                     </td>
                                 </tr>
+                            @endforeach
+                        @endif
+                        @if (isset($lawsuitSubjectTypes))
+                            @foreach ($lawsuitSubjectTypes as $item)
                                 <tr>
-                                    <th col="2">
-                                        Uyuşmazlık Konuları
-                                    </th>
+                                    <td>
+                                        {{ $item->name }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.template.subjects', $item) }}"
+                                           class="btn btn-primary btn-sm">Düzenle</a>
+                                    </td>
                                 </tr>
-                                @foreach ($lawsuitSubjectType->lawsuitSubjects as $item)
-                                    <tr>
-                                        <td>
-                                            {{ $item->name }}
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.template.edit', [$lawsuitSubjectType, $item]) }}"
-                                                class="btn btn-primary btn-sm">Düzenle</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                            @if (isset($subjectTypes))
-                                @foreach ($subjectTypes as $item)
-                                    <tr>
-                                        <td>
-                                            {{ $item->name }}
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.template.subjects', $item) }}"
-                                                class="btn btn-primary btn-sm">Düzenle</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
