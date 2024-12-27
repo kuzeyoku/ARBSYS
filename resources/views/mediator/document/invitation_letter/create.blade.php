@@ -116,15 +116,11 @@
                                             görüntülemek için kaydet butonu ile kaydedebilirsiniz.
                                         </p>
                                         <div class="kt-wizard-v4__review" id="saved" style="display: none;">
-                                            <div class="kt-wizard-v4__review-item">
-                                                <div class="neo-notification row">
-                                                    <i class="material-icons col-1 align-middle my-auto">notifications</i>
-                                                    <div class="col-11">
-                                                        Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
-                                                        dilediginiz zaman erişebilirsiniz.
-                                                    </div>
-                                                </div>
+                                            <div class="alert alert-solid-success font-weight-bold">
+                                                <i class="fas fa-bell my-auto align-middle mr-2"></i> Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
+                                                dilediginiz zaman erişebilirsiniz.
                                             </div>
+                                            <hr>
                                             <div class="kt-wizard-v4__review-item">
                                                 <div class="kt-wizard-v4__review-title" id="side_email_control"
                                                      data-url="{{ route('invitation_letter.isnull_side_email') }}">

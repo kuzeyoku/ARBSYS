@@ -69,69 +69,6 @@
                 </div>
             </div>
         </div>
-        <div class="modal" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog"
-             id="dosya-sistemden-kapatildi">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title font-weight-bold" style="color:#2C3E50;">Dosya Sistemden Kapatıldı?</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Son Tutanak, arabulucu Portal üzerinden Hukuk İşleri Genel Müdürlüğü’ne gönderildi mi?
-                        <form action="lawsuit_process_type_update" method="POST" id="dosya-sistemden-kapatildi-form">
-                            @csrf
-                            <input type="hidden" name="lawsuit_id">
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
-                        <button type="button" class="btn btn-success" id="dosya-sistemden-kapatildi-evet">Evet</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal" tabindex="-1" role="dialog" id="agreement_type_modal">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4>Toplantı Tutanağı Sonucu</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="lawsuit_agreement_type_update" method="POST" id="agreement-type-form">
-                            @csrf
-                            <input type="hidden" name="lawsuit_id">
-                            <input type="hidden" name="agreement_type_id">
-                        </form>
-                        <div class="form-group">
-                            <label>Hangi konuda anlaşma sağlandı?</label>
-                            <div class="kt-checkbox-list">
-                                @foreach ($agreement_types->where('back_to_work', true) as $type)
-                                    <label class="kt-checkbox">
-                                        <input type="radio" name="subject_answer" value="{{ $type->id }}"
-                                               data-template="{{ $type->description }}"> {{ $type->name }}
-                                        <span></span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Sonuç</label>
-                            <textarea class="form-control subject_answer_result" disabled></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-lg agreement_type_modal_ok">Tamam</button>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">İptal</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     @if (Request::get('tutanak'))
         <div class="modal fade" id="tutanak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

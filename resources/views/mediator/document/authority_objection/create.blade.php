@@ -114,13 +114,9 @@
                                             </p>
                                             <div class="kt-wizard-v4__review-item" id="saved"
                                                  style="display: none;">
-                                                <div class="neo-notification row">
-                                                    <i
-                                                            class="material-icons col-1 align-middle my-auto">notifications</i>
-                                                    <div class="col-11">
-                                                        Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
-                                                        dilediginiz zaman erişebilirsiniz.
-                                                    </div>
+                                                <div class="alert alert-solid-success font-weight-bold">
+                                                    <i class="fas fa-bell my-auto align-middle mr-2"></i> Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
+                                                    dilediginiz zaman erişebilirsiniz.
                                                 </div>
                                                 <hr>
                                                 <div class="kt-wizard-v4__review-content">

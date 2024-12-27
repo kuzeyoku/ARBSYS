@@ -271,12 +271,9 @@
                                                 görüntülemek için kaydet butonu ile kaydedebilirsiniz.
                                             </p>
                                             <div class="kt-wizard-v4__review-item" id="saved" style="display: none;">
-                                                <div class="neo-notification row">
-                                                    <i class="material-icons col-1 align-middle my-auto">notifications</i>
-                                                    <div class="col-11">
-                                                        Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
-                                                        dilediginiz zaman erişebilirsiniz.
-                                                    </div>
+                                                <div class="alert alert-solid-success font-weight-bold">
+                                                    <i class="fas fa-bell my-auto align-middle mr-2"></i> Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
+                                                    dilediginiz zaman erişebilirsiniz.
                                                 </div>
                                                 <hr>
                                                 <div class="kt-wizard-v4__review-content">
@@ -293,9 +290,7 @@
                                 </div>
 
                                 @include('layout.form_actions')
-
                                 {{ Form::close() }}
-
                             </div>
                         </div>
                     </div>
@@ -311,9 +306,6 @@
     <script src="{{ asset('js/plugins/mask-money.js') }}?v={{ time() }}"></script>
     <script>
         $(document).ready(function() {
-
-
-
             $('.pricemask').maskMoney();
             $('.pricemaskallowzero').maskMoney({
                 allowZero: true
