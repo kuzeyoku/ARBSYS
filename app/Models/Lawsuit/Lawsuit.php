@@ -132,6 +132,16 @@ class Lawsuit extends Model
         return $this->hasMany(Side::class)->whereNull("parent_id");
     }
 
+    public function claimants()
+    {
+        return $this->sides->where('side_type_id', SideTypeOptions::CLAIMANT);
+    }
+
+    public function defendants()
+    {
+        return $this->sides->where('side_type_id', SideTypeOptions::DEFENDANT);
+    }
+
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);

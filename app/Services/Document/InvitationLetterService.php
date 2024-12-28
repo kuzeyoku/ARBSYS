@@ -40,11 +40,11 @@ class InvitationLetterService
         $mediation_center_title = $documentService->getMediationCenterTitle($request);
         $list = array(
             "@DavaOzeti" => $disagreement,
-            "@AliciAdSoyad" => $side->detail->full_name, //TODO: Yetkilisi Yada Temsilcisi Eklenebilir.
+            "@AliciAdSoyad" => $side->detail->name, //TODO: Yetkilisi Yada Temsilcisi Eklenebilir.
             "@AliciAdres" => $side->detail->address,
             "@ArabuluculukBurosu" => $lawsuit->mediation_office->name,
-            "@BasvuranAdSoyad" => $lawsuit->claimants->first()->detail->name ?? "",
-            "@BasvuranTCKNo" => $lawsuit->claimants->first()->detail->identification ?? "",
+            "@BasvuranAdSoyad" => $lawsuit->sides->where("side_type_id", \SideTypeOptions::CLAIMANT)->first()->detail->name ?? "",
+            "@BasvuranTCKNo" => $lawsuit->sides->where("side_type_id", \SideTypeOptions::CLAIMANT)->first()->detail->identification ?? "",
             "@BasvuranAvukat" => isset($side->claimant_lawyer->detail->name) && !is_null($side->claimant_lawyer->detail->name) ? "vekili " . $side->claimant_lawyer->detail->name . $side->claimant->side_applicant_type_id == 2 ? ", şirket vekili sıfatıyla" : "" : "",
             "@BugunTarih" => Carbon::now()->format('d.m.Y'),
             "@ToplantiTarih" => Carbon::parse($request->meeting_date)->format('d.m.Y'),

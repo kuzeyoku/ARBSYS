@@ -28,7 +28,7 @@ class Side extends Model
         "detail"
     ];
 
-    public function detail()
+    public function detail(): ?BelongsTo
     {
         if ($this->person_id) {
             return $this->person();
@@ -38,6 +38,11 @@ class Side extends Model
             return $this->lawyer();
         }
         return null;
+    }
+
+    public function sub_sides(): HasMany
+    {
+        return $this->hasMany(Side::class, 'parent_id');
     }
 
     public function person(): BelongsTo

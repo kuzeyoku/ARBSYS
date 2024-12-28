@@ -33,11 +33,6 @@ class People extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getFullNameAttribute(): string
-    {
-        return HelperService::nameFormat($this->name) . " " . HelperService::nameFormat($this->surname);
-    }
-
     public function getDisplayNameAttribute(): string
     {
         return $this->identification . " - " . $this->name;

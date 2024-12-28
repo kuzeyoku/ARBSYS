@@ -1,6 +1,7 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor invitation_letter" id="kt_content" page-name="invitation_letter">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor invitation_letter" id="kt_content"
+         page-name="invitation_letter">
 
         @include('layout.breadcrumb', [
             'url' => [route('lawsuit.index') => 'Dosyalar', null => 'Davet Mektubu Oluştur'],
@@ -117,7 +118,8 @@
                                         </p>
                                         <div class="kt-wizard-v4__review" id="saved" style="display: none;">
                                             <div class="alert alert-solid-success font-weight-bold">
-                                                <i class="fas fa-bell my-auto align-middle mr-2"></i> Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
+                                                <i class="fas fa-bell my-auto align-middle mr-2"></i> Evrak başarıyla
+                                                kaydedilmiştir. Evraklarım sekmesinden
                                                 dilediginiz zaman erişebilirsiniz.
                                             </div>
                                             <hr>
@@ -129,12 +131,12 @@
                                                 <div class="kt-wizard-v4__review-content d-flex flex-column">
                                                     <strong>Gönderilecek E-postalar;</strong>
                                                     <div>
-                                                        @foreach ($lawsuit->claimants as $claimant)
+                                                        @foreach ($lawsuit->sides->where("side_type_id", SideTypeOptions::CLAIMANT) as $claimant)
                                                             <input class="form-control w-25 mb-3" type="text"
                                                                    name="flower[]" id="values[]"
                                                                    value="{{ $claimant->detail->email }}">
                                                         @endforeach
-                                                        @foreach ($lawsuit->defendants as $defendant)
+                                                        @foreach ($lawsuit->sides->where("side_type_id", SideTypeOptions::DEFENDANT) as $defendant)
                                                             <input class="form-control w-25 mb-3" type="text"
                                                                    name="flower[]" id="values[]"
                                                                    value="{{ $defendant->detail->email }}">
