@@ -1,10 +1,9 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content"
-         page-name="lawsuit">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="lawsuit">
         @include('layout.breadcrumb', ['url' => [null => 'Dosya Aç']])
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-            <div class="kt-wizard-v4" id="kt_wizard_lawsuit_v4" data-ktwizard-state="step-first">
+            <div class="kt-wizard-v4" id="kt_wizard_v4" data-ktwizard-state="step-first">
                 <div class="kt-wizard-v4__nav">
                     <div class="kt-wizard-v4__nav-items ">
                         <div class="kt-wizard-v4__nav-item" data-ktwizard-type="step" data-ktwizard-state="current">
@@ -270,9 +269,9 @@
     </div>
 @endsection
 @section('script')
+    <!-- <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script> -->
     <script src="{{ asset('js/page/lawsuit/lawsuit.js') }}?v={{ time() }}"></script>
-    <script src="{{asset("js/page/lawsuit/wizard.js")}}"></script>
-    {{--<script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>--}}
+    <script src="{{ asset('js/page/lawsuit/wizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
 @endsection

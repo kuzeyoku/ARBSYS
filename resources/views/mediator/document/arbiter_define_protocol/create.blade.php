@@ -1,7 +1,6 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor arbiter_define_protocol"
-         id="kt_content" page-name="arbiter_define_protocol">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor arbiter_define_protocol" id="kt_content" page-name="arbiter_define_protocol">
 
         @include('layout.breadcrumb', [
             'url' => [ route('lawsuit.index') => 'Dosya Listele', null => 'Arabulucu Belirleme Tutanağı'],
