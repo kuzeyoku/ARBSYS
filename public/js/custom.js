@@ -375,7 +375,7 @@ function capitalizeFirstLetter(input) {
         'ç': 'Ç', 'ğ': 'Ğ', 'ı': 'I', 'i': 'İ', 'ö': 'Ö', 'ş': 'Ş', 'ü': 'Ü'
     };
 
-    return input.toLowerCase().replace(/(^\w|\s\w)/g, function (match) {
+    return input.toLowerCase().replace(/(^|\s)\S/g, function (match) {
         const char = match.trim();
         return turkishChars[char] || char.toUpperCase();
     });
