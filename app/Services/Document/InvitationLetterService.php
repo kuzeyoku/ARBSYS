@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Side\Side;
 use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
-use App\Models\MediationCenter;
 use App\Services\HelperService;
 
 /**
@@ -40,7 +39,7 @@ class InvitationLetterService
         $mediation_center_title = $documentService->getMediationCenterTitle($request);
         $list = array(
             "@DavaOzeti" => $disagreement,
-            "@AliciAdSoyad" => $side->detail->name, //TODO: Yetkilisi Yada Temsilcisi Eklenebilir.
+            "@AliciAdSoyad" => $side->side_applicant_type_id == 2 ? $side->detail->name . " Yetkilisi" : $side->detail->name, //TODO: Yetkilisi Yada Temsilcisi Eklenebilir.
             "@AliciAdres" => $side->detail->address,
             "@ArabuluculukBurosu" => $lawsuit->mediation_office->name,
             "@BasvuranAdSoyad" => $lawsuit->sides->where("side_type_id", \SideTypeOptions::CLAIMANT)->first()->detail->name ?? "",
