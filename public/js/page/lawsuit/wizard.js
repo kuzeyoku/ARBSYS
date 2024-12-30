@@ -12,7 +12,7 @@ var KTWizard4 = (function () {
     // Private functions
     var initWizard = function () {
         // Initialize form wizard
-        wizard = new KTWizard("kt_wizard_lawsuit_v4", {
+        wizard = new KTWizard("kt_wizard_v4", {
             startStep: 1, // initial active step number
             clickableSteps: false, // allow step clicking
         });
@@ -210,8 +210,6 @@ var KTWizard4 = (function () {
 
             // Validation rules
             rules: {
-                // Step 1
-                // Step 2
                 delivery_by: {
                     required: true,
                 },
@@ -224,8 +222,6 @@ var KTWizard4 = (function () {
                 lawsuit_subject_type_id: {
                     required: true,
                 },
-
-                //= Step 3
                 application_document_no: {
                     required: true,
                 },
@@ -254,6 +250,9 @@ var KTWizard4 = (function () {
             },
             // Specify validation error messages
             messages: {
+                delivery_by: {
+                    required: "Bu alan zorunludur.",
+                },
                 job_date: {
                     application_date_required:
                         "Görevi kabul tarihi , başvuru tarihinden önce olamaz!",
@@ -263,19 +262,18 @@ var KTWizard4 = (function () {
             // Display error
             invalidHandler: function (event, validator) {
                 KTUtil.scrollTop();
+                // Hatalı alanları işaretle
+                $(validator.errorList).each(function () {
+                    var element = $(this.element);
+                    element.css({
+                        "border-color": "red", // Kenar rengi kırmızı
+                        "background-color": "#f8d7da", // Arka plan rengi açık kırmızı
+                    });
 
-                if ($("select[name='mediation_office_id']").val() == "") {
-                    $("select[name='mediation_office_id']").addClass("is-invalid");
-                } else {
-                    $("select[name='mediation_office_id']").removeClass("is-invalid");
-                }
-
-                swal.fire({
-                    title: "",
-                    icon: "error",
-                    text: "Lütfen gerekli alanları boş geçmeyiniz",
-                    type: "error",
-                    confirmButtonClass: "btn btn-secondary",
+                    // Eğer element bir select ise, özel bir stil ekleyin
+                    if (element.is("select")) {
+                        element.css("background-color", "#f8d7da"); // Arka plan rengi
+                    }
                 });
             },
 

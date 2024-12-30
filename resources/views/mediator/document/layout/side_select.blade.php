@@ -19,9 +19,7 @@
                                id="checkbox-{{ $side->id }}">
                             <input type="checkbox" name="side_ids[]" value="{{ $side->id }}"
                                    data-name="{{ App\Services\HelperService::nameFormat($side->detail->name) }}"
-                                    {{ $claimant->side_applicant_type_id == ApplicantTypeOptions::COMPANY && $index == 0 ? 'checked' : '' }}>
-                            {{ $side->applicant_title }} -
-                            {{ App\Services\HelperService::nameFormat($side->detail->name) }}
+                                    
                             <span></span>
                         </label>
                     @endforeach
