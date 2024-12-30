@@ -97,37 +97,36 @@ class LawsuitController extends Controller
             foreach ($request->sides as $side) {
                 $parent_side_id = null;
                 if ($side["type"] == 1) {
-                    $side["person_type_id"] = array_key_exists("tax_office_id", $side) ? 2 : 1;
+                    $side["person_type_id"] = array_key_exists("tax_office_id", $side) && $side["tax_office_id"] ? 2 : 1;
                     $person = PeopleService::create($side);
-                    $side = Side::create([
+                    $newSide = Side::create([
                         "person_id" => $person->id,
                         "side_applicant_type_id" => 1,
                         "lawsuit_id" => $lawsuit->id,
                         "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                         "user_id" => auth()->user()->id,
                     ]);
-                    $parent_side_id = $side->id;
+                    $parent_side_id = $newSide->id;
                 } //Kişi Tarafı Oluşturuldu
                 if ($side["type"] == 2) {
-                    $side["person_type_id"] = array_key_exists("detsis_number", $side) ? 10 : 9;
+                    $side["person_type_id"] = array_key_exists("detsis_number", $side) && $side["detsis_number"] ? 10 : 9;
                     $company = CompanyService::create($side);
-                    $side = Side::create([
+                    $newSide = Side::create([
                         "company_id" => $company->id,
                         "side_applicant_type_id" => 2,
                         "lawsuit_id" => $lawsuit->id,
                         "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
                         "user_id" => auth()->user()->id,
                     ]);
-                    $parent_side_id = $side->id;
+                    $parent_side_id = $newSide->id;
                 }//Tüzel Kişi Tarafı Oluşturuldu
-
-                if (!empty($side["lawyers"])) {
+                if (array_key_exists("lawyers", $side)) {
                     foreach ($side["lawyers"] as $lawyer) {
                         $lawyer["person_type_id"] = 3;
-                        $lawyer = LawyerService::create($lawyer);
-                        $side = Side::create([
+                        $newLawyer = LawyerService::create($lawyer);
+                        Side::create([
                             "parent_id" => $parent_side_id,
-                            "lawyer_id" => $lawyer->id,
+                            "lawyer_id" => $newLawyer->id,
                             "side_applicant_type_id" => 3,
                             "lawsuit_id" => $lawsuit->id,
                             "side_type_id" => $side["applicantType"] == "BAŞVURUCU" ? 1 : 2,
@@ -199,6 +198,7 @@ class LawsuitController extends Controller
             DB::commit();
             return response()->json(compact("lawsuit"));
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollback();
             Log::error($e->getMessage());
             return redirect()->back()->with("error", "Dosya Oluşturulurken Bir Hata Oluştu");
@@ -842,7 +842,6 @@ class LawsuitController extends Controller
 
             DB::commit();
         } catch (\Exception $e) {
-            dd($e->getMessage());
             Log::debug($e);
             DB::rollback();
         }
