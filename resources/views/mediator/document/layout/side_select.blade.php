@@ -8,18 +8,19 @@
                         <div class="kt-checkbox-list">
                             <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">
                                 <input type="checkbox" name="side_ids[]" value="{{ $claimant->id }}"
-                                       data-name="{{ App\Services\HelperService::nameFormat($claimant->detail->name) }}">
-                                {{ App\Services\HelperService::nameFormat($claimant->detail->name) }}
+                                       data-name="{{ $claimant->detail->name }}">
+                                {{ $claimant->detail->name }}
                                 <span></span>
                             </label>
                         </div>
                     </div>
-                    @foreach ($claimant->sub_sides as $index => $side)
+                    @foreach ($claimant->sub_sides as $side)
                         <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success"
                                id="checkbox-{{ $side->id }}">
                             <input type="checkbox" name="side_ids[]" value="{{ $side->id }}"
-                                   data-name="{{ App\Services\HelperService::nameFormat($side->detail->name) }}"
-                                    
+                                   data-name="{{ $side->detail->name }}">
+                            <strong class="text-capitalize">{{ $side->applicant_title }} - </strong>
+                            {{ $side->detail->name }}
                             <span></span>
                         </label>
                     @endforeach
@@ -32,8 +33,8 @@
                         <div class="kt-checkbox-list">
                             <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success">
                                 <input type="checkbox" name="side_ids[]" value="{{ $defendant->id }}"
-                                       data-name="{{ App\Services\HelperService::nameFormat($defendant->detail->name) }}">
-                                {{ App\Services\HelperService::nameFormat($defendant->detail->name) }}
+                                       data-name="{{ $defendant->detail->name }}">
+                                {{ $defendant->detail->name }}
                                 <span></span>
                             </label>
                         </div>
@@ -42,10 +43,10 @@
                         <label class="kt-checkbox kt-checkbox--tick kt-checkbox--success"
                                id="checkbox-{{ $side->id }}">
                             <input type="checkbox" name="side_ids[]" value="{{ $side->id }}"
-                                   data-name="{{ App\Services\HelperService::nameFormat($side->detail->name) }}"
+                                   data-name="{{ $side->detail->name }}"
                                     {{ $defendant->side_applicant_type_id == ApplicantTypeOptions::COMPANY && $index == 0 ? 'checked' : '' }}>
                             {{ $side->applicant_title }} -
-                            {{ App\Services\HelperService::nameFormat($side->detail->name) }}
+                            {{ $side->detail->name  }}
                             <span></span>
                         </label>
                     @endforeach
