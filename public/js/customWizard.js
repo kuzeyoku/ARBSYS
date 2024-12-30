@@ -17,8 +17,6 @@ var KTWizard4 = (function () {
 
         wizard = new KTWizard("kt_wizard_v4", {startStep: 1, clickableSteps: false});
 
-        console.log("wizard obj: ", wizard);
-
         wizard.on("beforeNext", function (wizardObj) {
             if (validator.form() !== true) {
                 wizardObj.stop();
@@ -30,8 +28,8 @@ var KTWizard4 = (function () {
                 lawsuitWizardApplicantTypeSideCheck(wizardObj);
             }
 
-            $.each(validator.errorList, function (index, error) {
-                $(error.element).css({'border': '2px solid red', 'background-color': '#ffe6e6'});
+            $.each(validator.errorList, function(index, error) {
+                $(error.element).css({ 'border': '2px solid red', 'background-color': '#ffe6e6' });
                 $(error.element).parent().css('color', $(error.element).is(':checked') ? '' : 'red');
             });
         });
@@ -56,8 +54,8 @@ var KTWizard4 = (function () {
 
         if (!isSingleDocument && wizard.getStep() == getLastStep()) {
             handleEmailControl();
-            $('[data-ktwizard-type="action-submit"]').click();
         }
+        $('[data-ktwizard-type="action-submit"]').click();
     };
 
     var handlePreviewData = function (data) {
@@ -70,7 +68,7 @@ var KTWizard4 = (function () {
             isSingleDocument = true;
         } else {
             $.each(data, function (k, v) {
-                var textarea = $("<textarea>").attr({id: "preview-" + v.id, name: "preview-" + v.id});
+                var textarea = $("<textarea>").attr({ id: "preview-" + v.id, name: "preview-" + v.id });
                 preview_content.append("</br><p><strong>" + v.label + "</strong> için davet mektubu</p>");
                 preview_content.append(textarea);
                 textarea.html(v.view);
