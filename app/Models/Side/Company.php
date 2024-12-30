@@ -28,6 +28,9 @@ class Company extends Model
         'user_id',
         "person_type_id"
     ];
+
+    protected $with = ["personType", "taxOffice"];
+
     public static function selectToArray()
     {
         return self::pluck("name", "id");

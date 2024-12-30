@@ -1,14 +1,21 @@
 @foreach ($lawsuit->sides as $side)
     @if ($side->side_applicant_type_id == ApplicantTypeOptions::INDIVIDUAL)
-        <strong>{{ $loop->iteration . ') ' . App\Services\HelperService::nameFormat($side->detail->name) }}</strong>
+        <strong>{{ $loop->iteration . ') ' . $side->detail->name}}</strong>
         (T.C. Kimlik No: <strong>{{ $side->detail->identification }}</strong>)<br>
     @elseif($side->side_applicant_type_id == ApplicantTypeOptions::COMPANY)
-        <strong>{{ $loop->iteration . ') ' . App\Services\HelperService::nameFormat($side->detail->name) }}</strong><br>
-        (Mersis No: <strong>{{ $side->detail->mersis_number }}</strong>)
-        (<strong>{{ $side->detail->taxOffice->name }}</strong> V.D. <strong>{{ $side->detail->tax_number }}</strong>)<br>
+        <strong>{{ $loop->iteration . ') ' . $side->detail->name }}</strong><br>
+        @if($side->detail->mersus_number)
+            (Mersis No: <strong>{{ $side->detail->mersis_number }}</strong>)
+        @endif
+        @if($side->detail->detsis_number)
+            (Detsis No: <strong>{{ $side->detail->detsis_number }}</strong>)
+        @endif
+        @if($side->detail->taxOffice || $side->detail->tax_number)
+            (<strong>{{ $side->detail->taxOffice->name ?? null }}</strong> V.D. <strong>{{ $side->detail->tax_number }}</strong>)
+        @endif
+        <br>
     @endif
-    {{ App\Services\HelperService::addressFormat($side->detail->address) }}
-    <br>
+    {{ $side->detail->address }}
     @if ($side->sub_sides->count() > 0)
         @if ($side->side_applicant_type_id == ApplicantTypeOptions::INDIVIDUAL)
             <strong>Vekili</strong> <br>
@@ -16,9 +23,9 @@
             <strong>Vekili/Yetkilisi</strong> <br>
         @endif
         @foreach ($side->sub_sides as $sub_side)
-            <strong>{{ App\Services\HelperService::nameFormat($sub_side->detail->name) }}</strong> (T.C. Kimlik
+            <strong>{{ $sub_side->detail->name }}</strong> (T.C. Kimlik
             No: <strong>{{ $sub_side->detail->identification }}</strong>)
-            {{ App\Services\HelperService::addressFormat($sub_side->detail->address) }}
+            {{$sub_side->detail->address}}
         @endforeach
     @endif
     @if (!$loop->last)

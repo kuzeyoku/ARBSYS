@@ -27,7 +27,7 @@ class FinalProtocolService
             "@BugunTarih" => Carbon::now()->format('d.m.Y'),
             "@ARBDosyaNo" => $lawsuit->mediation_document_no,
             "@Taraflar" => view("mediator.document.layout.sides", compact("lawsuit"))->render(),
-            "@UyusmazlikTuru" => $lawsuit->subject_type . "(" . $lawsuit->subject . ")",
+            "@UyusmazlikTuru" => $lawsuit->lawsuit_subject_type->name . " (" . $lawsuit->lawsuit_subject->name . ")",
             "@ToplantiAdres" => $meeting_address,
             "@BasvuruTarih" => Carbon::parse($lawsuit->application_date)->format('d.m.Y'),
             "@GorevKabulTarih" => Carbon::parse($lawsuit->job_date)->format('d.m.Y'),
