@@ -1,6 +1,6 @@
 @if (isset($item))
     {{ Form::hidden('id', $item->id, ['id' => 'person_id']) }}
-    {{ Form::hidden('current_type', $item->type->id) }}
+    {{ Form::hidden('person_type_id', $item->personType->id) }}
 @else
     {{ Form::hidden('person_type_id', $personType->id) }}
 @endif
@@ -10,7 +10,7 @@
     </div>
     <div class="col-sm-8">
         @if (isset($item))
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('person.getEditModalContent', $item)]) }}
+            {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->personType->key, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', "disabled"]) }}
         @else
             {{ Form::select('type', App\Models\PersonType::selectToArray(), $personType->key, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('api.get_person_modal_content')]) }}
         @endif

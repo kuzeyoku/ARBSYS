@@ -1,6 +1,5 @@
 @if (isset($item))
     {{ Form::hidden('id', $item->id, ['id' => 'person_id']) }}
-    {{ Form::hidden('current_type', $item->personType->id) }}
 @else
     {{ Form::hidden('person_type_id', $personType->id) }}
 @endif

@@ -59,7 +59,7 @@ class PersonController extends Controller
 
     public function update(Request $request)
     {
-        $type = PersonType::findOrFail($request->current_type);
+        $type = PersonType::findOrFail($request->person_type_id);
         try {
             switch ($type->group) {
                 case 1:
