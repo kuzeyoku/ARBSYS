@@ -347,11 +347,11 @@ $(document).on("click", "#matters-discussed-save", function () {
                 $('#preview-' + $(this).val()).summernote('code', replaceContent);
             }
         });
-/*        if ($("#preview-area").length > 0) {
-            const previewContent = $("#preview-area").summernote("code");
-            const replaceContent = previewContent.replace(`<span class="matters-discussed"></span>`, `<span class="matters-discussed">${inputValue}</span>`);
-            $("#preview-area").summernote("code", replaceContent);
-        }*/
+        /*        if ($("#preview-area").length > 0) {
+                    const previewContent = $("#preview-area").summernote("code");
+                    const replaceContent = previewContent.replace(`<span class="matters-discussed"></span>`, `<span class="matters-discussed">${inputValue}</span>`);
+                    $("#preview-area").summernote("code", replaceContent);
+                }*/
         $("#matters-discussed-modal").modal("hide");
     }
 });
@@ -370,6 +370,21 @@ function result_save() {
     $("#preview-area").summernote("code", replaceContent);
 }
 
+function capitalizeFirstLetter(input) {
+    const turkishChars = {
+        'ç': 'Ç', 'ğ': 'Ğ', 'ı': 'I', 'i': 'İ', 'ö': 'Ö', 'ş': 'Ş', 'ü': 'Ü'
+    };
+
+    return input.toLowerCase().replace(/(^\w|\s\w)/g, function (match) {
+        const char = match.trim();
+        return turkishChars[char] || char.toUpperCase();
+    });
+}
+
+$(document).on("change", "#personModal textarea[name='address'], #personModal input[name='name']", function () {
+    $(this).val(capitalizeFirstLetter($(this).val()));
+});
+
 $("#cikti_btn").on("click", function () {
     $(".print_side").printThis({
         importCSS: false,
@@ -377,11 +392,11 @@ $("#cikti_btn").on("click", function () {
     });
 });
 
-function capitalizeFirstLetter(input) {
+/*function capitalizeFirstLetter(input) {
     return input
         .toLowerCase()
         .replace(/(^\w|\s\w)/g, match => match.toUpperCase());
-}
+}*/
 
 function saveMember(self, memberType, memberIndex) {
     let activeSideMembers = [];
