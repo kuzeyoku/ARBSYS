@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -27,7 +27,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(UserStoreRequest $request)
@@ -62,7 +62,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
@@ -73,8 +73,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UserUpdateRequest $request, User $user)
@@ -121,25 +121,33 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {
         try {
-            if ($user->mediator)
+            if ($user->mediator) {
                 $user->mediator->delete();
+            }
+            if ($user->notifications) {
+                $user->notifications()->delete();
+            }
+            if ($user->requests) {
+                $user->requests()->delete();
+            }
             $user->delete();
-            return Redirect::route("admin.users")->withSuccess("Silme işlemi başarılı bir şekilde gerçekleşti");
+            return \redirect()->back()->withSuccess("Silme işlemi başarılı bir şekilde gerçekleşti");
         } catch (\Exception $e) {
-            return Redirect::back()->withError("Silme işlemi sırasında bir hata meydana geldi");
+            dd($e->getMessage());
+            return \redirect()->back()->withError("Silme işlemi sırasında bir hata meydana geldi");
         }
     }
 
     /**
      * Update userdata user is not active @Samet E.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function userBan(User $user)

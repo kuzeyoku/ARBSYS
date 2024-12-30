@@ -2,10 +2,13 @@
 
 namespace App\Models\User;
 
+use App\Models\Notification\Notification;
 use App\Models\Side\Company;
 use App\Models\Side\Lawyer;
 use App\Models\Side\People;
+use App\Models\System\SystemRequest;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -13,7 +16,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $with = ["mediator"];
+    protected $with = ["mediator", "notifications", "requests"];
 
     /**
      * The attributes that are mass assignable.
@@ -56,9 +59,19 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, "parent_id");
     }
 
-    public function mediator()
+    public function mediator(): HasOne
     {
-        return $this->hasOne(Mediator::class);
+        return $this->hasOne(Mediator::class, "user_id");
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(SystemRequest::class);
     }
 
     public function people(): HasMany
