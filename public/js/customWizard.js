@@ -23,13 +23,15 @@ var KTWizard4 = (function () {
                 notification("", "Lütfen Gerekli Alanları Doldurun", "error");
             }
 
+
             if (isLawsuitWizardPage) {
                 lawsuitWizardBeforeLastPageControl();
                 lawsuitWizardApplicantTypeSideCheck(wizardObj);
+                lawsuitWizardJobDateControl(wizardObj);
             }
 
-            $.each(validator.errorList, function(index, error) {
-                $(error.element).css({ 'border': '2px solid red', 'background-color': '#ffe6e6' });
+            $.each(validator.errorList, function (index, error) {
+                $(error.element).css({'border': '2px solid red', 'background-color': '#ffe6e6'});
                 $(error.element).parent().css('color', $(error.element).is(':checked') ? '' : 'red');
             });
         });
@@ -41,6 +43,15 @@ var KTWizard4 = (function () {
             }
         });
     };
+
+    var lawsuitWizardJobDateControl = function (wizardObj) {
+        var jobDate = $("input[name='job_date']").val();
+        var applicationDate = $("input[name='application_date']").val();
+        if (jobDate && applicationDate && jobDate < applicationDate) {
+            wizardObj.stop();
+            notification("", "Görevi Kabul Tarihi Başvuru Tarihinden Önce Olamaz!", "error");
+        }
+    }
 
     var handleWizardChange = function (wizard) {
         if (wizard.getStep() == (getLastStep() - 1) && preview == 0) {
@@ -68,7 +79,7 @@ var KTWizard4 = (function () {
             isSingleDocument = true;
         } else {
             $.each(data, function (k, v) {
-                var textarea = $("<textarea>").attr({ id: "preview-" + v.id, name: "preview-" + v.id });
+                var textarea = $("<textarea>").attr({id: "preview-" + v.id, name: "preview-" + v.id});
                 preview_content.append("</br><p><strong>" + v.label + "</strong> için davet mektubu</p>");
                 preview_content.append(textarea);
                 textarea.html(v.view);
@@ -107,7 +118,7 @@ var KTWizard4 = (function () {
                 $(element).parent().css('color', '');
             },
             errorPlacement: function (error, element) {
-                element.after(error);
+                //error.insertAfter(element);
             },
             invalidHandler: function (event, validator) {
                 KTUtil.scrollTop();
@@ -309,7 +320,7 @@ var KTWizard4 = (function () {
     };
 
     var getLawsuitWizardInitValidationMessage = function () {
-        return isLawsuitWizardPage ? {"job_date": {"application_date_required": "Görevi kabul tarihi , başvuru tarihinden önce olamaz!"}} : {};
+        return isLawsuitWizardPage;
     };
 
     var lawSuitEditWizardPreInvalidHandler = function () {

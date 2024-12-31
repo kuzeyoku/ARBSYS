@@ -30,21 +30,28 @@ class DataController extends Controller
     public function getPersonModalContent(Request $request): JsonResponse
     {
         $personType = new \stdClass();
-        if ($request->person_type_id === "person"):
-            $persons = People::selectToArray();
-            $formContent = view("mediator.person.modals.general_person", compact("persons"))->render();
-            $personType->name = "Gerçek Kişi";
-            $saveId = $request->person_type_id;
-        elseif ($request->person_type_id === "company"):
-            $companies = Company::selectToArray();
-            $formContent = view("mediator.person.modals.general_company", compact("companies"))->render();
-            $personType->name = "Tüzel Kişi";
-            $saveId = $request->person_type_id;
-        else:
+        if (is_numeric($request->person_type_id)):
             $personType = PersonType::findOrFail($request->person_type_id);
             $file = $personType->group == 3 ? "mediator.person.modals.company_" . $personType->key : "mediator.person.modals.person_" . $personType->key;
             $formContent = view($file, compact("personType"))->render();
             $saveId = $personType->key;
+        else:
+            if ($request->person_type_id === "person"):
+                $persons = People::selectToArray();
+                $formContent = view("mediator.person.modals.general_person", compact("persons"))->render();
+                $personType->name = "Gerçek Kişi";
+                $saveId = $request->person_type_id;
+            elseif ($request->person_type_id === "company"):
+                $companies = Company::selectToArray();
+                $formContent = view("mediator.person.modals.general_company", compact("companies"))->render();
+                $personType->name = "Tüzel Kişi";
+                $saveId = $request->person_type_id;
+            else:
+                $personType = PersonType::where("key", $request->person_type_id)->first();
+                $file = $personType->group == 3 ? "mediator.person.modals.company_" . $personType->key : "mediator.person.modals.person_" . $personType->key;
+                $formContent = view($file, compact("personType"))->render();
+                $saveId = $personType->key;
+            endif;
         endif;
         return response()->json(compact("formContent", "personType", "saveId"));
     }

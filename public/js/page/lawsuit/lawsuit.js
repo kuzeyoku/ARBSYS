@@ -4,18 +4,18 @@ var lawyerIndex, authorizedIndex, employeeIndex, representativeIndex, commission
 var index = 0;
 var activeSide, personType;
 
-function getModalContent(url, type) {
+function getModalContent(personType) {
     $.ajax({
         url: $(".personTypeSelect").data("url"),
         type: "POST",
         data: {
             _token: $("meta[name='csrf-token']").attr("content"),
-            type: type,
+            person_type_id: personType,
         },
         success: function (response) {
             $("#personModal .modal-header h5").text(response.personType.name);
             $("#personModal form .modal-body").html(response.formContent);
-            $("#personModal form .modal-body  #person_type").prop("disabled", true);
+            $(document).find("#personModal form .modal-body select[name='person_type_id']").prop("disabled", true);
             $("#personModal form .modal-footer .personAddButton").attr(
                 "id",
                 "save" + response.saveId
@@ -36,10 +36,7 @@ $(document).ready(function () {
         if (applicationDate && jobDate) {
             if (jobDate < applicationDate) {
                 $(".custom-save-button").prop("disabled", true);
-                swal.fire({
-                    text: "Görevi Kabul Tarihi Başvuru Tarihinden Eski Olamaz!",
-                    confirmButtonText: "Tamam",
-                });
+                notification("Görev Kabul Tarihi, Başvuru Tarihinden Önce Olamaz", "error");
             }
         }
     });
@@ -51,7 +48,7 @@ $(document).ready(function () {
             return false;
         }
         $("#applicantModal").modal("hide");
-        getModalContent($(this).data("url"), $(this).data("type"));
+        getModalContent($(this).data("type"));
     });
 
     //Taraf Tanımlama İşlemi
@@ -189,8 +186,7 @@ $(document).ready(function () {
     $(document).on("click", ".addPersonToSide", function (e) {
         e.preventDefault();
         const personType = $(this).attr("personType");
-        const url = $(this).attr("data-url");
-        getModalContent(url, personType);
+        getModalContent(personType);
         window[personType + "Index"] = $(this).attr("data-index");
     });
 
