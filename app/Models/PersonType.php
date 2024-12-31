@@ -11,7 +11,7 @@ class PersonType extends Model
     public static function selectToArray()
     {
         return Cache::rememberForever("person_types", function () {
-            return PersonType::pluck('name', 'key')->toArray();
+            return PersonType::pluck('name', 'id')->toArray();
         });
     }
 

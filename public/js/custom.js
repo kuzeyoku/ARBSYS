@@ -174,12 +174,11 @@ $(".delete-btn").on("click", function () {
 
 //Kişilerim Sayfası Kişi Ekle Butonu Aksiyonu
 $("#new-person-button").on("click", function () {
-    var data = $(this).closest("form").serialize();
-    let url = $(this).closest("form").attr("action");
+    const form = $(this).closest("form");
     $.ajax({
+        url: form.attr("action"),
         type: "POST",
-        url: url,
-        data: data,
+        data: form.serialize(),
         success: function (response) {
             $("#newSideModal").modal("hide");
             $("#personModal").modal("show");
@@ -187,19 +186,19 @@ $("#new-person-button").on("click", function () {
             $("#personModal .modal-title").html(response.personType.name);
             initSelect2();
         },
-    });
+    })
 });
 
 //Açık modal içerisinde kişi tipi değiştirilirse
-$(document).on("change", "#personModal select[name='type']", function () {
+$(document).on("change", "#personModal select[name='person_type_id']", function () {
     var url = $(this).data("url");
-    var type = $(this).val();
+    var person_type_id = $(this).val();
     $.ajax({
         type: "POST",
         url: url,
         data: {
             _token: $('meta[name="csrf-token"]').attr("content"),
-            type: type,
+            person_type_id: person_type_id,
         },
         success: function (response) {
             $("#personModal #formContent").html(response.formContent);

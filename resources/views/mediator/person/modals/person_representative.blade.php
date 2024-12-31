@@ -1,8 +1,5 @@
 @if (isset($item))
     {{ Form::hidden('id', $item->id, ['id' => 'person_id']) }}
-    {{ Form::hidden('person_type_id', $item->personType->id) }}
-@else
-    {{ Form::hidden('person_type_id', $personType->id) }}
 @endif
 <div class="form-group row">
     <div class="col-sm-4">
@@ -10,9 +7,9 @@
     </div>
     <div class="col-sm-8">
         @if (isset($item))
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $item->type->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', "disabled"]) }}
+            {{ Form::select("person_type_id", App\Models\PersonType::selectToArray(), $item->personType->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', "disabled"]) }}
         @else
-            {{ Form::select('type', App\Models\PersonType::selectToArray(), $personType->key, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('api.get_person_modal_content')]) }}
+            {{ Form::select("person_type_id", App\Models\PersonType::selectToArray(), $personType->id, ['class' => 'form-control', 'placeholder' => '--Seçiniz--', 'data-url' => route('api.get_person_modal_content')]) }}
         @endif
     </div>
 </div>
@@ -30,6 +27,11 @@
     </div>
     <div class="col-sm-8">
         {{ Form::text('identification', $item->identification ?? null, ['class' => 'form-control tcmask', 'placeholder' => 'T.C. Kimlik No Yazınız']) }}
+        <label class="kt-checkbox">
+            {{ Form::checkbox('check[foreign]', true, isset($item) ? GlobalFunction::checkControl('foreign', $item->check) : null) }}
+            Yabancı Uyruklu
+            <span></span>
+        </label>
     </div>
 </div>
 <div class="form-group row">

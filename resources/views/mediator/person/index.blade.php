@@ -30,7 +30,7 @@
                     <div class="row kt-margin-b-20">
                         <div class="col-lg-3 kt-margin-b-10-tablet-and-mobile">
                             {{ Form::label('Kişi Tipi') }}
-                            {{ Form::select('type', App\Models\PersonType::selectToArray(), 'default', ['class' => 'form-control', 'placeholder' => '--Tümü--']) }}
+                            {{ Form::select('person_type_id', App\Models\PersonType::selectToArray(), 'default', ['class' => 'form-control', 'placeholder' => '--Tümü--']) }}
                         </div>
                         <div class="col-lg-6 kt-margin-b-10-tablet-and-mobile">
                             {{ Form::label('Ad Soyad / Şirket Unvanı:') }}
@@ -92,7 +92,7 @@
                 {{ Form::open(['url' => route('api.get_person_modal_content')]) }}
                 <div class="modal-body">
                     <div class="form-group">
-                        {{ Form::select('type', App\Models\PersonType::selectToArray(), 'default', ['class' => 'form-control', 'required' => '']) }}
+                        {{ Form::select('person_type_id', App\Models\PersonType::selectToArray(), 'default', ['class' => 'form-control', 'required' => '']) }}
                     </div>
                 </div>
                 <div class="modal-footer">
