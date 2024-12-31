@@ -29,17 +29,6 @@ function getModalContent(personType) {
 }
 
 $(document).ready(function () {
-    //Görev Kabul Tarihi Kontrol İşlemi
-    $(".custom-next-button-date-logic").on("click", function () {
-        var applicationDate = new Date($('input[name="application_date"]').val());
-        var jobDate = new Date($('input[name="job_date"]').val());
-        if (applicationDate && jobDate) {
-            if (jobDate < applicationDate) {
-                $(".custom-save-button").prop("disabled", true);
-                notification("Görev Kabul Tarihi, Başvuru Tarihinden Önce Olamaz", "error");
-            }
-        }
-    });
 
     //Kişi Tipi Seçme ve Form İçeriğini Çekme İşlemi
     $(document).on("click", ".personTypeSelect", function () {
