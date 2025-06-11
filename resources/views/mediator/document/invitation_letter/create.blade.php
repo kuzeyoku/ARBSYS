@@ -260,5 +260,10 @@
                 textarea.summernote();
             }
         });
+
+        $(document).ready(function () {
+            const content = $(".preview-area").summernote("code");
+            console.log(content);
+        });
     </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mediator;
 
 use App\Models\Log;
+use App\Services\Document\DocumentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
@@ -79,6 +80,11 @@ class InvitationLetterController extends Controller
             "lawsuit_id" => $lawsuit->id,
             "event" => "Davet Mektubu Oluşturuldu",
         ]);
+    }
+
+    public function previewToPrint()
+    {
+        return DocumentService::tempPdf("testpdf");
     }
 
     public function preview(Request $request, Lawsuit $lawsuit): JsonResponse

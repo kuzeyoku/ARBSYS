@@ -6,6 +6,7 @@ use App\Models\Document\DocumentType;
 use App\Models\Lawsuit\Lawsuit;
 use App\Models\Log;
 use App\Models\MediationCenter;
+use ZanySoft\LaravelPDF\PDF as PDF;
 
 /**
  * @method static getMeetingAddress(\Illuminate\Http\Request $request)
@@ -61,6 +62,18 @@ class DocumentService
                 $mediation_center = $this->lawsuit->mediation_center;
             }
             return $mediation_center->address;
+        }
+    }
+
+    public static function tempPdf($document_content): ?string
+    {
+        try {
+            $pdf = new PDF();
+            $pdf->loadView("mediator.document.pdf", compact("document_content"));
+            return $pdf->stream();
+        } catch (\Exception $e) {
+            \Log::error('PDF oluşturulamadı: ' . $e->getMessage());
+            return null;
         }
     }
 }

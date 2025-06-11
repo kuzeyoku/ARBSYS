@@ -74,6 +74,12 @@ class LawsuitController extends Controller
         $lawsuit_types = $this->lawsuitTypes;
         return view('mediator.lawsuit.create', compact('lawsuit_types'));
     }
+    public function getDetail(Request $request)
+    {
+        $lawsuit_id = $request->get('lawsuit_id');
+        $lawsuit = Lawsuit::findOrFail($lawsuit_id);
+        return view("mediator.lawsuit.detail", compact("lawsuit"))->render();
+    }
 
     public function store(Request $request)
     {

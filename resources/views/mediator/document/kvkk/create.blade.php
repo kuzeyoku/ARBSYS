@@ -1,6 +1,7 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor arbiter_define_protocol" id="kt_content" page-name="kvkk">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor arbiter_define_protocol"
+         id="kt_content" page-name="kvkk">
 
         @include('layout.breadcrumb', [
             'url' => [route('lawsuit.index') => 'Dosyalar', null => 'KVKK Belgesi Oluştur'],
@@ -30,14 +31,33 @@
                                 </div>
 
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
-                                    <div class="kt-heading kt-heading--md">Önizleme</div>
-                                    <div class="kt-form__section kt-form__section--first">
-                                        <div class="kt-wizard-v4__form">
-                                            <div class="kt-wizard-v4__form">
-                                                <p class="red-text"><strong>Not:</strong> @ İşareti ile başlayan
-                                                    değişkenler kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri
-                                                    ile değiştirilecektir.</p>
-                                                {{Form::textarea("preview", null, ['id' => 'preview-area', 'data-url' => route('kvkk.preview', $lawsuit)])}}
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <div class="kt-heading kt-heading--md">Önizleme</div>
+                                            <div class="kt-form__section kt-form__section--first">
+                                                <div class="kt-wizard-v4__form">
+                                                    <div class="kt-wizard-v4__form">
+                                                        <p class="red-text"><strong>Not:</strong> @ İşareti ile başlayan
+                                                            değişkenler kaydet butonuna tıkladığınızda taraf ve alıcı
+                                                            bilgileri
+                                                            ile değiştirilecektir.</p>
+                                                        {{Form::textarea("preview", null, ['id' => 'preview-area', 'data-url' => route('kvkk.preview', $lawsuit)])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="kt-heading kt-heading--md">Çıktı Önizleme</div>
+                                            <button class="btn btn-primary btn-sm mb-3" id="pdf-refresh"
+                                                    data-url="{{route("kvkk.pdf_refresh")}}">Önizleme Güncelle
+                                            </button>
+                                            <div class="kt-form__section kt-form__section--first">
+                                                <div class="kt-wizard-v4__form">
+                                                    <div class="kt-wizard-v4__form">
+                                                        <div id="print-preview"
+                                                             data-url="{{route("kvkk.pdf_preview")}}"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -53,7 +73,8 @@
                                             </p>
                                             <div class="kt-wizard-v4__review-item" id="saved" style="display: none;">
                                                 <div class="alert alert-solid-success font-weight-bold">
-                                                    <i class="fas fa-bell my-auto align-middle mr-2"></i> Evrak başarıyla kaydedilmiştir. Evraklarım sekmesinden
+                                                    <i class="fas fa-bell my-auto align-middle mr-2"></i> Evrak
+                                                    başarıyla kaydedilmiştir. Evraklarım sekmesinden
                                                     dilediginiz zaman erişebilirsiniz.
                                                 </div>
                                                 <hr>
@@ -96,7 +117,6 @@
                                 </div>
 
                                 @include('layout.form_actions')
-
                                 {{ Form::close() }}
                             </div>
                         </div>
@@ -108,9 +128,28 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/addSubSide.js') }}?v={{ time() }}"></script>
-    <!-- <script src="{{ asset('js/page/kvkk_document/wizard.js') }}?v={{ time() }}"></script> -->
     <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/side_management_functions.js') }}?v={{ time() }}"></script>
+    <script>
+        $(document).on("click", "#pdf-refresh", function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    document_content: $('#preview-area').summernote('code'),
+                },
+                success: function (response) {
+                    var pdf_container = $("#print-preview");
+                    var pdf_url = pdf_container.data("url");
+                    var iframe_url = pdf_url + "?token=" + response;
+                    $("#pdf-preview-iframe").attr("src", iframe_url);
+                }
+            })
+        });
+    </script>
 @endsection

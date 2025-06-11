@@ -71,13 +71,7 @@ var KTWizard4 = (function () {
 
     var handlePreviewData = function (data) {
         var preview_content = $("#preview-area");
-        if (typeof (data) == "string") {
-            preview_content.val(data);
-            createEditor("#preview-area");
-            $(".print_side").html(data);
-            preview = 1;
-            isSingleDocument = true;
-        } else {
+        if (Array.isArray(data)) {
             $.each(data, function (k, v) {
                 var textarea = $("<textarea>").attr({id: "preview-" + v.id, name: "preview-" + v.id});
                 preview_content.append("</br><p><strong>" + v.label + "</strong> için davet mektubu</p>");
@@ -86,6 +80,22 @@ var KTWizard4 = (function () {
                 $("#preview-" + v.id).summernote();
             });
             isSingleDocument = false;
+        } else {
+            preview_content.val(data.view);
+            createEditor("#preview-area");
+            $(".print_side").html(data.view);
+            var pdf_container = $("#print-preview");
+            var pdf_url = pdf_container.data("url");
+            var iframe_url = pdf_url + "?token=" + data.token;
+            var iframe = $("<iframe>", {
+                "src": iframe_url + "#view=FitH",
+                "id": "pdf-preview-iframe",
+                "style": "width: 100%; height: 765px; border: none;",
+                "frameborder": "0"
+            });
+            pdf_container.append(iframe);
+            preview = 1;
+            isSingleDocument = true;
         }
     };
 

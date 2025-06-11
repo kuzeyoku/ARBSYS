@@ -160,6 +160,11 @@ class Lawsuit extends Model
         return $this->documents->where('document_type_id', $document_type_id)->isNotEmpty();
     }
 
+    public function getDocument($document_type_id)
+    {
+        return $this->documents->where('document_type_id', $document_type_id)->first();
+    }
+
     public function getDisagreementTemplateAttribute(): string
     {
         return InvitationLetterService::getDisagreement($this);
@@ -212,9 +217,10 @@ class Lawsuit extends Model
         });
     }
 
-    public function getLastTimeAttribute(): string
+    public function getDeadLineAttribute(): string
     {
         $addDay = null;
+        $result = "-";
         $now = Carbon::today();
         $type_ids = [1, 3, 4, 5]; //Dava Şartı Kapsamında
         if (in_array($this->lawsuit_type_id, $type_ids)) {
@@ -232,11 +238,14 @@ class Lawsuit extends Model
             if ($now->gte($addDay)) {
                 $result = "<span class='text-danger' > " . $addDay->format('d.m.Y') . "</span > ";
             }
-            return $result;
         }
-        return " - ";
+        return $result;
     }
 
+    public function getRemainingDateAttribute(): string
+    {
+        return "15";
+    }
 
     public function getProcessStatus(): string
     {

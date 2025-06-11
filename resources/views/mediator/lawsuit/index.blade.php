@@ -32,7 +32,15 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body py-4 px-4">
-                    <table class="table table-striped table-bordered" id="dataTable">
+                    <div class="dropdown mb-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                            Sütunları Seç
+                        </button>
+                        <ul class="dropdown-menu" id="columnToggleMenu">
+                            <!-- JS ile otomatik olarak doldurulacak -->
+                        </ul>
+                    </div>
+                    <table class="table table-striped table-bordered" id="dataTable1">
                         <thead>
                         <tr>
                             <th style="width: 150px;">BAŞVURUCU</th>
@@ -59,9 +67,12 @@
                                 <td>{{ $lawsuit->lawsuit_subject_type->name ?? null }}</td>
                                 <td>{{ $lawsuit->application_date }}</td>
                                 <td>{{ $lawsuit->job_date }}</td>
-                                <td>{!! $lawsuit->last_time !!}</td>
+                                <td>{!! $lawsuit->dead_line !!}</td>
                                 <td>{!! $lawsuit->getProcessStatus() !!}</td>
-                                <td>@include('mediator.lawsuit.process', compact('lawsuit'))</td>
+                                <td>
+                                    <button data-id="{{$lawsuit->id}}" class="btn btn-sm btn-primary lawsuit-detail"><i
+                                                class="fas fa-eye"></i></button>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -69,6 +80,7 @@
                 </div>
             </div>
         </div>
+        <div class="lawsuit-detail-area" id=""></div>
     </div>
     @if (Request::get('tutanak'))
         <div class="modal fade" id="tutanak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -96,9 +108,80 @@
     @endif
 @endsection
 @section('script')
+    <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
+    <script>
+        $(document).on("click", ".print-btn", function (e) {
+            url = $(this).data('url');
+            $.get(url, function (response) {
+                if (response.status)
+                    $(response.content).printThis({
+                        importCSS: false,
+                        loadCSS: "/css/print.css"
+                    });
+                else
+                    swal.fire({
+                        title: 'Hata!',
+                        text: "Bir Hata Oluştu!",
+                        type: 'error',
+                        confirmButtonText: 'Tamam'
+                    });
+            });
+        });
+    </script>
     @if (Request::get('tutanak'))
         <script>
             $('#tutanak').modal('show')
         </script>
     @endif
+
+    <script>
+        $(document).on("click", ".lawsuit-detail", function () {
+            let lawsuitId = $(this).data('id');
+            let lawsuitDetailArea = $(".lawsuit-detail-area");
+            if (lawsuitDetailArea.attr("id") === lawsuitId.toString()) {
+                lawsuitDetailArea.html('');
+                lawsuitDetailArea.removeAttr("id");
+                return;
+            }
+            let url = "{{ route('lawsuit.getDetail') }}";
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    lawsuit_id: lawsuitId
+                },
+                success: function (response) {
+                    lawsuitDetailArea.html(response);
+                    lawsuitDetailArea.attr("id", lawsuitId);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            const table = $('#dataTable1').DataTable();
+            table.columns().every(function (index) {
+                const column = this;
+                const title = $(column.header()).text();
+                const checkbox = $(`
+            <li>
+                <label class="dropdown-item">
+                    <input type="checkbox" class="toggle-column" data-column-index="${index}" checked>
+                    ${title}
+                </label>
+            </li>
+        `);
+
+                $('#columnToggleMenu').append(checkbox);
+            });
+
+            // Checkbox değişiminde sütunu göster/gizle
+            $('#columnToggleMenu').on('change', '.toggle-column', function () {
+                const column = table.column($(this).data('column-index'));
+                column.visible(this.checked);
+            });
+        });
+    </script>
 @endsection

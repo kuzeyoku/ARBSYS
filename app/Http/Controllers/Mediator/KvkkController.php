@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Mediator;
 
 use App\Models\Log;
+use App\Services\Document\DocumentService;
 use Illuminate\Http\Request;
 use App\Models\Lawsuit\Lawsuit;
 use App\Models\Document\Document;
 use App\Http\Controllers\Controller;
 use App\Services\Document\KvkkService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class KvkkController extends Controller
 {
@@ -44,10 +47,32 @@ class KvkkController extends Controller
         ]);
     }
 
+    public function previewPdf(Request $request)
+    {
+        $data = Cache::get("preview_" . $request->token);
+        if (!$data) {
+            return response()->json(['error' => 'Preview not found or expired'], 404);
+        }
+        return DocumentService::tempPdf($data);
+    }
+
+    public function refreshPdf(Request $request): ?string
+    {
+        $token = Str::uuid();
+        Cache::put("preview_" . $token, $request->document_content, 60 * 60);
+        return $token;
+    }
+
     public function preview(Request $request, Lawsuit $lawsuit)
     {
         $document_content = KvkkService::replaceKeywords($request, $lawsuit);
+        $token = Str::uuid();
+        Cache::put("preview_" . $token, $document_content, 60 * 60);
         $sides = $request->side_ids;
-        return view("mediator.document.preview", compact("document_content", "lawsuit", "sides"))->render();
+        $preview = view("mediator.document.preview", compact("document_content", "lawsuit", "sides"))->render();
+        return response()->json([
+            "view" => $preview,
+            "token" => $token,
+        ]);
     }
 }

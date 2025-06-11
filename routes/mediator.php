@@ -29,6 +29,7 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
     Route::get('/arsivlenmis-dosyalarim', 'LawsuitController@archive_index')->name('lawsuit.archive_index');
     Route::prefix('lawsuit')->group(function () {
         Route::get('/archive/{lawsuit}', 'LawsuitController@archive')->name("lawsuit.archive");
+        Route::post("/getDetail", 'LawsuitController@getDetail')->name("lawsuit.getDetail");
         Route::get('/un-archive/{lawsuit}', 'LawsuitController@unArchive')->name("lawsuit.unArchive");
         Route::post('/getModalContent', 'LawsuitController@getModalContent')->name("lawsuit.getModalContent");
         Route::post("/getPersonToSideModalContent", 'LawsuitController@getPersonToSideModalContent')->name("lawsuit.getPersonToSideModalContent");
@@ -61,7 +62,7 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
             Route::get('/{lawsuit}/davet-mektubu-olustur', [App\Http\Controllers\Mediator\InvitationLetterController::class, "create"])->name('create');
             Route::post('/{lawsuit}/davet-mektubu-kaydet', [App\Http\Controllers\Mediator\InvitationLetterController::class, "store"])->name('store');
             Route::post('/{lawsuit}/davet-mektubu-onizle', [App\Http\Controllers\Mediator\InvitationLetterController::class, "preview"])->name('preview');
-
+            Route::get("/previewToPrint", [App\Http\Controllers\Mediator\InvitationLetterController::class, "previewToPrint"])->name("preview_to_print");
         });
 
         //KVKK Belgesi
@@ -69,6 +70,8 @@ Route::group(['middleware' => ["auth", "mediator"], 'namespace' => 'Mediator'], 
             Route::get('/{lawsuit}/kvkk-belgesi-olustur', [App\Http\Controllers\Mediator\KvkkController::class, "create"])->name('create');
             Route::post('/{lawsuit}/kvkk-belgesi-kaydet', [App\Http\Controllers\Mediator\KvkkController::class, "store"])->name('store');
             Route::post('/{lawsuit}/kvkk-belgesi-onizle', [App\Http\Controllers\Mediator\KvkkController::class, "preview"])->name('preview');
+            Route::get("/pdf-preview", [App\Http\Controllers\Mediator\KvkkController::class, "previewPdf"])->name("pdf_preview");
+            Route::post("/refresh-pdf", [App\Http\Controllers\Mediator\KvkkController::class, "refreshPdf"])->name("pdf_refresh");
         });
 
         //Bilgilendirme Tutanağı

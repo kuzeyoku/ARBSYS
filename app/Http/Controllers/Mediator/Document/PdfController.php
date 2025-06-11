@@ -26,3 +26,4 @@ class PdfController extends Controller
         return $pdf->download();
     }
 }
+
