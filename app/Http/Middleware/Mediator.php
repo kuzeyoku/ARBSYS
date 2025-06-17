@@ -16,7 +16,7 @@ class Mediator
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->role_id === RoleOptions::MEDIATOR)
+        if (auth()->user()->role_id == RoleOptions::MEDIATOR)
             return $next($request);
     }
 }

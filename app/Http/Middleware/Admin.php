@@ -16,7 +16,7 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->role_id === RoleOptions::ADMIN)
+        if (auth()->user()->role_id == RoleOptions::ADMIN)
             return $next($request);
         else
             return redirect()->back()->withError("Bu sayfaya erişim yetkiniz bulunmamaktadır.");
