@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(["middleware" => ["auth", "admin"], "prefix" => "admin", "namespace" => "Admin"], function () {
     Route::get('/', 'HomeController@index')->name('admin.home');
+    Route::get("cache-clear", "HomeController@cacheClear")->name("admin.cache-clear");
     //Kullanıcı İşlemleri
     Route::prefix("kullanici")->group(function () {
         Route::get('/', 'UserController@index')->name("admin.users");

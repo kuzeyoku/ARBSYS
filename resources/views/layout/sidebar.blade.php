@@ -248,6 +248,14 @@
                         </ul>
                     </div>
                 </li>
+                <li class="kt-menu__item" aria-haspopup="true">
+                    <a href="{{ route('admin.cache-clear') }}" class="kt-menu__link ">
+                        <span class="kt-menu__link-icon">
+                            @svg('far-bell')
+                        </span>
+                        <span class="kt-menu__link-text">Önbellek Temizle</span>
+                    </a>
+                </li>
                 <li class="kt-menu__section ">
                     <h4 class="kt-menu__section-text">HESABIM</h4>
                     <i class="kt-menu__section-icon flaticon-more-v2"></i>
