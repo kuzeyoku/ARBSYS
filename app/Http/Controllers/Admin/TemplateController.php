@@ -49,12 +49,11 @@ class TemplateController extends Controller
             $documentTypes = DocumentType::pluck("name", "id");
             $data["document_type_id"] = $request->input("document_type");
             $data["lawsuit_subject_type_id"] = $request->input("lawsuit_subject_type");
-            $data["title"] = $documentTypes[$request->input("document_type")];
             $data["html"] = $request->input("html");
             DocumentTypeTemplate::create($data);
-            return Redirect::back()->with(['success' => 'Template kaydınız başarılı bir şekilde oluşturuldu']);
-        } catch (\Throwable $th) {
-            return Redirect::back()->with(['error' => 'Template kaydınız oluşturulurken bir hata oluştu']);
+            return Redirect::route("admin.template.edit",$request->lawsuit_subject_type)->with(['success' => 'Template kaydınız başarılı bir şekilde oluşturuldu']);
+        } catch (\Throwable $e) {
+            return Redirect::route("admin.template.edit",$request->lawsuit_subject_type)->with(['error' => 'Template kaydınız oluşturulurken bir hata oluştu']);
         }
     }
 

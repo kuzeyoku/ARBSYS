@@ -38,10 +38,10 @@
                                                    href="#tab_{{ $template->id }}">{{ $template->documentType->name }}</a>
                                             </li>
                                         @endforeach
-                                        {{-- <li class="nav-item">
-                                        <a class="btn btn-block btn-success"
-                                            href="{{ route('admin.template.create') }}">Yeni Şablon Ekle</a>
-                                    </li> --}}
+                                        <li class="nav-item">
+                                            <a class="btn btn-block btn-success"
+                                               href="{{ route('admin.template.create') }}">Yeni Şablon Ekle</a>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>
