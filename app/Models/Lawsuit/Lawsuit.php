@@ -106,7 +106,8 @@ class Lawsuit extends Model
 
     public function getMattersDiscussedToStringAttribute(): ?string
     {
-        if (count($this->matters_discussed_to_array) == 0) return null;
+        if (count($this->matters_discussed_to_array) == 0)
+            return null;
         $result = array_intersect_key($this->lawsuit_subject->matters_discussed_to_array, array_flip($this->matters_discussed_to_array));
         $implode = implode(", ", $result);
         return Str::lower($implode);
@@ -217,34 +218,77 @@ class Lawsuit extends Model
         });
     }
 
-    public function getDeadLineAttribute(): string
+    private function calculateDeadLine(): ?Carbon
     {
-        $addDay = null;
-        $result = "-";
+        // Dava Şartı Kapsamında olan tür ID'leri
+        $type_ids = [1, 3, 4, 5];
+
+        // Eğer mevcut dava türü bu ID'ler içinde değilse veya job_date boş ise, null dön.
+        if (!in_array($this->lawsuit_type_id, $type_ids) || is_null($this->job_date)) {
+            return null;
+        }
+
+        $accept_date = Carbon::parse($this->job_date);
+
+        // Dava konusuna göre gün ekle
+        switch ($this->lawsuit_subject_type_id) {
+            case 1:
+            case 3:
+                return $accept_date->addDays(28);
+            case 2:
+                return $accept_date->addDays(56);
+            default:
+                return null; // Eşleşen bir durum yoksa null dön
+        }
+    }
+
+
+    public function getDeadLineAttribute()
+    {
+        $deadLine = $this->calculateDeadLine();
+
+        // Eğer bir deadline hesaplanamadıysa "-" döndür
+        if (is_null($deadLine)) {
+            return "-";
+        }
+
         $now = Carbon::today();
-        $type_ids = [1, 3, 4, 5]; //Dava Şartı Kapsamında
-        if (in_array($this->lawsuit_type_id, $type_ids)) {
-            $accept_date = Carbon::parse($this->job_date);
-            if ($this->lawsuit_subject_type_id == 1) {
-                $addDay = $accept_date->addDay(28);
-            } elseif ($this->lawsuit_subject_type_id == 2) {
-                $addDay = $accept_date->addDay(56);
-            } elseif ($this->lawsuit_subject_type_id == 3) {
-                $addDay = $accept_date->addDay(28);
-            }
-        }
-        if (!is_null($addDay)) {
-            $result = " <span class='text-success' > " . $addDay->format('d.m.Y') . "</span > ";
-            if ($now->gte($addDay)) {
-                $result = "<span class='text-danger' > " . $addDay->format('d.m.Y') . "</span > ";
-            }
-        }
-        return $result;
+        $formattedDate = $deadLine->format('d.m.Y');
+
+        // Süre dolmuşsa kırmızı, dolmamışsa yeşil renkte göster
+        $colorClass = $now->gte($deadLine) ? 'text-danger' : 'text-success';
+
+        return [
+            "default" => $formattedDate,
+            "code" => "<span class='{$colorClass}'>{$formattedDate}</span>"
+        ];
     }
 
     public function getRemainingDateAttribute(): string
     {
-        return "15";
+        $deadLine = $this->calculateDeadLine();
+
+        // Eğer bir deadline hesaplanamadıysa "-" döndür
+        if (is_null($deadLine)) {
+            return "-";
+        }
+
+        $now = Carbon::today();
+
+        // Süre doldu mu kontrol et
+        if ($now->greaterThan($deadLine)) {
+            return "<span class='text-danger'>Süre Doldu</span>";
+        }
+
+        // Bugün son gün mü kontrol et
+        if ($now->isSameDay($deadLine)) {
+            return "<span class='text-warning'>Bugün Son Gün</span>";
+        }
+
+        // Kalan gün sayısını hesapla
+        $remainingDays = $now->diffInDays($deadLine);
+
+        return "Son <strong>{$remainingDays}</strong> gün";
     }
 
     public function getProcessStatus(): string

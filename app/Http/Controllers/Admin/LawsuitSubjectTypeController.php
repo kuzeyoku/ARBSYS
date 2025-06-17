@@ -17,7 +17,8 @@ class LawsuitSubjectTypeController extends Controller
     {
         try {
             LawsuitSubjectType::create([
-                "name" => $request->name
+                "lawsuit_type_id" => "1",
+                "name" => $request->lawsuit_subject_type_name
             ]);
             return back()->withSuccess("Uyuşmazlık türü başarıyla eklendi.");
         } catch (\Exception $e) {

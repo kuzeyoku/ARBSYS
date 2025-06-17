@@ -10,7 +10,7 @@ use App\Models\Document\DocumentTypeTemplate;
 class LawsuitSubjectType extends Model
 {
 
-    public $fillable = ["name"];
+    public $fillable = ["name","lawsuit_type_id"];
 
     public $with = ["lawsuitSubjects", "documentTypeTemplate"];
 

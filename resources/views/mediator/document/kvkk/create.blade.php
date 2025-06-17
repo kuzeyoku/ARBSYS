@@ -37,10 +37,6 @@
                                             <div class="kt-form__section kt-form__section--first">
                                                 <div class="kt-wizard-v4__form">
                                                     <div class="kt-wizard-v4__form">
-                                                        <p class="red-text"><strong>Not:</strong> @ İşareti ile başlayan
-                                                            değişkenler kaydet butonuna tıkladığınızda taraf ve alıcı
-                                                            bilgileri
-                                                            ile değiştirilecektir.</p>
                                                         {{Form::textarea("preview", null, ['id' => 'preview-area', 'data-url' => route('kvkk.preview', $lawsuit)])}}
                                                     </div>
                                                 </div>

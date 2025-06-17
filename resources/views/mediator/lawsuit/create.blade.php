@@ -1,7 +1,6 @@
 @extends('layout.main')
 @section('content')
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content"
-         page-name="lawsuit">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" page-name="lawsuit">
         @include('layout.breadcrumb', ['url' => [null => 'Dosya Aç']])
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="kt-wizard-v4" id="kt_wizard_v4" data-ktwizard-state="step-first">
@@ -77,15 +76,14 @@
                                 {{Form::open(["url" => route("lawsuit.store"), "method" => "POST", "class" => "kt-form", "id" => "kt_form"])}}
                                 <!--begin: Form Wizard Step 1-->
                                 <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
-                                     data-ktwizard-state="current">
+                                    data-ktwizard-state="current">
                                     <div class="kt-heading kt-heading--md">Taraf Bilgilerini Giriniz</div>
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v4__form">
                                             <div id="applicant_select">
                                                 <div class="form-group">
                                                     <label for="applicant_type">Taraf Sıfatı</label>
-                                                    <select class="form-control" id="applicant_type"
-                                                            name="applicant_type">
+                                                    <select class="form-control" id="applicant_type" name="applicant_type">
                                                         <option value="0">-- Seçiniz --</option>
                                                         <option value="1">Başvurucu</option>
                                                         <option value="2">Diğer Taraf</option>
@@ -96,15 +94,15 @@
                                                     <div class="kt-radio-inline row">
                                                         <label class="kt-radio">
                                                             <input type="radio" data-type="person" name="isPerson"
-                                                                   class="personTypeSelect"
-                                                                   data-url="{{route("api.get_person_modal_content")}}">
+                                                                class="personTypeSelect"
+                                                                data-url="{{route("api.get_person_modal_content")}}">
                                                             Gerçek Kişi
                                                             <span></span>
                                                         </label>
                                                         <label class="kt-radio">
                                                             <input type="radio" data-type="company" name="isPerson"
-                                                                   class="personTypeSelect"
-                                                                   data-url="{{route("api.get_person_modal_content")}}">
+                                                                class="personTypeSelect"
+                                                                data-url="{{route("api.get_person_modal_content")}}">
                                                             Tüzel Kişi
                                                             <span></span>
                                                         </label>
@@ -119,8 +117,8 @@
                                             <div class="row sideBasvuranRow mt-3"></div>
                                             <div class="row sideKarsiTarafRow mt-3"></div>
                                             <button class="btn btn-primary mt-3" type="button" style="display: none"
-                                                    id="applicant_add_button" data-toggle="modal"
-                                                    data-target="#applicantModal">Taraf Ekle
+                                                id="applicant_add_button" data-toggle="modal"
+                                                data-target="#applicantModal">Taraf Ekle
                                             </button>
                                         </div>
                                     </div>
@@ -132,17 +130,79 @@
                                     <div class="kt-heading kt-heading--md">Dosya Bilgileri</div>
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v4__form">
-                                            <div class="form-group" id="lawsuit-types">
-                                                {{Form::label("lawsuit_type_id", "Dosya Türü") }}
-                                                {{Form::select('lawsuit_type_id', App\Models\Lawsuit\LawsuitType::selectToArray(), 'default', ['class' => 'form-control', 'placeholder' => '--Seçiniz--'])}}
-                                            </div>
-                                            <div class="form-group d-none" id="lawsuit-subject-types">
+                                            <div class="form-group" id="lawsuit-subject-types">
                                                 {{Form::label("lawsuit_subject_type_id", "Uyuşmazlık Türü")}}
-                                                {{Form::select('lawsuit_subject_type_id', App\Models\Lawsuit\LawsuitSubjectType::selectToArray(), 'default', ['class' => 'form-control','placeholder' => '--Seçiniz--', "data-url"=>route("api.get_lawsuit_subjects")])}}
+                                                {{Form::select('lawsuit_subject_type_id', App\Models\Lawsuit\LawsuitSubjectType::selectToArray(), 'default', ['class' => 'form-control', 'placeholder' => '--Seçiniz--', "data-url" => route("api.get_lawsuit_subjects")])}}
                                             </div>
                                             <div class="form-group d-none" id="lawsuit-subjects">
                                                 {{Form::label("lawsuit_subject_id", "Uyuşmazlık Konusu")}}
                                                 {{Form::select("lawsuit_subject_id", [], "default", ["class" => "form-control", "placeholder" => "--Seçiniz--"])}}
+                                            </div>
+
+                                            <div class="mb-5">
+                                                <p class="font-weight-bold">Uyuşmazlık Dava Şartı Kapsamında mı?</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="davaSarti"
+                                                        id="davaSartiKapsaminda" checked>
+                                                    <label class="form-check-label" for="davaSartiKapsaminda">
+                                                        Dava şartı arabuluculuk kapsamında
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="davaSarti"
+                                                        id="ihtiyariKapsamda">
+                                                    <label class="form-check-label" for="ihtiyariKapsamda">
+                                                        İhtiyari arabuluculuk kapsamında
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-5">
+                                                <p class="font-weight-bold">Arabulucu dosyaya nasıl atandı?</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="atanmaSekli"
+                                                        id="adliyeGorevlendirdi" checked>
+                                                    <label class="form-check-label" for="adliyeGorevlendirdi">
+                                                        Adliye Arabuluculuk Bürosu tarafından görevlendirildim
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="atanmaSekli"
+                                                        id="taraflarSecti">
+                                                    <label class="form-check-label" for="taraflarSecti">
+                                                        Taraflarca seçildim
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-5">
+                                                <p class="font-weight-bold">Dosya Nasıl Açıldı?</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="acilmaSekli"
+                                                        id="tarafBasvurusu" checked>
+                                                    <label class="form-check-label" for="tarafBasvurusu">
+                                                        Taraf başvurusu üzerine
+                                                        <small class="text-muted ml-2">Adliye Arabuluculuk Bürosu tarafından
+                                                            açıldı.</small>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="acilmaSekli"
+                                                        id="belirlemeTutanagi">
+                                                    <label class="form-check-label" for="belirlemeTutanagi">
+                                                        Arabulucu belirleme tutanağı ile
+                                                        <small class="text-muted ml-2">Adliye Arabuluculuk Bürosu tarafından
+                                                            açıldı.</small>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="acilmaSekli"
+                                                        id="portalUzerinden">
+                                                    <label class="form-check-label" for="portalUzerinden">
+                                                        Arabulucu portal üzerinden
+                                                        <small class="text-muted ml-2">Arabulucu tarafından açıldı.</small>
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -170,13 +230,13 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group" id="application_document_no">
                                                         {{Form::label('application_document_no', 'Başvuru Dosya No')}}
-                                                        {{Form::text('application_document_no', null, ['class' => 'form-control', 'placeholder' => date('Y').'/'])}}
+                                                        {{Form::text('application_document_no', null, ['class' => 'form-control', 'placeholder' => date('Y') . '/'])}}
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         {{Form::label("mediation_document_no", "Arabuluculuk Dosya No")}}
-                                                        {{Form::text("mediation_document_no", null, ["class" => "form-control", "placeholder" => date('Y')."/"])}}
+                                                        {{Form::text("mediation_document_no", null, ["class" => "form-control", "placeholder" => date('Y') . "/"])}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,10 +289,10 @@
                                                 <div class="kt-wizard-v4__review-content" id="step3_details">
                                                 </div>
                                             </div>
-                                            <div class="kt-wizard-v4__review-item" id="saved"
-                                                 style="display: none;">
+                                            <div class="kt-wizard-v4__review-item" id="saved" style="display: none;">
                                                 <div class="alert alert-solid-success font-weight-bold">
-                                                    <i class="fas fa-bell my-auto align-middle mr-2"></i> Dosya başarıyla kaydedilmiştir. Dosyalarım sekmesinden erişebilirsiniz.
+                                                    <i class="fas fa-bell my-auto align-middle mr-2"></i> Dosya başarıyla
+                                                    kaydedilmiştir. Dosyalarım sekmesinden erişebilirsiniz.
                                                 </div>
                                                 <hr>
                                             </div>
@@ -241,19 +301,18 @@
                                 </div>
                                 <div class="kt-form__actions">
                                     <button
-                                            class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
-                                            data-ktwizard-type="action-prev">
+                                        class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                        data-ktwizard-type="action-prev">
                                         GERİ
                                     </button>
                                     <button type="button"
-                                            class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-save-button"
-                                            data-toggle="modal" data-target="#exampleModal"
-                                            data-ktwizard-type="action-submit">
+                                        class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-save-button"
+                                        data-toggle="modal" data-target="#exampleModal" data-ktwizard-type="action-submit">
                                         KAYDET
                                     </button>
                                     <button
-                                            class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-next-button-date-logic"
-                                            data-ktwizard-type="action-next">
+                                        class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u custom-next-button-date-logic"
+                                        data-ktwizard-type="action-next">
                                         İLERİ
                                     </button>
                                 </div>
@@ -273,6 +332,5 @@
     <script src="{{ asset('js/page/lawsuit/lawsuit.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/customWizard.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/dynamicRulesForWizard.js') }}?v={{ time() }}"></script>
-    <!-- <script src="{{ asset('js/page/lawsuit/wizard.js') }}?v={{ time() }}"></script> -->
     <script src="{{ asset('js/printThis.js') }}?v={{ time() }}"></script>
 @endsection

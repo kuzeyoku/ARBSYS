@@ -12,7 +12,7 @@ class LawsuitSubjectController extends Controller
     {
         try {
             LawsuitSubject::create([
-                "name" => $request->name,
+                "name" => $request->lawsuit_subject_name,
                 "lawsuit_subject_type_id" => $request->lawsuit_subject_type
             ]);
             return back()->withSuccess("Uyuşmazlık konusu başarıyla eklendi.");

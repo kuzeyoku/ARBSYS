@@ -58,9 +58,9 @@
                                 </div>
                                 <div class="col-4">
                                     <label class="font-weight-bold small">KALAN SÜRE</label>
-                                    <div class="d-flex align-items-center text-success">
+                                    <div class="d-flex align-items-center">
                                         <i class="fas fa-check-circle mr-2"></i>
-                                        <span class="font-weight-bold">{{$lawsuit->remaining_date}} GÜN</span>
+                                        <span class="font-weight-bold">{!! $lawsuit->remaining_date!!}</span>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                     <label class="font-weight-bold small">BAŞVURU TARİHİ</label>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-calendar mr-2"></i>
-                                        <span class="small">{{$lawsuit->applicant_date}}</span>
+                                        <span class="small">{{$lawsuit->application_date}}</span>
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -83,7 +83,7 @@
                                     <label class="font-weight-bold small">SON TARİH</label>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-calendar mr-2"></i>
-                                        <span class="small">{!! $lawsuit->dead_line !!}</span>
+                                       {!! $lawsuit->dead_line["code"] !!}
                                     </div>
                                 </div>
                             </div>
@@ -119,25 +119,30 @@
                                                 <i class="fas fa-user mr-2"></i>
                                                 {{ $claimant->detail->name }}
                                             </td>
-                                            <td><i class="fas fa-check text-success"></i></td>
-                                            <td><i class="fas fa-square text-muted"></i></td>
-                                            <td><i class="fas fa-square text-muted"></i></td>
-                                            <td><i class="fas fa-check text-success"></i></td>
+
+                                            <td>{!! $claimant->hasComminication("phone") !!}</td>
+                                            <td>{!! $claimant->hasComminication("sms") !!}</td>
+                                            <td>{!! $claimant->hasComminication("email") !!}</td>
+                                            <td>{!! $claimant->hasComminication("cargo") !!}</td>
                                         </tr>
-                                        <tr>
-                                            <td class="font-weight-bold">VEKİLİ</td>
-                                            <td colspan="4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <i class="fas fa-user mr-2"></i>
-                                                Av. Metehan Eryılmaz
-                                            </td>
-                                            <td><i class="fas fa-check text-success"></i></td>
-                                            <td><i class="fas fa-square text-muted"></i></td>
-                                            <td><i class="fas fa-square text-muted"></i></td>
-                                            <td><i class="fas fa-check text-success"></i></td>
-                                        </tr>
+                                        @if($claimant->sub_sides())
+                                            @foreach($claimant->sub_sides() as $subSide)
+                                                <tr>
+                                                    <td class="font-weight-bold">VEKİLİ</td>
+                                                    <td colspan="4"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <i class="fas fa-user mr-2"></i>
+                                                        {{$subSide->detail->name}}
+                                                    </td>
+                                                    <td><i class="fas fa-check text-success"></i></td>
+                                                    <td><i class="fas fa-square text-muted"></i></td>
+                                                    <td><i class="fas fa-square text-muted"></i></td>
+                                                    <td><i class="fas fa-check text-success"></i></td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     @endforeach
                                     @foreach($lawsuit->defendants() as $defendant)
                                         <tr>
@@ -148,10 +153,10 @@
                                             <td>
                                                 <i class="fas fa-building mr-2"></i>{{$defendant->detail->name}}
                                             </td>
-                                            <td><i class="fas fa-check text-success"></i></td>
-                                            <td><i class="fas fa-square text-muted"></i></td>
-                                            <td><i class="fas fa-square text-muted"></i></td>
-                                            <td><i class="fas fa-check text-success"></i></td>
+                                            <td>{!! $defendant->hasComminication("phone") !!}</td>
+                                            <td>{!! $defendant->hasComminication("sms") !!}</td>
+                                            <td>{!! $defendant->hasComminication("email") !!}</td>
+                                            <td>{!! $defendant->hasComminication("cargo") !!}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -181,20 +186,22 @@
                                             Davet Mektubu
                                         </td>
                                         <td class="text-right text-white">
-                                            <button class="btn btn-sm btn-primary mr-1 print-btn"
-                                                    data-url="{{route("document.getcontent",$lawsuit->getDocument(1))}}">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-primary mr-1 print-btn"
-                                                    data-url="{{route("document.getcontent",$lawsuit->getDocument(1))}}">
-                                                <i class="fas fa-print"></i>
-                                            </button>
-                                            <a class="btn btn-sm btn-primary mr-1">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </a>
-                                            <a class="btn btn-sm btn-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
+                                            @if($lawsuit->hasDocument(1))
+                                                <button class="btn btn-sm btn-primary mr-1 print-btn"
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(1))}}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-primary mr-1 print-btn"
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(1))}}">
+                                                    <i class="fas fa-print"></i>
+                                                </button>
+                                                <a class="btn btn-sm btn-primary mr-1">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                                <a class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr class="@if($lawsuit->hasDocument(2)) table-success @endif">
@@ -233,7 +240,7 @@
                                             KVKK Bilgilendirme Tutanağı Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(3))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(3))}}">
                                                     <i class="fas fa-eye"></i>
@@ -260,7 +267,7 @@
                                             Arabulucu Belirleme Tutanağı Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(4))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>
@@ -287,7 +294,7 @@
                                             Toplantı Tutanağı Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(5))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>
@@ -314,7 +321,7 @@
                                             Anlaşma Belgesi Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(6))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>
@@ -341,7 +348,7 @@
                                             Ücret Sözleşmesi Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(7))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>
@@ -368,7 +375,7 @@
                                             Son Tutanak Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(8))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>
@@ -395,7 +402,7 @@
                                             Yetki İtirazı Üst Yazı Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(9))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>
@@ -422,7 +429,7 @@
                                             Yetki Belgesi Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(10))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>
@@ -449,7 +456,7 @@
                                             Evrak Ekle
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(2))
+                                            @if($lawsuit->hasDocument(11))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
                                                         data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
                                                     <i class="fas fa-eye"></i>

@@ -32,7 +32,7 @@
                             {{ Form::open(['url' => route('admin.lawsuit_subject_type.store'), 'method' => 'POST']) }}
                             <div class="form-group">
                                 {{ Form::label('Uyuşmazlık Türü') }}
-                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Uyuşmazlık Türü Başlığı Giriniz']) }}
+                                {{ Form::text('lawsuit_subject_type_name', null, ['class' => 'form-control', 'placeholder' => 'Uyuşmazlık Türü Başlığı Giriniz']) }}
                             </div>
                             {{ Form::submit('Kaydet', ['class' => 'btn btn-primary']) }}
                             {{ Form::close() }}
@@ -45,7 +45,7 @@
                             </div>
                             <div class="form-group">
                                 {{ Form::label('Uyuşmazlık Konusu') }}
-                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Uyuşmazlık Konusu Giriniz']) }}
+                                {{ Form::text('lawsuit_subject_name', null, ['class' => 'form-control', 'placeholder' => 'Uyuşmazlık Konusu Giriniz']) }}
                             </div>
                             {{ Form::submit('Kaydet', ['class' => 'btn btn-primary']) }}
                             {{ Form::close() }}

@@ -229,29 +229,28 @@ $(document).ready(function () {
 
         $(`#sideCard-${deleteSideDataIndex}`).remove();
     });
-    $("select[name='lawsuit_type_id']").on("change", function () {
-        $("#lawsuit-subject-types").removeClass("d-none");
-        $("select[name='lawsuit_subject_type_id']").on("change", function () {
-            const url = $(this).data("url");
-            const lawsuit_subject_type_id = $(this).val();
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    _token: $("meta[name='csrf-token']").attr("content"),
-                    lawsuit_subject_type_id: lawsuit_subject_type_id,
-                },
-                success: function (response) {
-                    let options = "";
-                    $.each(response, function (index, value) {
-                        options += `<option value="${index}">${value}</option>`;
-                    });
-                    $("select[name='lawsuit_subject_id']").html(options);
-                    $("#lawsuit-subjects").removeClass("d-none");
-                }
-            });
+
+    $("select[name='lawsuit_subject_type_id']").on("change", function () {
+        const url = $(this).data("url");
+        const lawsuit_subject_type_id = $(this).val();
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {
+                _token: $("meta[name='csrf-token']").attr("content"),
+                lawsuit_subject_type_id: lawsuit_subject_type_id,
+            },
+            success: function (response) {
+                let options = "";
+                $.each(response, function (index, value) {
+                    options += `<option value="${index}">${value}</option>`;
+                });
+                $("select[name='lawsuit_subject_id']").html(options);
+                $("#lawsuit-subjects").removeClass("d-none");
+            }
         });
     });
+
     /*
         $("#delivery_by").on("change", function () {
             var delivery_by = $("#delivery_by")

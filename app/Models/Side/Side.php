@@ -6,7 +6,6 @@ use App\Models\Lawsuit\Lawsuit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use SideTypeOptions;
 
 /**
@@ -38,6 +37,13 @@ class Side extends Model
             return $this->lawyer();
         }
         return null;
+    }
+
+    public function hasComminication(string $field) : string {
+        if($this->detail->{$field}) {
+            return "<i class='fas fa-check text-success'></i>";
+        }
+        return "<i class='fas fa-times text-muted'></i>";
     }
 
     public function sub_sides(): HasMany

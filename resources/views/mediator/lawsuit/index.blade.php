@@ -67,7 +67,7 @@
                                 <td>{{ $lawsuit->lawsuit_subject_type->name ?? null }}</td>
                                 <td>{{ $lawsuit->application_date }}</td>
                                 <td>{{ $lawsuit->job_date }}</td>
-                                <td>{!! $lawsuit->dead_line !!}</td>
+                                <td>{!! $lawsuit->dead_line['code'] !!}</td>
                                 <td>{!! $lawsuit->getProcessStatus() !!}</td>
                                 <td>
                                     <button data-id="{{$lawsuit->id}}" class="btn btn-sm btn-primary lawsuit-detail"><i
