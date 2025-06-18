@@ -260,20 +260,47 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-outline-secondary btn-sm mr-2"
-                                                    onclick="createDocument('Arabulucu Belirleme Tutanağı')">
+                                            <a href="{{route("arbiter_define_protocol.create",$lawsuit)}}"
+                                               class="btn @if($lawsuit->hasDocument(15)) btn-success @else btn-outline-secondary @endif btn-sm mr-2">
                                                 <i class="fas fa-plus-circle"></i>
-                                            </button>
+                                            </a>
                                             Arabulucu Belirleme Tutanağı Oluştur
+                                        </td>
+                                        <td class="text-right">
+                                            @if($lawsuit->hasDocument(15))
+                                                <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(15))}}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(15))}}">
+                                                    <i class="fas fa-print"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary mr-1">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{{route("meeting_protocol.create",$lawsuit)}}"
+                                               class="btn @if($lawsuit->hasDocument(4)) btn-success @else btn-outline-secondary @endif btn-sm mr-2">
+                                                <i class="fas fa-plus-circle"></i>
+                                            </a>
+                                            Toplantı Tutanağı Oluştur
                                         </td>
                                         <td class="text-right">
                                             @if($lawsuit->hasDocument(4))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(4))}}">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(4))}}">
                                                     <i class="fas fa-print"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1">
@@ -287,20 +314,20 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-outline-secondary btn-sm mr-2"
-                                                    onclick="createDocument('Toplantı Tutanağı')">
+                                            <a href="{{route("agreement_document.create",$lawsuit)}}"
+                                               class="btn @if($lawsuit->hasDocument(5)) btn-success @else btn-outline-secondary @endif btn-sm mr-2">
                                                 <i class="fas fa-plus-circle"></i>
-                                            </button>
-                                            Toplantı Tutanağı Oluştur
+                                            </a>
+                                            Anlaşma Belgesi Oluştur
                                         </td>
                                         <td class="text-right">
                                             @if($lawsuit->hasDocument(5))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(5))}}">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(5))}}">
                                                     <i class="fas fa-print"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1">
@@ -314,37 +341,10 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-outline-secondary btn-sm mr-2"
-                                                    onclick="createDocument('Anlaşma Belgesi')">
+                                            <a href="{{route("wage_agreement.create",$lawsuit)}}"
+                                               class="btn @if($lawsuit->hasDocument(7)) btn-success @else btn-outline-secondary @endif btn-sm mr-2">
                                                 <i class="fas fa-plus-circle"></i>
-                                            </button>
-                                            Anlaşma Belgesi Oluştur
-                                        </td>
-                                        <td class="text-right">
-                                            @if($lawsuit->hasDocument(6))
-                                                <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
-                                                    <i class="fas fa-print"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-secondary mr-1">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button class="btn btn-outline-secondary btn-sm mr-2"
-                                                    onclick="createDocument('Ücret Sözleşmesi')">
-                                                <i class="fas fa-plus-circle"></i>
-                                            </button>
+                                            </a>
                                             Ücret Sözleşmesi Oluştur
                                         </td>
                                         <td class="text-right">
@@ -368,20 +368,20 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-outline-secondary btn-sm mr-2"
-                                                    onclick="createDocument('Son Tutanak')">
+                                            <a href="{{route("final_protocol.create",$lawsuit)}}"
+                                               class="btn @if($lawsuit->hasDocument(6)) btn-success @else btn-outline-secondary @endif btn-sm mr-2">
                                                 <i class="fas fa-plus-circle"></i>
-                                            </button>
+                                            </a>
                                             Son Tutanak Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(8))
+                                            @if($lawsuit->hasDocument(6))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(6))}}">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(6))}}">
                                                     <i class="fas fa-print"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1">
@@ -395,20 +395,20 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-outline-secondary btn-sm mr-2"
-                                                    onclick="createDocument('Yetki İtirazı Üst Yazı')">
+                                            <a href="{{route("authority_objection.create",$lawsuit)}}"
+                                               class="btn @if($lawsuit->hasDocument(16)) btn-success @else btn-outline-secondary @endif btn-sm mr-2">
                                                 <i class="fas fa-plus-circle"></i>
-                                            </button>
+                                            </a>
                                             Yetki İtirazı Üst Yazı Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(9))
+                                            @if($lawsuit->hasDocument(16))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(16))}}">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(16))}}">
                                                     <i class="fas fa-print"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1">
@@ -422,20 +422,20 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-outline-secondary btn-sm mr-2"
-                                                    onclick="createDocument('Yetki Belgesi')">
+                                            <a href="{{route("authority_document.create",$lawsuit)}}"
+                                               class="btn @if($lawsuit->hasDocument(17)) btn-success @else btn-outline-secondary @endif btn-sm mr-2">
                                                 <i class="fas fa-plus-circle"></i>
-                                            </button>
+                                            </a>
                                             Yetki Belgesi Oluştur
                                         </td>
                                         <td class="text-right">
-                                            @if($lawsuit->hasDocument(10))
+                                            @if($lawsuit->hasDocument(17))
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(17))}}">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1 print-btn"
-                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(2))}}">
+                                                        data-url="{{route("document.getcontent",$lawsuit->getDocument(17))}}">
                                                     <i class="fas fa-print"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary mr-1">
