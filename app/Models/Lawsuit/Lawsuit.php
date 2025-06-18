@@ -249,7 +249,10 @@ class Lawsuit extends Model
 
         // Eğer bir deadline hesaplanamadıysa "-" döndür
         if (is_null($deadLine)) {
-            return "-";
+            return [
+                "default" => "-",
+                "code" => "<span class='text-muted'>-</span>"
+            ];
         }
 
         $now = Carbon::today();
