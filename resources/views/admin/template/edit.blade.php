@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('content')
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-        @include('layout.breadcrumb', ['url' => [null => 'Şablon Düzenle']])
+        @include('layout.breadcrumb', ['url' => [route("admin.templates")=>"Şablon İşlemleri", route("admin.template.subjects",$lawsuitSubjectType) => $lawsuitSubjectType->name,null=>"Şablon Düzenle"]])
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="kt-portlet kt-portlet--mobile">
                 <div class="kt-portlet__head kt-portlet__head--lg">

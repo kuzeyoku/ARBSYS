@@ -3,7 +3,13 @@
         <div class="kt-subheader__main">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mt-1" style="background-color: white;">
-                    <li class="breadcrumb-item"><a href="/home">Anasayfa</a></li>
+                    <li class="breadcrumb-item">
+                        @can("mediator")
+                            <a href="{{ route('home') }}">Anasayfa</a>
+                        @elsecan("admin")
+                            <a href="{{ route('admin.home') }}">Anasayfa</a>
+                        @endcan
+                    </li>
                     @foreach ($url as $url => $title)
                         @if ($loop->last)
                             <li class="breadcrumb-item active">{{ $title }}</li>

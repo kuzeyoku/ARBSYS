@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('content')
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-        @include('layout.breadcrumb', ['url' => [null => 'Şablon İşlemleri']])
+        @include('layout.breadcrumb', ['url' => [route("admin.templates") => 'Şablon İşlemleri', null]])
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="kt-portlet kt-portlet--mobile">
                 <div class="kt-portlet__head kt-portlet__head--lg">
@@ -20,57 +20,57 @@
                 <div class="kt-portlet__body">
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
-                        <tr>
-                            @if (isset($lawsuitSubjectTypes))
-                                <th colspan="2">Uyuşmazlık Türleri</th>
-                            @elseif (isset($lawsuitSubjects))
-                                <th colspan="2">Uyuşmazlık Konuları</th>
-                            @else
-                                <th colspan="2">İşlemler</th>
-                            @endif
-                        </tr>
+                            <tr>
+                                @if (isset($lawsuitSubjectTypes))
+                                    <th colspan="2">Uyuşmazlık Türleri</th>
+                                @elseif (isset($lawsuitSubjects))
+                                    <th colspan="2">Uyuşmazlık Konuları</th>
+                                @else
+                                    <th colspan="2">İşlemler</th>
+                                @endif
+                            </tr>
                         </thead>
                         <tbody>
-                        @if (isset($lawsuitSubjectType))
-                            <tr>
-                                <td>
-                                    Genel Şablonlar
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.template.edit', $lawsuitSubjectType) }}"
-                                       class="btn btn-primary btn-sm">Düzenle</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th col="2">
-                                    Uyuşmazlık Konuları
-                                </th>
-                            </tr>
-                            @foreach ($lawsuitSubjectType->lawsuitSubjects as $item)
+                            @if (isset($lawsuitSubjectType))
                                 <tr>
                                     <td>
-                                        {{ $item->name }}
+                                        Genel Şablonlar
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.template.edit', [$lawsuitSubjectType, $item]) }}"
-                                           class="btn btn-primary btn-sm">Düzenle</a>
+                                        <a href="{{ route('admin.template.edit', $lawsuitSubjectType) }}"
+                                            class="btn btn-primary btn-sm">Düzenle</a>
                                     </td>
                                 </tr>
-                            @endforeach
-                        @endif
-                        @if (isset($lawsuitSubjectTypes))
-                            @foreach ($lawsuitSubjectTypes as $item)
                                 <tr>
-                                    <td>
-                                        {{ $item->name }}
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.template.subjects', $item) }}"
-                                           class="btn btn-primary btn-sm">Düzenle</a>
-                                    </td>
+                                    <th col="2">
+                                        Uyuşmazlık Konuları
+                                    </th>
                                 </tr>
-                            @endforeach
-                        @endif
+                                @foreach ($lawsuitSubjectType->lawsuitSubjects as $item)
+                                    <tr>
+                                        <td>
+                                            {{ $item->name }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.template.edit', [$lawsuitSubjectType, $item]) }}"
+                                                class="btn btn-primary btn-sm">Düzenle</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            @if (isset($lawsuitSubjectTypes))
+                                @foreach ($lawsuitSubjectTypes as $item)
+                                    <tr>
+                                        <td>
+                                            {{ $item->name }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.template.subjects', $item) }}"
+                                                class="btn btn-primary btn-sm">Düzenle</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
