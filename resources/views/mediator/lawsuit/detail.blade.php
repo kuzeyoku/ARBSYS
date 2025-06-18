@@ -22,15 +22,15 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="font-weight-bold">Uyuşmazlık Dava Şartı Kapsamında mı?</label>
-                                <p class="mb-2">{{$lawsuit->lawsuit_type->name}}</p>
+                                <p class="mb-2">{{$lawsuit->lawsuit_type->name ?? null}}</p>
                             </div>
                             <div class="mb-3">
                                 <label class="font-weight-bold">Uyuşmazlık Türü</label>
-                                <p class="mb-2">{{$lawsuit->lawsuit_subject_type->name}}</p>
+                                <p class="mb-2">{{$lawsuit->lawsuit_subject_type->name ?? null}}</p>
                             </div>
                             <div class="mb-3">
                                 <label class="font-weight-bold">Uyuşmazlık Konusu</label>
-                                <p class="mb-0">{{$lawsuit->lawsuit_subject->name}}</p>
+                                <p class="mb-0">{{$lawsuit->lawsuit_subject->name ?? null}}</p>
                             </div>
                         </div>
                     </div>
