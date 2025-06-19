@@ -126,9 +126,6 @@
                                     <div class="kt-heading kt-heading--md">Detaylarınızı İnceleyin</div>
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v4__form">
-                                            <p class="red-text"><strong>Not:</strong> @ İşareti ile başlayan
-                                                değişkenler kaydet butonuna tıkladığınızda taraf ve alıcı bilgileri ile
-                                                değiştirilecektir.</p>
                                             <textarea class="preview-area" name="preview" id="preview-area"
                                                 data-url="{{ route('final_protocol.preview', $lawsuit) }}">
                                                 </textarea>
